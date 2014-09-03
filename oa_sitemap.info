@@ -1,0 +1,5 @@
+name = Open Atrium Site Map
+description = A site map tool for OA2
+core = 7.x
+package = Open Atrium
+dependencies[] = oa_core

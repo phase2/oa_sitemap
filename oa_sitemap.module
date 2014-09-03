@@ -1,0 +1,72 @@
+<?php
+/**
+ * @file
+ * Code for the OpenAtrium Sitemap.
+ */
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function oa_sitemap_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'ctools' && $plugin_type == 'content_types') {
+    return 'plugins/content_types';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function oa_sitemap_theme() {
+  return array(
+    'oa_sitemap_show' => array(
+      'template' => 'oa-sitemap-show',
+      'variables' => array(
+        'node' => NULL,
+        'children' => NULL,
+        'sections' => NULL,
+      ),
+      'path' => drupal_get_path('module', 'oa_sitemap') . '/templates',
+    ),
+  );
+}
+
+/**
+ * Main helper function to render a specific space row in the sitemap
+ * Recursively calls for subspaces
+ * @param $node, node object or nid
+ * @param $icons, array of section type images keyed by tid
+ * @param $index, start at 0
+ * @param $depth, start at 0
+ *
+ */
+function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) {
+  if (is_numeric($node)) {
+    $node = node_load($node);
+  }
+
+  $children = oa_core_get_groups_by_parent($node->nid);
+  foreach ($children as $key => $child) {
+    $subspace = node_load($child);
+    $children[$key] = $subspace;
+  }
+
+  $sections = oa_core_space_sections($node->nid, 1, FALSE, array('field_oa_section|tid'));
+  foreach ($sections as $key => $section) {
+    $id = $section->field_oa_section_tid;
+    $sections[$key]->icon = !empty($icons[$id]) ? $icons[$id] : '';
+  }
+
+  $vars = array(
+    'node' => $node,
+    'children' => $children,
+    'sections' => $sections,
+    'depth' => $depth,
+    'index' => $index,
+  );
+  $output = theme('oa_sitemap_show', $vars);
+  foreach ($children as $subspace) {
+    $index++;
+    $output .= oa_sitemap_space_map($subspace, $icons, $index, $depth+1);
+  }
+  return $output;
+}
