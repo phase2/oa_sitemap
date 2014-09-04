@@ -22,6 +22,11 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
   if (!isset($context->data)) {
     return;
   }
+
+  $base = drupal_get_path('module', 'oa_sitemap');
+  drupal_add_js($base . '/js/oa_sitemap.js');
+  drupal_add_css($base . '/css/oa_sitemap.css');
+
   $node = $context->data;
   drupal_set_title(t('Site Map for @space', array('@space' => $node->title)));
 
