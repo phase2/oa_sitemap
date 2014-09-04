@@ -49,6 +49,9 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
   if (is_numeric($node)) {
     $node = node_load($node);
   }
+  $base = drupal_get_path('module', 'oa_sitemap');
+  drupal_add_js($base . '/js/oa_sitemap.js');
+  drupal_add_css($base . '/css/oa_sitemap.css');
 
   $children = oa_core_get_groups_by_parent($node->nid);
   foreach ($children as $key => $child) {
