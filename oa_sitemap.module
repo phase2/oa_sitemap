@@ -1,6 +1,12 @@
 <?php
 /**
  * @file
+ * Code for the Open Atrium Site Map feature.
+ */
+
+include_once 'oa_sitemap.features.inc';
+/**
+ * @file
  * Code for the OpenAtrium Sitemap.
  */
 
