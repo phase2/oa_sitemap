@@ -11,10 +11,10 @@
  */
 ?>
 <div class="oa_space_wrapper" data-depth="<?php print $depth; ?>" data-index="<?php print $index; ?>">
-  <h3><?php print $node->title; ?></h3>
+  <h3><?php print l($node->title, 'node/' . $node->nid); ?></h3>
   <div class="oa_section_wrapper">
   <?php foreach ($sections as $section): ?>
-    <div class="oa_section"><h4><?php print $section->icon; ?><?php print $section->title; ?></h4></div>
+    <div class="oa_section"><h4><?php print $section->icon; ?><?php print l($section->title, 'node/' . $section->nid); ?></h4></div>
   <?php endforeach; ?>
   </div>
   <div class="oa_subspace_wrapper">
