@@ -6,7 +6,7 @@
  * $node - space node
  * $index - index id of this row
  * $depth - depth of this row within the sitemap
- * $children - subspaces
+ * $subspaces - subspaces
  * $sections - sections
  */
 ?>
@@ -18,8 +18,8 @@
   <?php endforeach; ?>
   </div>
   <div class="oa_subspace_wrapper">
-    <?php foreach ($children as $subspace): ?>
-    <div class="oa_subspace"><h4><?php print $subspace->title; ?></h4></div>
+    <?php foreach ($subspaces as $subspace): ?>
+      <?php print $subspace; ?>
     <?php endforeach; ?>
   </div>
 </div>

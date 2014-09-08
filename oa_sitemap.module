@@ -62,17 +62,18 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
     $sections[$key]->icon = !empty($icons[$id]) ? $icons[$id] : '';
   }
 
+  $subspaces = array();
+  foreach ($children as $subspace) {
+    $index++;
+    $subspaces[] = oa_sitemap_space_map($subspace, $icons, $index, $depth+1);
+  }
   $vars = array(
     'node' => $node,
-    'children' => $children,
+    'subspaces' => $subspaces,
     'sections' => $sections,
     'depth' => $depth,
     'index' => $index,
   );
   $output = theme('oa_sitemap_show', $vars);
-  foreach ($children as $subspace) {
-    $index++;
-    $output .= oa_sitemap_space_map($subspace, $icons, $index, $depth+1);
-  }
   return $output;
 }
