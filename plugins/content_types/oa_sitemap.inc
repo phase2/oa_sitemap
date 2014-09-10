@@ -47,7 +47,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
       $content = array(
         'file' => array(
           '#theme' => 'image_style',
-          '#style_name' => 'panopoly_thumbnail',
+          '#style_name' => 'oa_medium_thumbnail',
           '#path' => $file->uri,
         ),
       );
