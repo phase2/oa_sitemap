@@ -89,6 +89,7 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
   foreach ($children as $subspace) {
     $subspaces[] = oa_sitemap_space_map($subspace, $icons, $index, $depth+1);
   }
+
   $index++;
   $new_space_vars = array(
     'link' => l(t('New Space'), 'wizard/nojs/add/oa-space', array(
@@ -98,10 +99,12 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
     'depth' => $depth,
     'index' => $index,
     'class' => '',
+    'icon' => $icons[0],
   );
   $subspaces[] = theme('oa_sitemap_show', $new_space_vars);
 
   $vars['subspaces'] = $subspaces;
   $output = theme('oa_sitemap_show', $vars);
+
   return $output;
 }
