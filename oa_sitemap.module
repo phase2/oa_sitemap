@@ -64,6 +64,8 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
     $section_links[] = array(
       'link' => l(check_plain($section->title), 'node/' . $section->nid),
       'icon' => !empty($icons[$id]) ? $icons[$id] : '',
+      'class' => 'oa_section',
+      'title_class' => 'oa_section_title',
     );
   }
 
@@ -72,6 +74,8 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
       'link' => l(t('New Section'), 'wizard/nojs/add/oa-section', array(
         'attributes' => array('class' => 'ctools-use-modal'))),
       'icon' => $icons[0],
+      'class' => 'oa_section oa_new_section',
+      'title_class' => '',
     );
   }
 
@@ -82,7 +86,8 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
     'sections' => $section_links,
     'depth' => $depth,
     'index' => $index,
-    'class' => 'oa_space_title',
+    'class' => 'oa_space_wrapper',
+    'title_class' => 'oa_space_title',
   );
 
   $subspaces = array();
@@ -98,7 +103,8 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
     'subspaces' => array(),
     'depth' => $depth,
     'index' => $index,
-    'class' => '',
+    'class' => 'oa_space_wrapper oa_new_space',
+    'title_class' => '', // allows link to work directly
     'icon' => $icons[0],
   );
   $subspaces[] = theme('oa_sitemap_show', $new_space_vars);
