@@ -49,14 +49,15 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
   if (is_numeric($node)) {
     $node = node_load($node);
   }
+  $nid = !empty($node) ? $node->nid : 0;
 
-  $children = oa_core_get_groups_by_parent($node->nid);
+  $children = oa_core_get_groups_by_parent($nid);
   foreach ($children as $key => $child) {
     $subspace = node_load($child);
     $children[$key] = $subspace;
   }
 
-  $sections = oa_core_space_sections($node->nid, 1, FALSE, array('field_oa_section|tid'));
+  $sections = oa_core_space_sections($nid, 1, FALSE, array('field_oa_section|tid'));
   foreach ($sections as $key => $section) {
     $id = $section->field_oa_section_tid;
     $sections[$key]->icon = !empty($icons[$id]) ? $icons[$id] : '';
