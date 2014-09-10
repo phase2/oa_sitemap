@@ -58,23 +58,48 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
   }
 
   $sections = oa_core_space_sections($nid, 1, FALSE, array('field_oa_section|tid'));
+  $section_links = array();
   foreach ($sections as $key => $section) {
     $id = $section->field_oa_section_tid;
-    $sections[$key]->icon = !empty($icons[$id]) ? $icons[$id] : '';
+    $section_links[] = array(
+      'link' => l(check_plain($section->title), 'node/' . $section->nid),
+      'icon' => !empty($icons[$id]) ? $icons[$id] : '',
+    );
   }
+
+  if (!empty($node)) {
+    $section_links[] = array(
+      'link' => l(t('New Section'), 'wizard/nojs/add/oa-section', array(
+        'attributes' => array('class' => 'ctools-use-modal'))),
+      'icon' => $icons[0],
+    );
+  }
+
 
   $index++;
   $vars = array(
-    'node' => $node,
-    'sections' => $sections,
+    'link' => !empty($node) ? l(check_plain($node->title), 'node/' . $node->nid) : l(t('Home'), '<front>'),
+    'sections' => $section_links,
     'depth' => $depth,
     'index' => $index,
+    'class' => 'oa_space_title',
   );
 
   $subspaces = array();
   foreach ($children as $subspace) {
     $subspaces[] = oa_sitemap_space_map($subspace, $icons, $index, $depth+1);
   }
+  $index++;
+  $new_space_vars = array(
+    'link' => l(t('New Space'), 'wizard/nojs/add/oa-space', array(
+      'attributes' => array('class' => 'ctools-use-modal'))),
+    'sections' => array(),
+    'subspaces' => array(),
+    'depth' => $depth,
+    'index' => $index,
+    'class' => '',
+  );
+  $subspaces[] = theme('oa_sitemap_show', $new_space_vars);
 
   $vars['subspaces'] = $subspaces;
   $output = theme('oa_sitemap_show', $vars);

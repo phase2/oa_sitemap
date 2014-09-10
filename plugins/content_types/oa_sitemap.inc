@@ -30,10 +30,14 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
   drupal_add_js($base . '/js/oa_sitemap.js');
   drupal_add_css($base . '/css/oa_sitemap.css');
 
+  ctools_include('modal');
+  ctools_modal_add_js();
+
   drupal_set_title($title);
 
   $terms = oa_sections_get_icons();
   $icons = array();
+  $icons[0] = '<i class="icon-plus"></i>';
   foreach ($terms as $id => $term) {
     if (!empty($term->field_icon_class_value)) {
       $icon = '<i class="' . check_plain($term->field_icon_class_value) . '"></i>';
