@@ -14,6 +14,7 @@
   <?php if (!empty($node)): ?>
     <h3 class="oa_space_title"><?php print l($node->title, 'node/' . $node->nid); ?></h3>
   <?php else: ?>
+    <h3 class="oa_space_title"><?php print l(t('Home'), '<front>'); ?></h3>
   <?php endif; ?>
   <div class="oa_section_wrapper">
   <?php foreach ($sections as $section): ?>
