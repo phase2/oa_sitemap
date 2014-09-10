@@ -74,19 +74,19 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
       'link' => l(t('New Section'), 'wizard/nojs/add/oa-section', array(
         'attributes' => array('class' => 'ctools-use-modal'))),
       'icon' => $icons[0],
-      'class' => 'oa_section oa_new_section',
-      'title_class' => '',
+      'class' => 'oa_section',
+      'title_class' => 'oa_section_title',
     );
   }
 
 
   $index++;
   $vars = array(
-    'link' => !empty($node) ? l(check_plain($node->title), 'node/' . $node->nid) : l(t('Home'), '<front>'),
+    'link' => !empty($node) ? l('<span>' . check_plain($node->title) . '</span>', 'node/' . $node->nid, array('html'=>true)) : l(t('Home'), '<front>'),
     'sections' => $section_links,
     'depth' => $depth,
     'index' => $index,
-    'class' => 'oa_space_wrapper',
+    'class' => 'oa_space_wrapper item',
     'title_class' => 'oa_space_title',
   );
 
@@ -97,14 +97,15 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
 
   $index++;
   $new_space_vars = array(
-    'link' => l(t('New Space'), 'wizard/nojs/add/oa-space', array(
-      'attributes' => array('class' => 'ctools-use-modal'))),
+    'link' => l('<span>' . t('New Space') . '</span>', 'wizard/nojs/add/oa-space', array(
+      'attributes' => array('class' => 'ctools-use-modal'),
+      'html'       => 'true')),
     'sections' => array(),
     'subspaces' => array(),
-    'depth' => $depth,
+    'depth' => "$depth",
     'index' => $index,
-    'class' => 'oa_space_wrapper oa_new_space',
-    'title_class' => '', // allows link to work directly
+    'class' => 'oa_space_wrapper item',
+    'title_class' => 'oa_new_space_title', // allows link to work directly
     'icon' => $icons[0],
   );
   $subspaces[] = theme('oa_sitemap_show', $new_space_vars);

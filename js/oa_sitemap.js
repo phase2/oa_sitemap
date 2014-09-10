@@ -28,11 +28,11 @@
 
       function applyCarousel (target, newActiveIndex) {
         // remove old carousel
-        $('.carousel-inner').removeClass('carousel-inner').children().removeClass('item').removeClass('active');
+        $('.carousel-inner').removeClass('carousel-inner').children().removeClass('active');
         $('.carousel-prev').remove();
         $('.carousel-next').remove();
         // add new
-        $(target).addClass('carousel-inner').children().addClass('item').eq(newActiveIndex).addClass('active');
+        $(target).addClass('carousel-inner').children('.oa_space_wrapper').eq(newActiveIndex).addClass('active');
         $("<a/>", {
           href: "#",
           class: "carousel-prev",

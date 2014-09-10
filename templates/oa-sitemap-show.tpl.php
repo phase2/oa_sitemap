@@ -15,7 +15,8 @@
   <div class="oa_section_wrapper">
   <?php foreach ($sections as $section): ?>
     <div <?php print !empty($section['class']) ? 'class = "' . $section['class'] . '"' : ''; ?>>
-      <h4 <?php print !empty($section['title_class']) ? 'class = "' . $section['title_class'] . '"' : ''; ?>><?php print !empty($section['icon']) ? $section['icon'] : ''; ?><?php print $section['link']; ?></h4>
+      <h4 <?php print !empty($section['title_class']) ? 'class = "' . $section['title_class'] . '"' : ''; ?>>
+      <?php print !empty($section['icon']) ? $section['icon'] : ''; ?><?php print $section['link']; ?></h4>
     </div>
   <?php endforeach; ?>
   </div>
