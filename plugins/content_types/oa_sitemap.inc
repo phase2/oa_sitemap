@@ -10,7 +10,7 @@ $plugin = array(
   'category' => array(t('Open Atrium'), -9),
   'edit form' => 'oa_sitemap_settings_form',
   'render callback' => 'oa_sitemap_render',
-  'required context' => new ctools_context_required(t('Node'), 'node'),
+  'required context' => new ctools_context_optional(t('Node'), 'node'),
 );
 
 /**
@@ -19,16 +19,18 @@ $plugin = array(
  * @see ctools_plugin_examples for more advanced info
  */
 function oa_sitemap_render($subtype, $conf, $args, $context) {
-  if (!isset($context->data)) {
-    return;
+  $node = NULL;
+  if (isset($context->data)) {
+    $node = $context->data;
   }
+  $space_id = isset($node) ? $node->nid : 0;
+  $title = isset($node) ? t('Site Map for @space', array('@space' => $node->title)) : t('Site Map');
 
   $base = drupal_get_path('module', 'oa_sitemap');
   drupal_add_js($base . '/js/oa_sitemap.js');
   drupal_add_css($base . '/css/oa_sitemap.css');
 
-  $node = $context->data;
-  drupal_set_title(t('Site Map for @space', array('@space' => $node->title)));
+  drupal_set_title($title);
 
   $terms = oa_sections_get_icons();
   $icons = array();
@@ -53,7 +55,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
     $icons[$id] = $icon;
   }
 
-  $map = oa_sitemap_space_map($node->nid, $icons);
+  $map = oa_sitemap_space_map($space_id, $icons);
 
   $block = new stdClass();
   $block->title = '';
