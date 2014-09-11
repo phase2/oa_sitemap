@@ -95,7 +95,9 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
 
   $index++;
   $vars = array(
-    'link' => !empty($node) ? l('<span>' . check_plain($node->title) . '</span>', 'node/' . $node->nid, array('html'=>true)) : l(t('Home'), '<front>'),
+    'link' => !empty($node)
+      ? l('<span>' . check_plain($node->title) . '</span>', 'node/' . $node->nid, array('html'=>true))
+      : l(variable_get('site_name', t('Home')), '<front>'),
     'sections' => $section_links,
     'id' => $nid,
     'depth' => $depth,

@@ -27,7 +27,9 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
     $node = $context->data;
   }
   $space_id = isset($node) ? $node->nid : 0;
-  $title = isset($node) ? t('Site Map for @space', array('@space' => $node->title)) : t('Site Map');
+
+  $title = (empty($node) || !empty($conf['oa_sitemap_parent'])) ? variable_get('site_name', '') : $node->title;
+  $title = !empty($title) ? t('Site Map for @space', array('@space' => $title)) : t('Site Map');
 
   $base = drupal_get_path('module', 'oa_sitemap');
 
