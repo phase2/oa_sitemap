@@ -62,7 +62,7 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
   $sections = oa_core_space_sections($nid, 1, FALSE, array('field_oa_section|tid'));
   $section_links = array();
   foreach ($sections as $section) {
-    $id = $section->field_oa_section_tid;
+    $id = !empty($section->field_oa_section_tid) ? $section->field_oa_section_tid : 0;
     $section_links[] = array(
       'link' => l($section->title, 'node/' . $section->nid),
       'icon' => !empty($icons[$id]) ? $icons[$id] : '',
