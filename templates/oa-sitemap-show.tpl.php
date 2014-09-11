@@ -10,7 +10,7 @@
  * $sections - sections
  */
 ?>
-<div <?php print !empty($class) ? 'class = "' . $class . '"' : ''; ?> data-depth="<?php print $depth; ?>" data-index="<?php print $index; ?>">
+<div <?php print !empty($class) ? 'class = "' . $class . '"' : ''; ?> data-depth="<?php print $depth; ?>" data-index="<?php print $index; ?>" data-id="<?php print $id; ?>">
   <h3 <?php print !empty($title_class) ? 'class = "' . $title_class . '"' : ''; ?>><?php print !empty($icon) ? $icon : ''; ?><?php print $link; ?></h3>
   <div class="oa_section_wrapper">
   <?php foreach ($sections as $section): ?>

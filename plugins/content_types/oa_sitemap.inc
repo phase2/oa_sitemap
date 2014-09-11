@@ -11,6 +11,9 @@ $plugin = array(
   'edit form' => 'oa_sitemap_settings_form',
   'render callback' => 'oa_sitemap_render',
   'required context' => new ctools_context_optional(t('Node'), 'node'),
+  'defaults' => array(
+    'oa_sitemap_parent' => FALSE,
+  ),
 );
 
 /**
@@ -27,6 +30,9 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
   $title = isset($node) ? t('Site Map for @space', array('@space' => $node->title)) : t('Site Map');
 
   $base = drupal_get_path('module', 'oa_sitemap');
+
+  drupal_add_js(array('oa_sitemap' => array('topID' => $space_id)), 'setting');
+
   drupal_add_js($base . '/js/oa_sitemap.js');
   drupal_add_css($base . '/css/oa_sitemap.css');
 
@@ -59,7 +65,12 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
     $icons[$id] = '<div class="icon-wrapper">' . $icon . '</div>';
   }
 
-  $map = oa_sitemap_space_map($space_id, $icons);
+  $top_id = empty($conf['oa_sitemap_parent']) ? $space_id : 0;
+  $map = oa_sitemap_space_map($top_id, $icons);
+  if (empty($conf['oa_sitemap_parent']) && ($space_id != 0)) {
+    $map_link = l(t('Full sitemap'), 'sitemap/' . $space_id);
+    $map = '<div class="oa_sitemap_full">' . $map_link . '</div>' . $map;
+  }
 
   $block = new stdClass();
   $block->title = '';
@@ -71,6 +82,14 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
  * Empty config form
  */
 function oa_sitemap_settings_form($form, &$form_state) {
+  $conf = $form_state['conf'];
+
+  $form['oa_sitemap_parent'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show full parent tree'),
+    '#default_value' => $conf['oa_sitemap_parent'],
+  );
+
   return $form;
 }
 

@@ -8,6 +8,8 @@
   Drupal.behaviors.oaSitemap = {
     attach: function(context, settings) {
 
+      var $topID = settings.oa_sitemap.topID;
+
       // function changeSection(index, state) {
       //   state = (state == open ? "open" : "close" );
       //   $("[data-index='" + index + "']").children('.oa_section_wrapper').attr('data-state', state);

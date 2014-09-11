@@ -15,10 +15,17 @@ function oa_sitemap_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'SItemap';
   $page->admin_description = '';
-  $page->path = 'sitemap';
+  $page->path = 'sitemap/!node';
   $page->access = array();
   $page->menu = array();
-  $page->arguments = array();
+  $page->arguments = array(
+    'node' => array(
+      'id' => 1,
+      'identifier' => 'Node: ID',
+      'name' => 'entity_id:node',
+      'settings' => array(),
+    ),
+  );
   $page->conf = array(
     'admin_paths' => FALSE,
   );
@@ -66,13 +73,14 @@ function oa_sitemap_default_page_manager_pages() {
     $pane->configuration = array(
       'return' => 'Finish',
       'cancel' => 'Cancel',
-      'context' => 'empty',
+      'context' => 'argument_entity_id:node_1',
       'override_title' => 0,
       'override_title_text' => '',
-      'form_build_id' => 'form-mgnkdjYirxcmPpHr0LzgaUwz4UQnBEE0Jzs66ZYLOBM',
+      'form_build_id' => 'form-xh8zo_G4hHry7wKPdaYcfyE7s_CgJzCsV2YuH0qc1FI',
       'form_token' => 'O7ZA79McLp02oU-WMIO5r6irrHNcxJV2aeuW1tsQHrk',
       'form_id' => 'oa_sitemap_settings_form',
       'op' => 'Finish',
+      'oa_sitemap_parent' => 1,
     );
     $pane->cache = array();
     $pane->style = array(
