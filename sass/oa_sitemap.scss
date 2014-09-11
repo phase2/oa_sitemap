@@ -1,0 +1,172 @@
+@import "compass";
+
+.pane-oa-sitemap {
+  $width: 110px;
+  $margin: 20px;
+  $title-gap: 30px; // vertical gaps
+
+  padding-top: 20px;
+
+  [data-state~="closed"] {
+    display: none;
+    .oa_section_wrapper, .oa_subspace_wrapper {
+      display: none;
+    }
+  }
+
+  [data-state~="active"] {
+    &.active {
+      border: 2px solid #bbb;
+      border-radius: 10px;
+    }
+    ////
+    // Top Title bar/navigation
+    ////
+    > .oa_space_title {
+      position: relative;
+      margin: 0 0 $title-gap;
+      text-align: center;
+      background: #ddd;
+      border-bottom: 2px solid #aaa;
+      border-radius: 8px;
+      padding: 8px 0;
+    }
+    .carousel-prev, .carousel-next {
+      position: absolute;
+
+    }
+    .carousel-prev {
+      left: 5%;
+    }
+    .carousel-next {
+      right: 5%;
+    }
+
+    ////
+    // Section
+    ////
+    .oa_section_wrapper {
+      text-align: center;
+      clear: both;
+      margin-bottom: $title-gap;
+    }
+
+     .oa_section {
+       width: $width;
+       margin-bottom: 10px;
+       display: inline-block;
+       vertical-align: top;
+       text-align: center;
+       .icon-wrapper {
+          display: block;
+          margin: 0 $margin;
+          height: $width - $margin * 2;
+          border-radius: 50%;
+          margin-bottom: 10px;
+          border: 1px solid #ccc;
+      }
+      &:last-child .icon-wrapper {
+       border: 1px dashed #aaa;
+      }
+      img {
+        width: $width / 3;
+        position: relative;
+        top: 50%;
+        @include translateY(-50%);
+      }
+      i {
+        display: block;
+        position: relative;
+        font-size: 32px;
+        top: 50%;
+        @include translateY(-40%);
+      }
+      .oa_section_title {
+        margin: 0;
+      }
+    }
+    ////
+    //Sub Space
+    ////
+    .oa_subspace_wrapper {
+      text-align: center;
+      clear: both;
+      margin-bottom: $title-gap /2;
+    }
+
+    .oa_space_wrapper{
+      border: 1px solid #ddd;
+      display: inline-block;
+      vertical-align: top;
+      margin-right: $margin/2;
+      margin-left: $margin/2;
+      width: $width * 1.4;
+      height: $width * 1.4;
+      margin-bottom: 10px;
+      .oa_space_title, .oa_new_space_title {
+        margin: 0;
+        text-align: center;
+        position: relative;
+        height: 100%;
+        a {
+          display: block;
+          height: 100%;
+        }
+        span {
+          display: block;
+          position: relative;
+          top: 50%;
+          @include translateY(-50%);
+        }
+
+      }
+      // New Space Wrapper
+      &:last-child {
+       border: 1px dashed #aaa;
+      }
+      .oa_new_space_title {
+        span {
+          top: 45%;
+          @include translateY(-50%);
+        }
+        .icon-wrapper {
+          display: block;
+          position: relative;
+          top: 30%;
+        }
+      }
+    }
+  }
+  ////
+  // breadcrumb
+  ////
+
+  [data-state~="breadcrumb"] {
+    > .oa_section_wrapper {
+      display: none;
+    }
+    > .oa_space_title {
+      display: block;
+      text-align: center;
+      margin: 0;
+      a {
+        display: inline-block;
+        margin-bottom: $title-gap;
+        padding: 8px;
+        border: 2px solid #aaa;
+        position: relative;
+        &:after {
+          content: "";
+          position: absolute;
+          width: 2px;
+          height: $title-gap;
+          background: #aaa;
+          left: 50%;
+          bottom: -$title-gap - 2;
+        }
+      }
+    }
+  }
+}
+
+

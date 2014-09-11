@@ -11,30 +11,48 @@
       var $topID = settings.oa_sitemap.topID;
 
       function applyCarousel (target, newActiveIndex) {
+        var $carouselItems = $(target).children('.oa_space_wrapper');
         // remove old carousel
         $('.carousel-inner').removeClass('carousel-inner').children().removeClass('active');
         $('.carousel-prev').remove();
         $('.carousel-next').remove();
-        // add new
-        $(target).addClass('carousel-inner').children('.oa_space_wrapper').eq(newActiveIndex).addClass('active');
-        $("<a/>", {
-          href: "#",
-          class: "carousel-prev",
-          text: "prev",
-          click: function(e) {
-            e.preventDefault;
-            target.carousel("prev");
-          }
-        }).prependTo(".carousel-inner > .item > h3");
-        $("<a/>", {
-          href: "#",
-          class: "carousel-next",
-          text: "next",
-          click: function(e) {
-            e.preventDefault;
-            target.carousel("next");
-          }
-        }).prependTo(".carousel-inner > .item > h3");
+        // add new carousel
+        $(target).addClass('carousel-inner');
+        $carouselItems.eq(newActiveIndex).addClass('active');
+
+        // Affix navigation
+        $.each($carouselItems, function(index, carouselItem) {
+          var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa_space_title').find('span').text() : false;
+              nextTitle = $carouselItems.eq(index + 1).children('.oa_space_title').text();
+              $currentTitle = $(carouselItem).children('.oa_space_title');
+
+
+          if (prevTitle) {
+            $("<a/>", {
+              href: "#",
+              class: "carousel-prev",
+              text: prevTitle,
+              click: function(e) {
+                e.preventDefault;
+                target.carousel("prev");
+              }
+            }).prependTo($currentTitle);
+          };
+
+          if (nextTitle) {
+            $("<a/>", {
+              href: "#",
+              class: "carousel-next",
+              text: nextTitle,
+              click: function(e) {
+                e.preventDefault;
+                target.carousel("next");
+              }
+            }).prependTo($currentTitle);
+          };
+
+        });
+
         $(target).carousel({
           interval: false
         })
@@ -59,7 +77,6 @@
         var index = $this.closest(".oa_space_wrapper").attr('data-index');
         makeActive(index);
       });
-
       makeActive(1);
 
     }
