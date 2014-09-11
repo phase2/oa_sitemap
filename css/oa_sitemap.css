@@ -165,3 +165,35 @@
   left: 50%;
   bottom: -22px;
 }
+
+/* Changes by Mike Potter */
+.pane-oa-sitemap [data-state~="active"] .oa_subspace_wrapper {
+  text-align: center;
+}
+.pane-oa-sitemap [data-state~="active"] .oa_section_wrapper {
+  text-align: center;
+}
+.pane-oa-sitemap [data-state~="active"] .oa_space_wrapper {
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 165px;
+  height: 165px;
+}
+.pane-oa-sitemap [data-state~="active"] .oa_section {
+  width: 110px;
+  margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.pane-oa-sitemap [data-state~="active"] .oa_section .icon-wrapper {
+  height: 70px;
+}
+.pane-oa-sitemap [data-state~="active"] > .oa_space_title {
+  background: #eee;
+  border: 0;
+  border-bottom: 2px solid #bbb;
+}
+.carousel-inner > .active {
+  border: 2px solid #bbb;
+  border-radius: 10px;
+}
