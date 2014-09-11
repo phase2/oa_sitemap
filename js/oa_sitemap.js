@@ -10,24 +10,6 @@
 
       var $topID = settings.oa_sitemap.topID;
 
-      // function changeSection(index, state) {
-      //   state = (state == open ? "open" : "close" );
-      //   $("[data-index='" + index + "']").children('.oa_section_wrapper').attr('data-state', state);
-      // }
-      // function changeSubspace(index, state) {
-      //   state = (state == open ? "open" : "close" );
-      //   $("[data-index='" + index + "']").children('.oa_subspace_wrapper').attr('data-state', state);
-      // }
-
-      // function changeBoth(index, state) {
-      //   changeSection(index, state);
-      //   changeSubspace(index, state);
-      // }
-
-      // // Open Root Section
-      // changeBoth(1, open);
-
-
       function applyCarousel (target, newActiveIndex) {
         // remove old carousel
         $('.carousel-inner').removeClass('carousel-inner').children().removeClass('active');
