@@ -52,7 +52,7 @@
             e.preventDefault;
             target.carousel("next");
           }
-        }).appendTo(".carousel-inner > .item > h3");
+        }).prependTo(".carousel-inner > .item > h3");
         $(target).carousel({
           interval: false
         })
