@@ -11,22 +11,31 @@
       var topID = settings.oa_sitemap.topID;
 
       function applyCarousel (target, newActiveIndex) {
-        var $carouselItems = $(target).children('.oa-space-wrapper');
+        var $carouselItems = $(target).children('.item');
+
         // remove old carousel
         $('.carousel-inner').removeClass('carousel-inner').children().removeClass('active');
         $('.carousel-prev').remove();
         $('.carousel-next').remove();
-
+        $('.carousel-jump').remove();
         // add new carousel classes
         $(target).addClass('carousel-inner');
         $carouselItems.eq(newActiveIndex).addClass('active');
 
         // Affix navigation
         $.each($carouselItems, function(index, carouselItem) {
-          var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa-space-title').find('span').text() : false;
-              nextTitle = $carouselItems.eq(index + 1).children('.oa-space-title').text();
-              $currentTitle = $(carouselItem).children('.oa-space-title');
+          var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa-space-title').find('span').text() : false,
+              nextTitle = $carouselItems.eq(index + 1).children('.oa-space-title').text(),
+              $currentTitle = $(carouselItem).children('.oa-space-title'),
 
+              $carouselJump = $("<ul/>", {
+                                  class: "carousel-jump",
+                                  html: "abc"
+                                });
+
+              $carouselJump.empty();
+
+          // if not first element in carousel
           if (prevTitle) {
             $("<a/>", {
               href: "#",
@@ -38,7 +47,7 @@
               }
             }).prependTo($currentTitle);
           };
-
+          // if not last element in carousel
           if (nextTitle) {
             $("<a/>", {
               href: "#",
@@ -51,11 +60,32 @@
             }).prependTo($currentTitle);
           };
 
+          $.each($carouselItems, function(subIndex, subCarouselItem) {
+            $jumpItem = $('<li/>', {
+                        html: $('<a/>', {
+                                text: $(subCarouselItem).children('.oa-space-title').find('.oa-space-link').find('span').text(),
+                                click: function(e) {
+                                  e.preventDefault;
+                                  target.carousel(subIndex);
+                                }
+                              })
+                      });
+            if (subIndex == index) {
+              $jumpItem.addClass('current');
+            };
+            $jumpItem.appendTo($carouselJump);
+          });
+
+          if ($carouselItems.length > 1) {
+            $currentTitle.find('.oa-space-link').append($carouselJump);
+          };
+
         });
 
         $(target).carousel({
           interval: false
         });
+
 
         $(target).on('slid.bs.carousel', function() {
           var activeSlideId = $('.oa-space-wrapper.active').attr('data-id');

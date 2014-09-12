@@ -13,6 +13,20 @@
       display: none;
     }
   }
+  .carousel-inner {
+    > .new-space {
+      display: none;
+    }
+  }
+  .carousel-prev, .carousel-next {
+    position: absolute;
+  }
+  .carousel-prev {
+    left: 5%;
+  }
+  .carousel-next {
+    right: 5%;
+  }
 
   [data-state~="active"] {
     &.active {
@@ -33,16 +47,39 @@
       .oa-icon-footer {
         display: none;
       }
+      .oa-space-link {
+        position: relative;
+        display: inline-block;
+      }
     }
-    .carousel-prev, .carousel-next {
+    .carousel-jump {
+      margin: 0;
+      width: 200px;
+      left: 110%;
+      top: 0;
       position: absolute;
-
-    }
-    .carousel-prev {
-      left: 5%;
-    }
-    .carousel-next {
-      right: 5%;
+      z-index: 10;
+      background: white;
+      border: 1px solid #ccc;
+      li {
+        margin: 0;
+        padding: 0;
+        &:hover {
+          background: #ccc;
+        }
+      }
+      .current a{
+        font-weight: bold;
+        text-decoration: underline;
+      }
+      a {
+        padding: 5px 0;
+        display: block;
+        font-size: 14px;
+        &:hover {
+          text-decoration: none;
+        }
+      }
     }
 
     ////
@@ -133,17 +170,14 @@
         .oa-icon-left {
           width: 33%;
           float: left;
-
         }
         .oa-icon-middle {
           width: 33%;
           float: left;
-
         }
         .oa-icon-right {
           width: 33%;
           float: left;
-
         }
         [class^="icon-"] {
           color: #999;

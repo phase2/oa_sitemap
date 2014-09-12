@@ -170,7 +170,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       'depth' => "$depth",
       'index' => $index,
       'nid' => -1,
-      'class' => 'oa-space-wrapper new-space item',
+      'class' => 'oa-space-wrapper new-space',
       'title_class' => 'oa-new-space-title', // allows link to work directly
       'icon' => $icons[0],
     );
