@@ -108,11 +108,17 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
   }
 
   $gear_icon = '';
-  if (!empty($node) && node_access('edit', $node)) {
-    $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE));
+  $view_icon = '';
+  $head_icon = '';
+  if (!empty($node)) {
+    if (node_access('update', $node)) {
+      $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE));
+    }
+    $view_icon = l('<icon class="icon-eye-open"></i>', 'node/' . $nid, array('html' => TRUE));
+    $visibility = field_get_items('node', $node, 'group_access');
+    $head_color = $node->status ? (empty($visibility[0]['value']) ? 'oa-icon-green' : 'oa-icon-red') : '';
+    $head_icon = l('<icon class="icon-user ' . $head_color . '"></i>', 'node/' . $nid, array('html' => TRUE));
   }
-  $view_icon = l('<icon class="icon-eye-open"></i>', 'node/' . $nid, array('html' => TRUE));
-  $head_icon = l('<icon class="icon-user"></i>', 'node/' . $nid, array('html' => TRUE));
 
   $index++;
   $vars = array(
