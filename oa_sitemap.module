@@ -107,10 +107,17 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
     );
   }
 
+  $gear_icon = '';
+  if (!empty($node) && node_access('edit', $node)) {
+    $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE));
+  }
+  $view_icon = l('<icon class="icon-eye-open"></i>', 'node/' . $nid, array('html' => TRUE));
+  $head_icon = l('<icon class="icon-user"></i>', 'node/' . $nid, array('html' => TRUE));
+
   $index++;
   $vars = array(
     'link' => !empty($node)
-      ? l('<span>' . check_plain($node->title) . '</span>', 'node/' . $node->nid, array('html'=>true))
+      ? l('<span>' . check_plain($node->title) . '</span>', 'node/' . $nid, array('html' => TRUE))
       : l(variable_get('site_name', t('Home')), '<front>'),
     'sections' => $section_links,
     'id' => $nid,
@@ -118,6 +125,9 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
     'index' => $index,
     'class' => 'oa_space_wrapper item',
     'title_class' => 'oa_space_title',
+    'view_icon' => $view_icon,
+    'gear_icon' => $gear_icon,
+    'head_icon' => $head_icon,
   );
   if (!empty($node)) {
     $options[$nid] = str_repeat('-', $depth*2) . $node->title;

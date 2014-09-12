@@ -11,7 +11,12 @@
  */
 ?>
 <div <?php print !empty($class) ? 'class = "' . $class . '"' : ''; ?> data-depth="<?php print $depth; ?>" data-index="<?php print $index; ?>" data-id="<?php print $id; ?>">
-  <h3 <?php print !empty($title_class) ? 'class = "' . $title_class . '"' : ''; ?>><?php print !empty($icon) ? $icon : ''; ?><?php print $link; ?></h3>
+  <h3 <?php print !empty($title_class) ? 'class = "' . $title_class . '"' : ''; ?>><?php print !empty($icon) ? $icon : ''; ?><?php print $link; ?>
+    <div class="icon-footer">
+      <?php if (!empty($head_icon)): ?><div class="icon-left"><?php print $head_icon; ?></div><?php endif; ?>
+      <?php if (!empty($gear_icon)): ?><div class="icon-middle"><?php print $gear_icon; ?></div><?php endif; ?>
+      <?php if (!empty($view_icon)): ?><div class="icon-right"><?php print $view_icon; ?></div><?php endif; ?>
+    </div></h3>
   <div class="oa_section_wrapper">
   <?php foreach ($sections as $section): ?>
     <div <?php print !empty($section['class']) ? 'class = "' . $section['class'] . '"' : ''; ?>>
