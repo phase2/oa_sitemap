@@ -23,6 +23,7 @@ function oa_sitemap_ctools_plugin_directory($owner, $plugin_type) {
  * Implements hook_theme().
  */
 function oa_sitemap_theme() {
+  $path = drupal_get_path('module', 'oa_sitemap') . '/templates';
   return array(
     'oa_sitemap_show' => array(
       'template' => 'oa-sitemap-show',
@@ -31,7 +32,15 @@ function oa_sitemap_theme() {
         'children' => NULL,
         'sections' => NULL,
       ),
-      'path' => drupal_get_path('module', 'oa_sitemap') . '/templates',
+      'path' => $path,
+    ),
+    'oa_sitemap_header' => array(
+      'template' => 'oa-sitemap-header',
+      'variables' => array(
+        'link' => NULL,
+        'search' => NULL,
+      ),
+      'path' => $path,
     ),
   );
 }
@@ -45,7 +54,7 @@ function oa_sitemap_theme() {
  * @param $depth, start at 0
  *
  */
-function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) {
+function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $depth = 0) {
   global $user;
 
   if (is_numeric($node)) {
@@ -110,10 +119,13 @@ function oa_sitemap_space_map($node, $icons = array(), &$index = 0, $depth = 0) 
     'class' => 'oa_space_wrapper item',
     'title_class' => 'oa_space_title',
   );
+  if (!empty($node)) {
+    $options[$nid] = str_repeat('-', $depth*2) . $node->title;
+  }
 
   $subspaces = array();
   foreach ($children as $subspace) {
-    $subspaces[] = oa_sitemap_space_map($subspace, $icons, $index, $depth+1);
+    $subspaces[] = oa_sitemap_space_map($subspace, $options, $icons, $index, $depth+1);
   }
 
   $access = empty($node)

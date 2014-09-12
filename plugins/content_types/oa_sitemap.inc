@@ -29,7 +29,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
   $space_id = isset($node) ? $node->nid : 0;
 
   $title = (empty($node) || !empty($conf['oa_sitemap_parent'])) ? variable_get('site_name', '') : $node->title;
-  $title = !empty($title) ? t('Site Map for @space', array('@space' => $title)) : t('Site Map');
+  $page_title = !empty($title) ? t('Site Map for @space', array('@space' => $title)) : t('Site Map');
 
   $base = drupal_get_path('module', 'oa_sitemap');
 
@@ -41,7 +41,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
   ctools_include('modal');
   ctools_modal_add_js();
 
-  drupal_set_title($title);
+  drupal_set_title($page_title);
 
   $terms = oa_sections_get_icons();
   $icons = array();
@@ -68,15 +68,32 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
   }
 
   $top_id = empty($conf['oa_sitemap_parent']) ? $space_id : 0;
-  $map = oa_sitemap_space_map($top_id, $icons);
+  $options = array();
+  if ($top_id == 0) {
+    $options[0] = $title;
+  }
+  $map = oa_sitemap_space_map($top_id, $options, $icons);
+
+  $map_link = '';
   if (empty($conf['oa_sitemap_parent']) && ($space_id != 0)) {
     $map_link = l(t('Full sitemap'), 'sitemap/' . $space_id);
-    $map = '<div class="oa_sitemap_full">' . $map_link . '</div>' . $map;
   }
+  $form['search'] = array(
+    '#name' => 'oa_sitemap_search',
+    '#type' => 'select',
+    '#options' => $options,
+    '#value' => $top_id,
+  );
+
+  $header_vars = array(
+    'link' => $map_link,
+    'search' => drupal_render($form),
+  );
+  $header = theme('oa_sitemap_header', $header_vars);
 
   $block = new stdClass();
   $block->title = '';
-  $block->content = $map;
+  $block->content = $header . $map;
   return $block;
 }
 
