@@ -3,7 +3,7 @@
 .pane-oa-sitemap {
   $width: 110px;
   $margin: 20px;
-  $title-gap: 30px; // vertical gaps
+  $vertical-gap: 30px; // vertical gaps
 
   padding-top: 20px;
 
@@ -24,7 +24,7 @@
     ////
     > .oa-space-title {
       position: relative;
-      margin: 0 0 $title-gap;
+      margin: 0 0 $vertical-gap;
       text-align: center;
       background: #ddd;
       border-bottom: 2px solid #aaa;
@@ -51,7 +51,7 @@
     .oa-section-wrapper {
       text-align: center;
       clear: both;
-      margin-bottom: $title-gap;
+      margin-bottom: $vertical-gap;
     }
 
      .oa-section {
@@ -68,7 +68,7 @@
           margin-bottom: 10px;
           border: 1px solid #ccc;
       }
-      &:last-child .oa-icon-wrapper {
+      &.new-section .oa-icon-wrapper {
        border: 1px dashed #aaa;
       }
       img {
@@ -94,7 +94,7 @@
     .oa-subspace-wrapper {
       text-align: center;
       clear: both;
-      margin-bottom: $title-gap /2;
+      margin-bottom: $vertical-gap /2;
     }
 
     .oa-space-wrapper{
@@ -111,6 +111,9 @@
         text-align: center;
         position: relative;
         height: 100%;
+      }
+      .oa-space-link {
+        height: 100%;
         a {
           display: block;
           height: 100%;
@@ -121,27 +124,26 @@
           top: 50%;
           @include translateY(-50%);
         }
-        .oa-icon-footer {
-          font-size: 18px;
-          bottom: 0;
-          position: absolute;
-          width: 100%;
-          padding: 0 5px;
-          .oa-icon-left {
-            float: left;
-          }
-          .oa-icon-right {
-            float: right;
-          }
-          [class^="icon-"] {
-            color: #999;
-          }
-          [class^="icon-"]:hover {
-            color: inherit;
-            text-decoration: none;
-          }
+      }
+      .oa-icon-footer {
+        font-size: 18px;
+        bottom: 0;
+        position: absolute;
+        width: 100%;
+        padding: 0 5px;
+        .oa-icon-left {
+          float: left;
         }
-
+        .oa-icon-right {
+          float: right;
+        }
+        [class^="icon-"] {
+          color: #999;
+        }
+        [class^="icon-"]:hover {
+          color: inherit;
+          text-decoration: none;
+        }
       }
       // New Space Wrapper
       &:last-child {
@@ -172,9 +174,9 @@
       display: block;
       text-align: center;
       margin: 0;
-      a {
+      > .oa-space-link a {
         display: inline-block;
-        margin-bottom: $title-gap;
+        margin-bottom: $vertical-gap;
         padding: 8px;
         border: 2px solid #aaa;
         position: relative;
@@ -182,11 +184,14 @@
           content: "";
           position: absolute;
           width: 2px;
-          height: $title-gap;
+          height: $vertical-gap;
           background: #aaa;
           left: 50%;
-          bottom: -$title-gap - 2;
+          bottom: -$vertical-gap - 2;
         }
+      }
+      > .oa-icon-footer {
+        display: none;
       }
     }
   }

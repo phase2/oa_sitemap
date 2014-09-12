@@ -102,7 +102,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       'link' => ctools_modal_text_button(t('New Section'), 'wizard/nojs/add/oa-section',
         t('New Section'), 'ctools-modal-oa-sitemap-section'),
       'icon' => $icons[0],
-      'class' => 'oa-section',
+      'class' => 'oa-section new-section',
       'title_class' => 'oa-section-title',
     );
   }
@@ -164,7 +164,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       'depth' => "$depth",
       'index' => $index,
       'nid' => -1,
-      'class' => 'oa-space-wrapper item',
+      'class' => 'oa-space-wrapper new-space item',
       'title_class' => 'oa-new-space-title', // allows link to work directly
       'icon' => $icons[0],
     );

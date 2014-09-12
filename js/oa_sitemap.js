@@ -73,7 +73,7 @@
         applyCarousel($newActiveParent, newActiveIndex);
       }
 
-      $(".oa-space-title a").on("click", function(e) {
+      $(".oa-space-link a").on("click", function(e) {
         e.preventDefault();
         $this = $(this);
         var index = $this.closest(".oa-space-wrapper").attr('data-index');
