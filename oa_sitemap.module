@@ -79,8 +79,8 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
     $section_links[] = array(
       'link' => l($section->title, 'node/' . $section->nid),
       'icon' => !empty($icons[$id]) ? $icons[$id] : '',
-      'class' => 'oa_section',
-      'title_class' => 'oa_section_title',
+      'class' => 'oa-section',
+      'title_class' => 'oa-section-title',
     );
   }
 
@@ -102,8 +102,8 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       'link' => ctools_modal_text_button(t('New Section'), 'wizard/nojs/add/oa-section',
         t('New Section'), 'ctools-modal-oa-sitemap-section'),
       'icon' => $icons[0],
-      'class' => 'oa_section',
-      'title_class' => 'oa_section_title',
+      'class' => 'oa-section',
+      'title_class' => 'oa-section-title',
     );
   }
 
@@ -123,8 +123,8 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
     'nid' => $nid,
     'depth' => $depth,
     'index' => $index,
-    'class' => 'oa_space_wrapper item',
-    'title_class' => 'oa_space_title',
+    'class' => 'oa-space-wrapper item',
+    'title_class' => 'oa-space-title',
     'view_icon' => $view_icon,
     'gear_icon' => $gear_icon,
     'head_icon' => $head_icon,
@@ -164,8 +164,8 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       'depth' => "$depth",
       'index' => $index,
       'nid' => -1,
-      'class' => 'oa_space_wrapper item',
-      'title_class' => 'oa_new_space_title', // allows link to work directly
+      'class' => 'oa-space-wrapper item',
+      'title_class' => 'oa-new-space-title', // allows link to work directly
       'icon' => $icons[0],
     );
     $subspaces[] = theme('oa_sitemap_show', $new_space_vars);

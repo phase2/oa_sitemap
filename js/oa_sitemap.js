@@ -11,7 +11,7 @@
       var $topID = settings.oa_sitemap.topID;
 
       function applyCarousel (target, newActiveIndex) {
-        var $carouselItems = $(target).children('.oa_space_wrapper');
+        var $carouselItems = $(target).children('.oa-space-wrapper');
         // remove old carousel
         $('.carousel-inner').removeClass('carousel-inner').children().removeClass('active');
         $('.carousel-prev').remove();
@@ -22,9 +22,9 @@
 
         // Affix navigation
         $.each($carouselItems, function(index, carouselItem) {
-          var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa_space_title').find('span').text() : false;
-              nextTitle = $carouselItems.eq(index + 1).children('.oa_space_title').text();
-              $currentTitle = $(carouselItem).children('.oa_space_title');
+          var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa-space-title').find('span').text() : false;
+              nextTitle = $carouselItems.eq(index + 1).children('.oa-space-title').text();
+              $currentTitle = $(carouselItem).children('.oa-space-title');
 
 
           if (prevTitle) {
@@ -52,29 +52,31 @@
           };
 
         });
+        console.log($topID);
 
         $(target).carousel({
           interval: false
         })
       }
 
+      // set classes to open up sitemap at that level
       function makeActive(position) {
         var $newActive = $("[data-index='" + position + "']"),
             $newActiveParent = $newActive.parent("div"),
             $newActiveGroup = $newActiveParent.children();
-            newActiveIndex = $newActiveParent.children(".oa_space_wrapper").index($newActive);
+            newActiveIndex = $newActiveParent.children(".oa-space-wrapper").index($newActive);
 
-        $('.oa_space_wrapper').attr('data-state', 'closed');
+        $('.oa-space-wrapper').attr('data-state', 'closed');
         $newActiveGroup.attr('data-state', 'active');
-        $newActiveParent.parents(".oa_space_wrapper").attr('data-state', 'breadcrumb');
+        $newActiveParent.parents(".oa-space-wrapper").attr('data-state', 'breadcrumb');
 
         applyCarousel($newActiveParent, newActiveIndex);
       }
 
-      $(".oa_space_title a").on("click", function(e) {
+      $(".oa-space-title a").on("click", function(e) {
         e.preventDefault();
         $this = $(this);
-        var index = $this.closest(".oa_space_wrapper").attr('data-index');
+        var index = $this.closest(".oa-space-wrapper").attr('data-index');
         makeActive(index);
       });
       makeActive(1);

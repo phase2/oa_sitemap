@@ -9,7 +9,7 @@
 
   [data-state~="closed"] {
     display: none;
-    .oa_section_wrapper, .oa_subspace_wrapper {
+    .oa-section-wrapper, .oa-subspace-wrapper {
       display: none;
     }
   }
@@ -22,7 +22,7 @@
     ////
     // Top Title bar/navigation
     ////
-    > .oa_space_title {
+    > .oa-space-title {
       position: relative;
       margin: 0 0 $title-gap;
       text-align: center;
@@ -48,13 +48,13 @@
     ////
     // Section
     ////
-    .oa_section_wrapper {
+    .oa-section-wrapper {
       text-align: center;
       clear: both;
       margin-bottom: $title-gap;
     }
 
-     .oa_section {
+     .oa-section {
        width: $width;
        margin-bottom: 10px;
        display: inline-block;
@@ -84,20 +84,20 @@
         top: 50%;
         @include translateY(-40%);
       }
-      .oa_section_title {
+      .oa-section-title {
         margin: 0;
       }
     }
     ////
     //Sub Space
     ////
-    .oa_subspace_wrapper {
+    .oa-subspace-wrapper {
       text-align: center;
       clear: both;
       margin-bottom: $title-gap /2;
     }
 
-    .oa_space_wrapper{
+    .oa-space-wrapper{
       border: 1px solid #ddd;
       display: inline-block;
       vertical-align: top;
@@ -106,7 +106,7 @@
       width: $width * 1.4;
       height: $width * 1.4;
       margin-bottom: 10px;
-      .oa_space_title, .oa_new_space_title {
+      .oa-space-title, .oa-new-space-title {
         margin: 0;
         text-align: center;
         position: relative;
@@ -126,7 +126,6 @@
           bottom: 0;
           position: absolute;
           width: 100%;
-          text-align: center;
           padding: 0 5px;
           .oa-icon-left {
             float: left;
@@ -134,10 +133,10 @@
           .oa-icon-right {
             float: right;
           }
-          [class^="icon-"], [class*=" icon-"] {
+          [class^="icon-"] {
             color: #999;
           }
-          [class^="icon-"]:hover, [class*=" icon-"]:hover {
+          [class^="icon-"]:hover {
             color: inherit;
             text-decoration: none;
           }
@@ -148,7 +147,7 @@
       &:last-child {
        border: 1px dashed #aaa;
       }
-      .oa_new_space_title {
+      .oa-new-space-title {
         span {
           top: 45%;
           @include translateY(-50%);
@@ -166,10 +165,10 @@
   ////
 
   [data-state~="breadcrumb"] {
-    > .oa_section_wrapper {
+    > .oa-section-wrapper {
       display: none;
     }
-    > .oa_space_title {
+    > .oa-space-title {
       display: block;
       text-align: center;
       margin: 0;
