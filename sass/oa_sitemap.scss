@@ -130,12 +130,20 @@
         bottom: 0;
         position: absolute;
         width: 100%;
-        padding: 0 5px;
         .oa-icon-left {
+          width: 33%;
           float: left;
+
+        }
+        .oa-icon-middle {
+          width: 33%;
+          float: left;
+
         }
         .oa-icon-right {
-          float: right;
+          width: 33%;
+          float: left;
+
         }
         [class^="icon-"] {
           color: #999;

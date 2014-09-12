@@ -73,10 +73,9 @@
   width: 36.66667px;
   position: relative;
   top: 50%;
-  -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 /* line 80, ../sass/oa_sitemap.scss */
@@ -85,10 +84,9 @@
   position: relative;
   font-size: 32px;
   top: 50%;
-  -webkit-transform: translateY(-40%);
   -moz-transform: translateY(-40%);
   -ms-transform: translateY(-40%);
-  -o-transform: translateY(-40%);
+  -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
 }
 /* line 87, ../sass/oa_sitemap.scss */
@@ -133,10 +131,9 @@
   display: block;
   position: relative;
   top: 50%;
-  -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
 /* line 128, ../sass/oa_sitemap.scss */
@@ -145,63 +142,68 @@
   bottom: 0;
   position: absolute;
   width: 100%;
-  padding: 0 5px;
 }
-/* line 134, ../sass/oa_sitemap.scss */
+/* line 133, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-left {
+  width: 33%;
   float: left;
 }
-/* line 137, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-right {
-  float: right;
+/* line 138, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-middle {
+  width: 33%;
+  float: left;
 }
-/* line 140, ../sass/oa_sitemap.scss */
+/* line 143, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-right {
+  width: 33%;
+  float: left;
+}
+/* line 148, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer [class^="icon-"] {
   color: #999;
 }
-/* line 143, ../sass/oa_sitemap.scss */
+/* line 151, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer [class^="icon-"]:hover {
   color: inherit;
   text-decoration: none;
 }
-/* line 147, ../sass/oa_sitemap.scss */
+/* line 155, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-red {
   color: #FB4D53;
 }
-/* line 150, ../sass/oa_sitemap.scss */
+/* line 158, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-green {
   color: #42BB3D;
 }
-/* line 155, ../sass/oa_sitemap.scss */
+/* line 163, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper:last-child {
   border: 1px dashed #aaa;
 }
-/* line 159, ../sass/oa_sitemap.scss */
+/* line 167, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-new-space-title span {
   top: 45%;
-  -webkit-transform: translateY(-50%);
   -moz-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 163, ../sass/oa_sitemap.scss */
+/* line 171, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-new-space-title .oa-icon-wrapper {
   display: block;
   position: relative;
   top: 30%;
 }
-/* line 176, ../sass/oa_sitemap.scss */
+/* line 184, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-section-wrapper {
   display: none;
 }
-/* line 179, ../sass/oa_sitemap.scss */
+/* line 187, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title {
   display: block;
   text-align: center;
   margin: 0;
 }
-/* line 183, ../sass/oa_sitemap.scss */
+/* line 191, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title > .oa-space-link a {
   display: inline-block;
   margin-bottom: 30px;
@@ -209,7 +211,7 @@
   border: 2px solid #aaa;
   position: relative;
 }
-/* line 189, ../sass/oa_sitemap.scss */
+/* line 197, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title > .oa-space-link a:after {
   content: "";
   position: absolute;
@@ -219,7 +221,7 @@
   left: 50%;
   bottom: -32px;
 }
-/* line 199, ../sass/oa_sitemap.scss */
+/* line 207, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title > .oa-icon-footer {
   display: none;
 }
