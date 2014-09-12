@@ -120,7 +120,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       ? l('<span>' . check_plain($node->title) . '</span>', 'node/' . $nid, array('html' => TRUE))
       : l(variable_get('site_name', t('Home')), '<front>'),
     'sections' => $section_links,
-    'id' => $nid,
+    'nid' => $nid,
     'depth' => $depth,
     'index' => $index,
     'class' => 'oa_space_wrapper item',
@@ -163,7 +163,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       'subspaces' => array(),
       'depth' => "$depth",
       'index' => $index,
-      'id' => -1,
+      'nid' => -1,
       'class' => 'oa_space_wrapper item',
       'title_class' => 'oa_new_space_title', // allows link to work directly
       'icon' => $icons[0],

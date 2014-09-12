@@ -10,7 +10,7 @@
  * $sections - sections
  */
 ?>
-<div <?php print !empty($class) ? 'class = "' . $class . '"' : ''; ?> data-depth="<?php print $depth; ?>" data-index="<?php print $index; ?>" data-id="<?php print $id; ?>">
+<div <?php print !empty($class) ? 'class = "' . $class . '"' : ''; ?> data-depth="<?php print $depth; ?>" data-index="<?php print $index; ?>" data-id="<?php print $nid; ?>">
   <h3 <?php print !empty($title_class) ? 'class = "' . $title_class . '"' : ''; ?>>
     <?php if (!empty($icon)): ?><div class="oa-icon-wrapper"><?php print $icon; ?></div><?php endif; ?>
     <?php print $link; ?>
