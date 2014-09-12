@@ -16,7 +16,8 @@
         $('.carousel-inner').removeClass('carousel-inner').children().removeClass('active');
         $('.carousel-prev').remove();
         $('.carousel-next').remove();
-        // add new carousel
+
+        // add new carousel classes
         $(target).addClass('carousel-inner');
         $carouselItems.eq(newActiveIndex).addClass('active');
 
@@ -25,7 +26,6 @@
           var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa-space-title').find('span').text() : false;
               nextTitle = $carouselItems.eq(index + 1).children('.oa-space-title').text();
               $currentTitle = $(carouselItem).children('.oa-space-title');
-
 
           if (prevTitle) {
             $("<a/>", {
@@ -52,11 +52,16 @@
           };
 
         });
-        console.log(topID);
 
         $(target).carousel({
           interval: false
-        })
+        });
+
+        $(target).on('slid.bs.carousel', function() {
+          var activeSlideId = $('.oa-space-wrapper.active').attr('data-id');
+          updateDropdown(activeSlideId);
+        });
+
       }
 
       // set classes to open up sitemap at that level
@@ -72,16 +77,21 @@
 
         applyCarousel($newActiveParent, newActiveIndex);
       }
+      function updateDropdown(id) {
+        $('.oa_sitemap_search .form-select').val(id);
+      }
 
       $(".oa-space-link a").on("click", function(e) {
         e.preventDefault();
         $this = $(this);
         var index = $this.closest(".oa-space-wrapper").attr('data-id');
         makeActive(index);
+        updateDropdown(index);
       });
 
-      $('.oa_sitemap_search form-select').change(function() {
-        console.log("hi");
+      $('.oa_sitemap_search .form-select').change(function() {
+        value = $(this).attr('value');
+        makeActive(value);
       })
 
 
