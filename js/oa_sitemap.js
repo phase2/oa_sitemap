@@ -8,7 +8,7 @@
   Drupal.behaviors.oaSitemap = {
     attach: function(context, settings) {
 
-      var $topID = settings.oa_sitemap.topID;
+      var topID = settings.oa_sitemap.topID;
 
       function applyCarousel (target, newActiveIndex) {
         var $carouselItems = $(target).children('.oa-space-wrapper');
@@ -52,7 +52,7 @@
           };
 
         });
-        console.log($topID);
+        console.log(topID);
 
         $(target).carousel({
           interval: false
@@ -61,7 +61,7 @@
 
       // set classes to open up sitemap at that level
       function makeActive(position) {
-        var $newActive = $("[data-index='" + position + "']"),
+        var $newActive = $("[data-id='" + position + "']"),
             $newActiveParent = $newActive.parent("div"),
             $newActiveGroup = $newActiveParent.children();
             newActiveIndex = $newActiveParent.children(".oa-space-wrapper").index($newActive);
@@ -76,10 +76,16 @@
       $(".oa-space-link a").on("click", function(e) {
         e.preventDefault();
         $this = $(this);
-        var index = $this.closest(".oa-space-wrapper").attr('data-index');
+        var index = $this.closest(".oa-space-wrapper").attr('data-id');
         makeActive(index);
       });
-      makeActive(1);
+
+      $('.oa_sitemap_search form-select').change(function() {
+        console.log("hi");
+      })
+
+
+      makeActive(topID);
 
     }
   }
