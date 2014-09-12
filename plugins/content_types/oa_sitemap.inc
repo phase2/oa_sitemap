@@ -45,7 +45,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
 
   $terms = oa_sections_get_icons();
   $icons = array();
-  $icons[0] = '<div class="icon-wrapper"><i class="icon-plus"></i></div>';
+  $icons[0] = '<i class="icon-plus"></i>';
   foreach ($terms as $id => $term) {
     if (!empty($term->field_icon_class_value)) {
       $icon = '<i class="' . check_plain($term->field_icon_class_value) . '"></i>';
@@ -64,7 +64,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
     else {
       $icon = '<i class="icon-th-large"></i>';
     }
-    $icons[$id] = '<div class="icon-wrapper">' . $icon . '</div>';
+    $icons[$id] = $icon;
   }
 
   $top_id = empty($conf['oa_sitemap_parent']) ? $space_id : 0;
