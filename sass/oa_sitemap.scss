@@ -52,35 +52,6 @@
         display: inline-block;
       }
     }
-    .carousel-jump {
-      margin: 0;
-      width: 200px;
-      left: 110%;
-      top: 0;
-      position: absolute;
-      z-index: 10;
-      background: white;
-      border: 1px solid #ccc;
-      li {
-        margin: 0;
-        padding: 0;
-        &:hover {
-          background: #ccc;
-        }
-      }
-      .current a{
-        font-weight: bold;
-        text-decoration: underline;
-      }
-      a {
-        padding: 5px 0;
-        display: block;
-        font-size: 14px;
-        &:hover {
-          text-decoration: none;
-        }
-      }
-    }
 
     ////
     // Section
@@ -243,6 +214,45 @@
       }
     }
   }
+
+  ////
+  // Drop Down Carousel Jump
+  ////
+  .oa-space-link[data-state="open"] .carousel-jump {
+    display: block;
+  }
+  .carousel-jump {
+    display: none;
+    margin: 0;
+    width: 200px;
+    right: -220px;
+    top: 0;
+    position: absolute;
+    z-index: 10;
+    background: white;
+    border: 1px solid #ccc;
+    li {
+      margin: 0;
+      padding: 0;
+      &:hover {
+        background: #ccc;
+      }
+    }
+    .current a{
+      font-weight: bold;
+      text-decoration: underline;
+    }
+    a {
+      padding: 5px 0;
+      display: block;
+      font-size: 14px;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }
+
+
 
 

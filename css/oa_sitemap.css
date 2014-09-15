@@ -50,48 +50,13 @@
   position: relative;
   display: inline-block;
 }
-/* line 55, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .carousel-jump {
-  margin: 0;
-  width: 200px;
-  left: 110%;
-  top: 0;
-  position: absolute;
-  z-index: 10;
-  background: white;
-  border: 1px solid #ccc;
-}
-/* line 64, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .carousel-jump li {
-  margin: 0;
-  padding: 0;
-}
-/* line 67, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .carousel-jump li:hover {
-  background: #ccc;
-}
-/* line 71, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .carousel-jump .current a {
-  font-weight: bold;
-  text-decoration: underline;
-}
-/* line 75, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .carousel-jump a {
-  padding: 5px 0;
-  display: block;
-  font-size: 14px;
-}
-/* line 79, ../sass/oa_sitemap.scss */
-.pane-oa-sitemap [data-state~="active"] .carousel-jump a:hover {
-  text-decoration: none;
-}
-/* line 88, ../sass/oa_sitemap.scss */
+/* line 59, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section-wrapper {
   text-align: center;
   clear: both;
   margin-bottom: 30px;
 }
-/* line 94, ../sass/oa_sitemap.scss */
+/* line 65, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section {
   width: 110px;
   margin-bottom: 10px;
@@ -99,7 +64,7 @@
   vertical-align: top;
   text-align: center;
 }
-/* line 100, ../sass/oa_sitemap.scss */
+/* line 71, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section .oa-icon-wrapper {
   display: block;
   margin: 0 20px;
@@ -108,11 +73,11 @@
   margin-bottom: 10px;
   border: 1px solid #ccc;
 }
-/* line 108, ../sass/oa_sitemap.scss */
+/* line 79, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section.new-section .oa-icon-wrapper {
   border: 1px dashed #aaa;
 }
-/* line 111, ../sass/oa_sitemap.scss */
+/* line 82, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section img {
   width: 36.66667px;
   position: relative;
@@ -122,7 +87,7 @@
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 117, ../sass/oa_sitemap.scss */
+/* line 88, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section i {
   display: block;
   position: relative;
@@ -133,17 +98,17 @@
   -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
 }
-/* line 124, ../sass/oa_sitemap.scss */
+/* line 95, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-section .oa-section-title {
   margin: 0;
 }
-/* line 131, ../sass/oa_sitemap.scss */
+/* line 102, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-subspace-wrapper {
   text-align: center;
   clear: both;
   margin-bottom: 15px;
 }
-/* line 137, ../sass/oa_sitemap.scss */
+/* line 108, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper {
   border: 1px solid #ddd;
   display: inline-block;
@@ -154,23 +119,23 @@
   height: 154px;
   margin-bottom: 10px;
 }
-/* line 146, ../sass/oa_sitemap.scss */
+/* line 117, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-space-title, .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-new-space-title {
   margin: 0;
   text-align: center;
   position: relative;
   height: 100%;
 }
-/* line 152, ../sass/oa_sitemap.scss */
+/* line 123, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-space-link {
   height: 100%;
 }
-/* line 154, ../sass/oa_sitemap.scss */
+/* line 125, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-space-link a {
   display: block;
   height: 100%;
 }
-/* line 158, ../sass/oa_sitemap.scss */
+/* line 129, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-space-link span {
   display: block;
   position: relative;
@@ -180,50 +145,50 @@
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 165, ../sass/oa_sitemap.scss */
+/* line 136, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer {
   font-size: 22px;
   bottom: 0;
   position: absolute;
   width: 100%;
 }
-/* line 170, ../sass/oa_sitemap.scss */
+/* line 141, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-left {
   width: 33%;
   float: left;
 }
-/* line 174, ../sass/oa_sitemap.scss */
+/* line 145, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-middle {
   width: 33%;
   float: left;
 }
-/* line 178, ../sass/oa_sitemap.scss */
+/* line 149, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-right {
   width: 33%;
   float: left;
 }
-/* line 182, ../sass/oa_sitemap.scss */
+/* line 153, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer [class^="icon-"] {
   color: #999;
 }
-/* line 185, ../sass/oa_sitemap.scss */
+/* line 156, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer [class^="icon-"]:hover {
   color: inherit;
   text-decoration: none;
 }
-/* line 189, ../sass/oa_sitemap.scss */
+/* line 160, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-red {
   color: #FB4D53;
 }
-/* line 192, ../sass/oa_sitemap.scss */
+/* line 163, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-icon-footer .oa-icon-green {
   color: #42BB3D;
 }
-/* line 197, ../sass/oa_sitemap.scss */
+/* line 168, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper:last-child {
   border: 1px dashed #aaa;
 }
-/* line 201, ../sass/oa_sitemap.scss */
+/* line 172, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-new-space-title span {
   top: 45%;
   -moz-transform: translateY(-50%);
@@ -231,23 +196,23 @@
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 205, ../sass/oa_sitemap.scss */
+/* line 176, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="active"] .oa-space-wrapper .oa-new-space-title .oa-icon-wrapper {
   display: block;
   position: relative;
   top: 30%;
 }
-/* line 218, ../sass/oa_sitemap.scss */
+/* line 189, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-section-wrapper {
   display: none;
 }
-/* line 221, ../sass/oa_sitemap.scss */
+/* line 192, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title {
   display: block;
   text-align: center;
   margin: 0;
 }
-/* line 225, ../sass/oa_sitemap.scss */
+/* line 196, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title > .oa-space-link a {
   display: inline-block;
   margin-bottom: 30px;
@@ -255,7 +220,7 @@
   border: 2px solid #aaa;
   position: relative;
 }
-/* line 231, ../sass/oa_sitemap.scss */
+/* line 202, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title > .oa-space-link a:after {
   content: "";
   position: absolute;
@@ -265,7 +230,47 @@
   left: 50%;
   bottom: -32px;
 }
-/* line 241, ../sass/oa_sitemap.scss */
+/* line 212, ../sass/oa_sitemap.scss */
 .pane-oa-sitemap [data-state~="breadcrumb"] > .oa-space-title > .oa-icon-footer {
   display: none;
+}
+/* line 221, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .oa-space-link[data-state="open"] .carousel-jump {
+  display: block;
+}
+/* line 224, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .carousel-jump {
+  display: none;
+  margin: 0;
+  width: 200px;
+  right: -220px;
+  top: 0;
+  position: absolute;
+  z-index: 10;
+  background: white;
+  border: 1px solid #ccc;
+}
+/* line 234, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .carousel-jump li {
+  margin: 0;
+  padding: 0;
+}
+/* line 237, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .carousel-jump li:hover {
+  background: #ccc;
+}
+/* line 241, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .carousel-jump .current a {
+  font-weight: bold;
+  text-decoration: underline;
+}
+/* line 245, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .carousel-jump a {
+  padding: 5px 0;
+  display: block;
+  font-size: 14px;
+}
+/* line 249, ../sass/oa_sitemap.scss */
+.pane-oa-sitemap .carousel-jump a:hover {
+  text-decoration: none;
 }

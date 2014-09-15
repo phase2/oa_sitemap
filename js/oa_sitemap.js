@@ -27,13 +27,13 @@
           var prevTitle = index > 0 ? $carouselItems.eq(index - 1).children('.oa-space-title').find('span').text() : false,
               nextTitle = $carouselItems.eq(index + 1).children('.oa-space-title').text(),
               $currentTitle = $(carouselItem).children('.oa-space-title'),
+              $currentLinkWrapper = $currentTitle.children('.oa-space-link'),
+              $currentLink = $currentLinkWrapper.children('a').first(),
 
               $carouselJump = $("<ul/>", {
                                   class: "carousel-jump",
-                                  html: "abc"
+                                  html: ""
                                 });
-
-              $carouselJump.empty();
 
           // if not first element in carousel
           if (prevTitle) {
@@ -60,9 +60,11 @@
             }).prependTo($currentTitle);
           };
 
+          // Build Coursel Jump
           $.each($carouselItems, function(subIndex, subCarouselItem) {
             $jumpItem = $('<li/>', {
                         html: $('<a/>', {
+                                href: "#",
                                 text: $(subCarouselItem).children('.oa-space-title').find('.oa-space-link').find('span').text(),
                                 click: function(e) {
                                   e.preventDefault;
@@ -76,18 +78,23 @@
             $jumpItem.appendTo($carouselJump);
           });
 
+          // Attach carousel jump
           if ($carouselItems.length > 1) {
-            $currentTitle.find('.oa-space-link').append($carouselJump);
+            $currentLinkWrapper.append($carouselJump);
           };
 
+
+
         });
+        // END Affix Navigation
 
         $(target).carousel({
           interval: false
         });
 
-
+        // change dropdown when carousel advances
         $(target).on('slid.bs.carousel', function() {
+          $(".oa-space-link[data-state='open']").attr('data-state', '');
           var activeSlideId = $('.oa-space-wrapper.active').attr('data-id');
           updateDropdown(activeSlideId);
         });
@@ -101,6 +108,7 @@
             $newActiveGroup = $newActiveParent.children();
             newActiveIndex = $newActiveParent.children(".oa-space-wrapper").index($newActive);
 
+        $(".oa-space-link[data-state='open']").attr('data-state', '');
         $('.oa-space-wrapper').attr('data-state', 'closed');
         $newActiveGroup.attr('data-state', 'active');
         $newActiveParent.parents(".oa-space-wrapper").attr('data-state', 'breadcrumb');
@@ -111,12 +119,21 @@
         $('.oa_sitemap_search .form-select').val(id);
       }
 
+      // oa-space-link click function
+
       $(".oa-space-link a").on("click", function(e) {
         e.preventDefault();
         $this = $(this);
-        var index = $this.closest(".oa-space-wrapper").attr('data-id');
-        makeActive(index);
-        updateDropdown(index);
+        if ($this.closest('.oa-subspace-wrapper').hasClass('carousel-inner')) {
+          $currentLinkWrapper = $this.closest('.oa-space-link');
+          $currentLinkWrapper.attr('data-state', $currentLinkWrapper.attr('data-state') == 'open' ? '' : 'open');
+        }
+        else {
+          var index = $this.closest(".oa-space-wrapper").attr('data-id');
+          makeActive(index);
+          updateDropdown(index);
+        };
+
       });
 
       $('.oa_sitemap_search .form-select').change(function() {
