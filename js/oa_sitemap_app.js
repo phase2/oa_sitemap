@@ -1,3 +1,6 @@
+
+
+
 /**
  * @file
  * Javascript for the OA sitemap.
@@ -12,8 +15,44 @@
       var icons = settings.oa_sitemap.icons;
       var data = settings.oa_sitemap.data;
 
-      console.log(icons);
-      console.log(data);
+      function searchObj( obj , id ){
+
+          for( var i = 0; i < obj.subspaces.length; i++ ) {
+            if (obj.subspaces[i].index == id) {
+              return obj.subspaces[i].subspaces;
+            }
+            if (obj.subspaces[i].subspaces.length > 1) {
+              searchObj(obj.subspaces[i], id);
+            };
+          }
+      }
+
+
+      var app = angular.module("oaSitemap", ['ui.bootstrap']);
+
+      app.controller("oaSitemapController", function($scope, $http) {
+        $scope.spaces = data.subspaces;
+        $scope.breadcrumbs = [
+        {'title': 'North',
+         'link' : '/sitemap_app/2'},
+        {'title': 'North West',
+         'link' : '/sitemap_app/3'}
+         ];
+        $scope.explore = function() {
+
+          var id = this.index;
+          console.log(this.subspace.index);
+          $scope.spaces = searchObj(data,5);
+
+          //[this.$id]
+        };
+        console.log(data);
+      });
+
+
+
+      // console.log(icons);
+
 
     }
   }

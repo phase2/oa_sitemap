@@ -1,0 +1,11 @@
+/* line 3, ../sass/oa_sitemap_app.scss */
+.oa-section {
+  display: inline-block;
+  width: 150px;
+}
+
+/* line 8, ../sass/oa_sitemap_app.scss */
+.oa-subspace {
+  display: inline-block;
+  width: 200px;
+}
