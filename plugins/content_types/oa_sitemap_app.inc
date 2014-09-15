@@ -1,0 +1,127 @@
+<?php
+/**
+ * @file oa_sitemap_app.inc
+ */
+
+$plugin = array(
+  'title' => t('Site Map (App)'),
+  'description' => t('Displays the site map of a space.'),
+  'single' => TRUE,
+  'category' => array(t('Open Atrium'), -9),
+  'edit form' => 'oa_sitemap_app_settings_form',
+  'render callback' => 'oa_sitemap_app_render',
+  'required context' => new ctools_context_optional(t('Node'), 'node'),
+  'defaults' => array(
+    'oa_sitemap_parent' => FALSE,
+  ),
+);
+
+/**
+ * Run-time rendering of the body of the pane.
+ *
+ * @see ctools_plugin_examples for more advanced info
+ */
+function oa_sitemap_app_render($subtype, $conf, $args, $context) {
+  $node = NULL;
+  if (isset($context->data)) {
+    $node = $context->data;
+  }
+  $space_id = isset($node) ? $node->nid : 0;
+
+  $title = (empty($node) || !empty($conf['oa_sitemap_parent'])) ? variable_get('site_name', '') : $node->title;
+  $page_title = !empty($title) ? t('Site Map for @space', array('@space' => $title)) : t('Site Map');
+
+  $base = drupal_get_path('module', 'oa_sitemap');
+
+  ctools_include('modal');
+  ctools_modal_add_js();
+
+  drupal_set_title($page_title);
+
+  $terms = oa_sections_get_icons();
+  $icons = array();
+  $icons[0] = '<i class="icon-plus"></i>';
+  foreach ($terms as $id => $term) {
+    if (!empty($term->field_icon_class_value)) {
+      $icon = '<i class="' . check_plain($term->field_icon_class_value) . '"></i>';
+    }
+    elseif (!empty($term->field_icon_image_fid)) {
+      $file = file_load($term->field_icon_image_fid);
+      $content = array(
+        'file' => array(
+          '#theme' => 'image_style',
+          '#style_name' => 'oa_medium_thumbnail',
+          '#path' => $file->uri,
+        ),
+      );
+      $icon = drupal_render($content);
+    }
+    else {
+      $icon = '<i class="icon-th-large"></i>';
+    }
+    $icons[$id] = $icon;
+  }
+
+  $top_id = empty($conf['oa_sitemap_parent']) ? $space_id : 0;
+  $options = array();
+  if ($top_id == 0) {
+    $options[0] = $title;
+  }
+  $data = oa_sitemap_data($top_id, $options);
+
+  $map_link = '';
+  if (empty($conf['oa_sitemap_parent']) && ($space_id != 0)) {
+    $map_link = l(t('Full sitemap'), 'sitemap/' . $space_id);
+  }
+  $form['search'] = array(
+    '#name' => 'oa_sitemap_search',
+    '#type' => 'select',
+    '#options' => $options,
+    '#value' => $top_id,
+  );
+
+  $header_vars = array(
+    'link' => $map_link,
+    'search' => drupal_render($form),
+  );
+
+  drupal_add_js(array('oa_sitemap' => array(
+    'topID' => $space_id,
+    'icons' => $icons,
+    'data' => $data,
+  )), 'setting');
+
+  drupal_add_js($base . '/js/oa_sitemap_app.js');
+  drupal_add_css($base . '/css/oa_sitemap_app.css');
+
+  $block = new stdClass();
+  $block->title = '';
+  $block->content = theme('oa_sitemap_app', $header_vars);
+  return $block;
+}
+
+/**
+ * Empty config form
+ */
+function oa_sitemap_app_settings_form($form, &$form_state) {
+  $conf = $form_state['conf'];
+
+  $form['oa_sitemap_parent'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show full parent tree'),
+    '#default_value' => $conf['oa_sitemap_parent'],
+  );
+
+  return $form;
+}
+
+/**
+ * Saves changes to the widget.
+ */
+function oa_sitemap_json_settings_form_submit($form, &$form_state) {
+  foreach (array_keys($form_state['values']) as $key) {
+    if (isset($form_state['values'][$key])) {
+      $form_state['conf'][$key] = $form_state['values'][$key];
+    }
+  }
+}

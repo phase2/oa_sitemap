@@ -5,10 +5,19 @@
  */
 
 include_once 'oa_sitemap.features.inc';
+
 /**
- * @file
- * Code for the OpenAtrium Sitemap.
+ * Implements hook_menu().
  */
+function oa_sitemap_menu() {
+  $items['oa_sitemap_data/%'] = array(
+    'page callback' => 'oa_sitemap_data_callback',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -42,7 +51,162 @@ function oa_sitemap_theme() {
       ),
       'path' => $path,
     ),
+    'oa_sitemap_app' => array(
+      'template' => 'oa-sitemap-app',
+      'variables' => array(
+        'link' => NULL,
+        'search' => NULL,
+      ),
+      'path' => $path,
+    ),
   );
+}
+
+/**
+ * JSON callback to return space/subspace/section data for a given space node
+ * @param $node optional parent node
+ */
+function oa_sitemap_data_callback($nid) {
+  $options = array();
+  return json_encode(oa_sitemap_data($nid, $options));
+}
+
+/**
+ * Main helper function to render a specific space row in the sitemap
+ * Recursively calls for subspaces
+ * @param $node, node object or nid
+ * @param $icons, array of section type images keyed by tid
+ * @param $index, start at 0
+ * @param $depth, start at 0
+ * Returns an array of data
+ *
+ */
+function oa_sitemap_data($node, &$options, &$index = 0, $depth = 0) {
+  global $user;
+
+  if (is_numeric($node)) {
+    $node = node_load($node);
+  }
+  $nid = !empty($node) ? $node->nid : 0;
+
+  $children = oa_core_get_groups_by_parent($nid);
+  foreach ($children as $key => $child) {
+    $subspace = node_load($child);
+    $children[$key] = $subspace;
+  }
+
+  $sections = oa_core_space_sections($nid, 1, FALSE, array('field_oa_section|tid'));
+  $section_links = array();
+  foreach ($sections as $section) {
+    $id = $section->field_oa_section_tid;
+    if (empty($id)) {
+      $term = taxonomy_get_term_by_name('Default', 'section_type');
+      $id = !empty($term) ? current(array_keys($term)) : 0;
+    }
+    $section_links[] = array(
+      'title' => $section->title,
+      'url' => url('node/' . $section->nid),
+      'icon_id' => $id,
+    );
+  }
+
+  if (!empty($node) && (og_user_access('node', $nid, "create " . OA_SECTION_TYPE . " content", $user))) {
+    $custom_style = array(
+      'oa-sitemap-section' => array(
+        'modalSize' => array(
+          'type' => 'scale',
+          'width' => 0.5,
+          'height' => 0.5,
+        ),
+        'animation' => 'fadeIn',
+      ),
+    );
+    ctools_include('ajax');
+    ctools_include('modal');
+    drupal_add_js($custom_style, 'setting');
+
+    $section_links[] = array(
+      'title' => t('New Section'),
+      'url' => url('wizard/js/add/oa-section'),
+      'class' => 'ctools-use-modal ctools-modal-oa-sitemap-section',
+      'icon_id' => 0,
+    );
+  }
+
+  $icons = array();
+  if (!empty($node)) {
+    if (node_access('update', $node)) {
+      $icons['center'] = array(
+        'icon' => 'icon-cog',
+        'url' => url('node/' . $nid . '/edit'),
+      );
+    }
+    $visibility = field_get_items('node', $node, 'group_access');
+    $icons['left'] = array(
+      'icon' => 'icon-user',
+      'url' => url('node/' . $nid),
+      'class' => $node->status ? (empty($visibility[0]['value']) ? 'oa-icon-green' : 'oa-icon-red') : '',
+    );
+    $icons['right'] = array(
+      'icon' => 'icon-eye-open',
+      'url' => url('node/' . $nid),
+    );
+  }
+
+  $index++;
+  $vars = array(
+    'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
+    'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
+    'sections' => $section_links,
+    'nid' => $nid,
+    'depth' => $depth,
+    'index' => $index,
+    'icons' => $icons,
+  );
+  if (!empty($node)) {
+    $options[$nid] = str_repeat('-', $depth*2) . $node->title;
+  }
+
+  $subspaces = array();
+  foreach ($children as $subspace) {
+    $subspaces[] = oa_sitemap_data($subspace, $options, $index, $depth+1);
+  }
+
+  $access = empty($node)
+    ? user_access('create ' . OA_SPACE_TYPE . ' content', $user)
+    : (module_exists('oa_subspaces') && og_user_access('node', $nid, 'create ' . OA_SPACE_TYPE . ' content', $user));
+  if ($access) {
+    $index++;
+    $custom_style = array(
+      'oa-sitemap-space' => array(
+        'modalSize' => array(
+          'type' => 'scale',
+          'width' => 0.5,
+          'height' => 0.5,
+        ),
+        'animation' => 'fadeIn',
+      ),
+    );
+    ctools_include('ajax');
+    drupal_add_js($custom_style, 'setting');
+
+    $new_space_vars = array(
+      'title' => t('New Space'),
+      'url' => url('wizard/js/add/oa-space'),
+      'class' => 'ctools-use-modal ctools-modal-oa-sitemap-space',
+      'sections' => array(),
+      'subspaces' => array(),
+      'depth' => $depth,
+      'index' => $index,
+      'nid' => -1,
+      'icon_id' => 0,
+    );
+    $subspaces[] = $new_space_vars;
+  }
+
+  $vars['subspaces'] = $subspaces;
+
+  return $vars;
 }
 
 /**
@@ -96,6 +260,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
       ),
     );
     ctools_include('ajax');
+    ctools_include('modal');
     drupal_add_js($custom_style, 'setting');
 
     $section_links[] = array(
