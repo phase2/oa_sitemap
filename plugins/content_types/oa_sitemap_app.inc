@@ -68,6 +68,8 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
     $options[0] = $title;
   }
   $data = oa_sitemap_data($top_id, $options);
+  $spaces = array();
+  oa_sitemap_spaces($top_id, $spaces);
 
   $map_link = '';
   if (empty($conf['oa_sitemap_parent']) && ($space_id != 0)) {
@@ -89,6 +91,7 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
     'topID' => $space_id,
     'icons' => $icons,
     'data' => $data,
+    'spaces' => $spaces,
   )), 'setting');
 
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular.min.js');
