@@ -28,11 +28,9 @@
 
       <section class="oa-subspaces">
         <div class="oa-subspace" ng-repeat="subspace in space.subspaces">
-          <h3 class="oa-subspace-title"><a ng-click='explore()' class="oa-subspace-link">{{subspace.title}}</a></h3>
+          <h3 class="oa-subspace-title"><a ng-click='explore(subspace.index)' class="oa-subspace-link">{{subspace.title}}</a></h3>
         </div>
       </section>
-
-
 
     </slide>
   </carousel>

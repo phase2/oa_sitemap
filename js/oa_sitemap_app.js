@@ -22,7 +22,7 @@
               return obj.subspaces[i].subspaces;
             }
             if (obj.subspaces[i].subspaces.length > 1) {
-              searchObj(obj.subspaces[i], id);
+              return searchObj(obj.subspaces[i], id);
             };
           }
       }
@@ -38,13 +38,10 @@
         {'title': 'North West',
          'link' : '/sitemap_app/3'}
          ];
-        $scope.explore = function() {
+        $scope.explore = function(index) {
 
-          var id = this.index;
-          console.log(this.subspace.index);
-          $scope.spaces = searchObj(data,5);
+          $scope.spaces = searchObj(data,index);
 
-          //[this.$id]
         };
         console.log(data);
       });
