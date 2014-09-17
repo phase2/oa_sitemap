@@ -71,10 +71,16 @@ function oa_sitemap_default_page_manager_pages() {
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'oa_sitemap_parent' => FALSE,
+      'oa_sitemap_parent' => 1,
       'context' => 'argument_entity_id:node_1',
       'override_title' => 0,
       'override_title_text' => '',
+      'return' => 'Finish',
+      'cancel' => 'Cancel',
+      'form_build_id' => 'form-f9Poh0Up2MD71aezSQY_sF2aJUXGaaoOyqfWnaekVSU',
+      'form_token' => 'YZMG4AmvmAsvRPSzwpkZrRAoo_TG-GKIO2M85G90bTA',
+      'form_id' => 'oa_sitemap_app_settings_form',
+      'op' => 'Finish',
     );
     $pane->cache = array();
     $pane->style = array(

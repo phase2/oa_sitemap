@@ -124,7 +124,7 @@ function oa_sitemap_app_settings_form($form, &$form_state) {
 /**
  * Saves changes to the widget.
  */
-function oa_sitemap_json_settings_form_submit($form, &$form_state) {
+function oa_sitemap_app_settings_form_submit($form, &$form_state) {
   foreach (array_keys($form_state['values']) as $key) {
     if (isset($form_state['values'][$key])) {
       $form_state['conf'][$key] = $form_state['values'][$key];
