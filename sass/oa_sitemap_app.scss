@@ -29,6 +29,7 @@
   }
 
   .oa-spaces {
+    text-align: center;
     height: 0;
     overflow: hidden;
     visibility: hidden;
@@ -70,6 +71,9 @@
     display: inline-block;
   }
 
+  .oa-sections {
+    text-align: center;
+  }
   .oa-section {
     width: $width;
     margin-bottom: 10px;
