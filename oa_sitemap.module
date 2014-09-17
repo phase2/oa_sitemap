@@ -311,7 +311,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
 
   $spaces[$nid] = array(
     'nid' => $nid,
-    'parent_id' => $parent_id,
+    'parent_id' => ($nid == 0) ? -1 : $parent_id,
     'depth' => $depth,
     'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
     'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
