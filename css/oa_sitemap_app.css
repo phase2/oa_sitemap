@@ -57,11 +57,11 @@
 }
 /* line 58, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-space-header .next {
-  left: 5%;
+  right: 5%;
 }
 /* line 61, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-space-header .prev {
-  right: 5%;
+  left: 5%;
 }
 /* line 65, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .dropdown {

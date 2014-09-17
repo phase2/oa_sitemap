@@ -61,8 +61,8 @@
       var app = angular.module("oaSitemap", ['ngSanitize']);
 
       app.controller("oaSitemapController", function($scope, $http) {
-        $scope.spaces = loadSpace(613);
-        $scope.breadcrumbs = loadBreadCrumbs(613);
+        $scope.spaces = loadSpace(0);
+        $scope.breadcrumbs = loadBreadCrumbs(0);
         $scope.icons = icons;
         $scope.currentSlide = 0;
 

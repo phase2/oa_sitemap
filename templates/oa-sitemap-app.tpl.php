@@ -19,7 +19,7 @@
   <div class="oa-space-header">
     <button class="prev" ng-show="spaces[currentSlide - 1]" ng-click="currentSlide = currentSlide -1">{{spaces[currentSlide - 1].title}}</button>
     <div class="dropdown">
-      <a class="oa-space-title" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}}</a>
+      <a class="oa-space-title" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}} nid is:{{spaces[currentSlide].nid}}</a>
       <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
         <li ng-repeat="space in spaces"><a ng-click="slide($index)">{{space.title}}</a></li>
       </ul>
