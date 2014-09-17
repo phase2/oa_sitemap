@@ -23,6 +23,17 @@
   bottom: -32px;
 }
 /* line 31, ../sass/oa_sitemap_app.scss */
+.oa-sitemap .oa-spaces {
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+/* line 35, ../sass/oa_sitemap_app.scss */
+.oa-sitemap .oa-spaces.active {
+  height: auto;
+  visibility: visible;
+}
+/* line 40, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-space-title {
   position: relative;
   margin: 0 0 30px;
@@ -32,7 +43,7 @@
   border-radius: 8px;
   padding: 8px 0;
 }
-/* line 41, ../sass/oa_sitemap_app.scss */
+/* line 50, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-section {
   width: 110px;
   margin-bottom: 10px;
@@ -40,7 +51,7 @@
   vertical-align: top;
   text-align: center;
 }
-/* line 48, ../sass/oa_sitemap_app.scss */
+/* line 57, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-section-icon {
   display: block;
   margin: 0 20px;
@@ -49,7 +60,7 @@
   margin-bottom: 10px;
   border: 1px solid #ccc;
 }
-/* line 55, ../sass/oa_sitemap_app.scss */
+/* line 64, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-section-icon img {
   width: 36.66667px;
   position: relative;
@@ -59,7 +70,7 @@
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 61, ../sass/oa_sitemap_app.scss */
+/* line 70, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-section-icon i {
   display: block;
   position: relative;
@@ -70,7 +81,7 @@
   -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
 }
-/* line 70, ../sass/oa_sitemap_app.scss */
+/* line 79, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace {
   border: 1px solid #ddd;
   display: inline-block;
@@ -81,20 +92,20 @@
   height: 154px;
   margin-bottom: 10px;
 }
-/* line 81, ../sass/oa_sitemap_app.scss */
+/* line 90, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace-title {
   margin: 0;
   text-align: center;
   position: relative;
   height: 100%;
 }
-/* line 88, ../sass/oa_sitemap_app.scss */
+/* line 97, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace-link {
   display: block;
   height: 100%;
   cursor: pointer;
 }
-/* line 92, ../sass/oa_sitemap_app.scss */
+/* line 101, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace-link span {
   display: block;
   position: relative;
@@ -104,12 +115,12 @@
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 100, ../sass/oa_sitemap_app.scss */
+/* line 109, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .carousel-control.left, .oa-sitemap .carousel-control.right {
   height: 50px;
   background: #888;
 }
-/* line 105, ../sass/oa_sitemap_app.scss */
+/* line 114, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .carousel-indicators {
   display: none;
 }

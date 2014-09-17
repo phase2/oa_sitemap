@@ -49,27 +49,35 @@
           return breadcrumbs;
       }
 
+      function returnSpacePosition (spaces, index) {
+        for(var i in spaces) {
+          if (spaces[i].nid == index) {
+            return i;
+          }
+        }
+      }
 
 
-      var app = angular.module("oaSitemap", ['ui.bootstrap','ngSanitize']);
+      var app = angular.module("oaSitemap", ['ngSanitize']);
 
       app.controller("oaSitemapController", function($scope, $http) {
         $scope.spaces = loadSpace(613);
         $scope.breadcrumbs = loadBreadCrumbs(613);
         $scope.icons = icons;
+        $scope.currentSlide = 0;
+
         $scope.explore = function(index) {
           breadcrumbs = [];
           $scope.breadcrumbs = loadBreadCrumbs(index);
           $scope.spaces = loadSpace(index);
+          $scope.currentSlide = returnSpacePosition($scope.spaces, index);
         };
-        console.log(breadcrumbs);
-        console.log(spaces);
+
+        $scope.slide = function(slide) {
+          $scope.currentSlide = slide;
+        }
+
       });
-
-
-       console.log(icons);
-
-
     }
   }
 

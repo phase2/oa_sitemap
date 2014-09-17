@@ -28,6 +28,15 @@
     }
   }
 
+  .oa-spaces {
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    &.active {
+      height: auto;
+      visibility: visible;
+    }
+  }
   .oa-space-title {
     position: relative;
     margin: 0 0 $vertical-gap;
