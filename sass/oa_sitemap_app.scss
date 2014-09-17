@@ -1,11 +1,108 @@
 @import "compass";
 
-.oa-section {
-  display: inline-block;
-  width: 150px;
-}
+.oa-sitemap {
+  $width: 110px;
+  $margin: 20px;
+  $vertical-gap: 30px; // vertical gaps
 
-.oa-subspace {
-  display: inline-block;
-  width: 200px;
+  .oa-sitemap-breadcrumbs {
+    display: block;
+    text-align: center;
+    margin: 0;
+  }
+
+  .oa-sitemap-breadcrumb a{
+    display: inline-block;
+    margin-bottom: $vertical-gap;
+    padding: 8px;
+    border: 2px solid #aaa;
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: $vertical-gap;
+      background: #aaa;
+      left: 50%;
+      bottom: -$vertical-gap - 2;
+    }
+  }
+
+  .oa-space-title {
+    position: relative;
+    margin: 0 0 $vertical-gap;
+    text-align: center;
+    background: #ddd;
+    border-bottom: 2px solid #aaa;
+    border-radius: 8px;
+    padding: 8px 0;
+  }
+
+  .oa-section {
+    width: $width;
+    margin-bottom: 10px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+  }
+  .oa-section-icon {
+    display: block;
+    margin: 0 $margin;
+    height: $width - $margin * 2;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    img {
+      width: $width / 3;
+      position: relative;
+      top: 50%;
+      @include translateY(-50%);
+    }
+    i {
+      display: block;
+      position: relative;
+      font-size: 32px;
+      top: 50%;
+      @include translateY(-40%);
+    }
+  }
+
+  .oa-subspace {
+    border: 1px solid #ddd;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: $margin/2;
+    margin-left: $margin/2;
+    width: $width * 1.4;
+    height: $width * 1.4;
+    margin-bottom: 10px;
+  }
+
+  .oa-subspace-title {
+    margin: 0;
+    text-align: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .oa-subspace-link {
+    display: block;
+    height: 100%;
+    cursor: pointer;
+    span {
+      display: block;
+      position: relative;
+      top: 50%;
+      @include translateY(-50%);
+    }
+  }
+
+  .carousel-control.left, .carousel-control.right {
+    height: 50px;
+    background: #888;
+  }
+
+  .carousel-indicators {
+    display: none;
+  }
 }
