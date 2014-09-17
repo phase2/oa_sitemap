@@ -16,11 +16,16 @@
     <li class="oa-sitemap-breadcrumb" ng-repeat="breadcrumb in breadcrumbs.slice().reverse()"><a ng-click='explore(breadcrumb.nid)'>{{breadcrumb.title}}</a></li>
   </ul>
 
-  <h3 class="oa-space-title">
-    <button ng-show="spaces[currentSlide - 1]" ng-click="currentSlide = currentSlide -1">{{spaces[currentSlide - 1].title}}</button>
-    {{spaces[currentSlide].title}} - {{currentSlide}}
-    <button ng-show="spaces[currentSlide + 1]" ng-click="currentSlide = currentSlide +1">{{spaces[currentSlide + 1].title}}</button>
-  </h3>
+  <div class="oa-space-header">
+    <button class="prev" ng-show="spaces[currentSlide - 1]" ng-click="currentSlide = currentSlide -1">{{spaces[currentSlide - 1].title}}</button>
+    <div class="dropdown">
+      <a class="oa-space-title" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}}</a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <li ng-repeat="space in spaces"><a ng-click="slide($index)">{{space.title}}</a></li>
+      </ul>
+    </div>
+    <button class="next" ng-show="spaces[currentSlide + 1]" ng-click="currentSlide = currentSlide +1">{{spaces[currentSlide + 1].title}}</button>
+  </div>
   <div class="oa-spaces" ng-class="{active: $index == currentSlide}" ng-repeat="space in spaces">
     <section class="oa-sections">
       <div class="oa-section" ng-repeat="section in space.sections">

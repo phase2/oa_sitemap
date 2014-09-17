@@ -37,7 +37,7 @@
       visibility: visible;
     }
   }
-  .oa-space-title {
+  .oa-space-header {
     position: relative;
     margin: 0 0 $vertical-gap;
     text-align: center;
@@ -45,6 +45,29 @@
     border-bottom: 2px solid #aaa;
     border-radius: 8px;
     padding: 8px 0;
+    button {
+      position: absolute;
+      border: none;
+      background: none;
+      line-height: 34px;
+      &:focus {
+        outline: none;
+      }
+    }
+    .next {
+      left: 5%;
+    }
+    .prev {
+      right: 5%;
+    }
+  }
+  .dropdown {
+    display: inline-block;
+  }
+  .oa-space-title {
+    font-size: 24px;
+    font-weight: bold;
+    display: inline-block;
   }
 
   .oa-section {
