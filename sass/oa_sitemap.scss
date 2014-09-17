@@ -20,17 +20,37 @@
   }
   .carousel-prev, .carousel-next {
     position: absolute;
+    font-size: 18px;
+    top: 12px;
+    color: #333;
   }
   .carousel-prev {
     left: 5%;
-  }
+    &:before {
+      content: "";
+      position: absolute;
+      left: -25px;
+      top: 0;
+      border-right: 12px solid #aaa;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }  }
   .carousel-next {
     right: 5%;
+    &:after {
+      content: "";
+      position: absolute;
+      right: -25px;
+      top: 0;
+      border-left: 12px solid #aaa;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+    }
   }
 
   [data-state~="active"] {
     &.active {
-      border: 2px solid #bbb;
+      border: 1px solid #bbb;
       border-radius: 10px;
     }
     ////
@@ -69,15 +89,16 @@
        vertical-align: top;
        text-align: center;
        .oa-icon-wrapper {
-          display: block;
-          margin: 0 $margin;
-          height: $width - $margin * 2;
-          border-radius: 50%;
-          margin-bottom: 10px;
-          border: 1px solid #ccc;
+         display: block;
+         background-color: #f7f7f7;
+         margin: 0 $margin;
+         height: $width - $margin * 2;
+         border-radius: 50%;
+         margin-bottom: 10px;
+         border: 1px solid #ccc;
       }
       &.new-section .oa-icon-wrapper {
-       border: 1px dashed #aaa;
+        border: 1px dashed #aaa;
       }
       img {
         width: $width / 3;
@@ -106,6 +127,7 @@
     }
 
     .oa-space-wrapper{
+      background-color: #f7f7f7;
       border: 1px solid #ddd;
       display: inline-block;
       vertical-align: top;
@@ -164,6 +186,12 @@
           color: #42BB3D;
         }
       }
+      &:hover {
+        background-color: #ddd;
+        a {
+          text-decoration: none;
+        }
+      }
       // New Space Wrapper
       &:last-child {
        border: 1px dashed #aaa;
@@ -195,9 +223,10 @@
       margin: 0;
       > .oa-space-link a {
         display: inline-block;
+        background-color: #f7f7f7;
         margin-bottom: $vertical-gap;
         padding: 8px;
-        border: 2px solid #aaa;
+        border: 1px solid #aaa;
         position: relative;
         &:after {
           content: "";
@@ -207,6 +236,10 @@
           background: #aaa;
           left: 50%;
           bottom: -$vertical-gap - 2;
+        }
+        &:hover {
+          background-color: #ddd;
+          text-decoration: none;
         }
       }
       > .oa-icon-footer {

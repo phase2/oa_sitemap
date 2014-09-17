@@ -396,7 +396,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
   $head_icon = '';
   if (!empty($node)) {
     if (node_access('update', $node)) {
-      $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE));
+      $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE, 'query' => drupal_get_destination()));
     }
     $view_icon = l('<icon class="icon-eye-open"></i>', 'node/' . $nid, array('html' => TRUE));
     $visibility = field_get_items('node', $node, 'group_access');
