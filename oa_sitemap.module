@@ -318,10 +318,12 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'new_space'=> $new_space,
     'icons' => $icons,
     'sections' => $section_links,
+    'subspaces' => array(),
   );
 
   $children = oa_core_get_groups_by_parent($nid);
   foreach ($children as $child) {
+    $spaces[$nid]['subspaces'][] = $child;
     oa_sitemap_spaces($child, $spaces, $nid, $depth+1);
   }
 
@@ -396,7 +398,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
   $head_icon = '';
   if (!empty($node)) {
     if (node_access('update', $node)) {
-      $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE));
+      $gear_icon = l('<icon class="icon-cog"></i>', 'node/' . $nid . '/edit', array('html' => TRUE, 'query' => drupal_get_destination()));
     }
     $view_icon = l('<icon class="icon-eye-open"></i>', 'node/' . $nid, array('html' => TRUE));
     $visibility = field_get_items('node', $node, 'group_access');
