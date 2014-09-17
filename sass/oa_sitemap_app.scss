@@ -28,14 +28,18 @@
     }
   }
 
+  .oa-carousel-container {
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    padding-bottom: 20px;
+  }
+
   .oa-spaces {
     text-align: center;
     height: 0;
     overflow: hidden;
-    visibility: hidden;
     &.active {
       height: auto;
-      visibility: visible;
     }
   }
   .oa-space-header {
@@ -47,10 +51,14 @@
     border-radius: 8px;
     padding: 8px 0;
     button {
+      font-weight: 500;
+      font-size: 18px;
+      color: #333;
       position: absolute;
       border: none;
       background: none;
       line-height: 34px;
+      padding: 0;
       &:focus {
         outline: none;
       }
@@ -69,6 +77,9 @@
     font-size: 24px;
     font-weight: bold;
     display: inline-block;
+    &:hover, &.open:hover {
+      text-decoration: none;
+    }
   }
 
   .oa-sections {
@@ -80,6 +91,11 @@
     display: inline-block;
     vertical-align: top;
     text-align: center;
+  }
+  .oa-section-link {
+    &:hover {
+
+    }
   }
   .oa-section-icon {
     display: block;
@@ -104,6 +120,7 @@
   }
 
   .oa-subspace {
+    position: relative;
     border: 1px solid #ddd;
     display: inline-block;
     vertical-align: top;
@@ -125,20 +142,53 @@
     display: block;
     height: 100%;
     cursor: pointer;
+    background: #f7f7f7;
+    font-size: 24px;
+    &:hover {
+      text-decoration: none;
+      background: #ddd;
+    }
     span {
       display: block;
       position: relative;
       top: 50%;
       @include translateY(-50%);
     }
+    i {
+      display: block;
+      color: #3B3B3B;
+    }
+  }
+  .oa-subspace-icons {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 22px;
+    z-index: 10;
+    a {
+      color: #999;
+      &:hover {
+        color: #0071B3;
+        text-decoration: none;
+      }
+    }
+  }
+  .oa-subspace-icon-left {
+    float: left;
+    width: 33%;
+  }
+  .oa-subspace-icon-center {
+    float: left;
+    width: 33%;
+  }
+  .oa-subspace-icon-right {
+    float: right;
+    width: 33%;
+  }
+  .oa-icon-green {
+    color: #42BB3D;
   }
 
-  .carousel-control.left, .carousel-control.right {
-    height: 50px;
-    background: #888;
-  }
 
-  .carousel-indicators {
-    display: none;
-  }
 }

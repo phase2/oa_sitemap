@@ -270,18 +270,21 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
   $icons = array();
   if (!empty($node)) {
     if (node_access('update', $node)) {
-      $icons['center'] = array(
+      $icons['1'] = array(
+        'position' => 'center',
         'icon' => 'icon-cog',
         'url' => url('node/' . $nid . '/edit'),
       );
     }
     $visibility = field_get_items('node', $node, 'group_access');
-    $icons['left'] = array(
+    $icons['0'] = array(
+      'position' => 'left',
       'icon' => 'icon-user',
       'url' => url('node/' . $nid),
       'class' => $node->status ? (empty($visibility[0]['value']) ? 'oa-icon-green' : 'oa-icon-red') : '',
     );
-    $icons['right'] = array(
+    $icons['2'] = array(
+      'position' => 'right',
       'icon' => 'icon-eye-open',
       'url' => url('node/' . $nid),
     );
