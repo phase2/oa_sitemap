@@ -318,10 +318,12 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'new_space'=> $new_space,
     'icons' => $icons,
     'sections' => $section_links,
+    'subspaces' => array(),
   );
 
   $children = oa_core_get_groups_by_parent($nid);
   foreach ($children as $child) {
+    $spaces[$nid]['subspaces'][] = $child;
     oa_sitemap_spaces($child, $spaces, $nid, $depth+1);
   }
 
