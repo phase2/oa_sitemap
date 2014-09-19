@@ -5,6 +5,12 @@
   $margin: 20px;
   $vertical-gap: 30px; // vertical gaps
 
+  .oa-sitemap-search {
+    .active {
+      background: #ddd;
+    }
+  }
+
   .oa-sitemap-breadcrumbs {
     display: block;
     text-align: center;

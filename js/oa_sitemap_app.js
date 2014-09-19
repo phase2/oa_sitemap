@@ -56,23 +56,49 @@
         }
       }
 
+      function returnDropDownSelects(active) {
+        var dropDownSelects = [spaces[0]];
+        var index = 0;
+
+
+        function returnChildren(index, active) {
+          var subspaces = spaces[index].subspaces;
+          for(var i in subspaces) {
+            var spaceID = subspaces[i]
+            spaces[spaceID].prefix = Array(spaces[spaceID].depth  + 1 ).join("- ");
+            console.log('active' + active);
+            console.log('current' + spaceID);
+            spaces[spaceID].classes = spaceID == active ? 'active' : '';
+            dropDownSelects.push(spaces[spaceID]);
+            if (spaces[spaceID].subspaces.length > 1) {
+              var child = returnChildren(spaces[spaceID].nid, active);
+              if (child) {
+                return child;
+              }
+            };
+          }
+        }
+        returnChildren(0, active);
+        return dropDownSelects;
+      }
+
 
       var app = angular.module("oaSitemap", ['ngSanitize']);
 
       app.controller("oaSitemapController", function($scope, $http) {
         $scope.allSpaces = spaces;
         $scope.spaces = loadSpace(topID);
+        $scope.dropDownSelects = returnDropDownSelects(topID);
         $scope.breadcrumbs = loadBreadCrumbs(topID);
         $scope.icons = icons;
         $scope.currentSlide = 0;
 
-        console.log($scope.spaces);
-        $scope.explore = function(index) {
+        $scope.exploreSpace = function(index) {
           breadcrumbs = [];
           $scope.breadcrumbs = loadBreadCrumbs(index);
           $scope.spaces = loadSpace(index);
           $scope.currentSlide = returnSpacePosition($scope.spaces, index);
-          console.log($scope.spaces);
+          $scope.dropDownSelects = returnDropDownSelects(topID);
         };
 
         $scope.slide = function(slide) {
