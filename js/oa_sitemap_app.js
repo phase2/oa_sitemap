@@ -17,19 +17,19 @@
       var spaces = settings.oa_sitemap.spaces;
       var breadcrumbs = [];
 
-      console.log(topID);
-      console.log(spaces);
-
       function loadSpace(id) {
         var parentId = spaces[id].parent_id;
         var currentSpaces = [];
         var parentSpace = "";
+
+        // if ID has a valid parent space
         if (parentSpace = spaces[parentId]) {
           for(var i in parentSpace.subspaces) {
-            var childSpaceId = parentSpace.subspaces[i];
-            currentSpaces.push(spaces[childSpaceId]);
+            var childSpace = spaces[parentSpace.subspaces[i]];
+            currentSpaces.push(childSpace);
           }
         }
+        // if ID does not have a valid parent i.e. is top level space
         else {
           currentSpaces.push(spaces[id]);
         }
@@ -39,10 +39,9 @@
 
       function loadBreadCrumbs(id) {
           var parentId = spaces[id].parent_id;
-          var breadcrumb = spaces[parentId];
 
-          if (spaces[id].nid != 0) {
-            breadcrumbs.push(breadcrumb);
+          if (parentId != -1) {
+            breadcrumbs.push(spaces[parentId]);
             loadBreadCrumbs(parentId);
           }
 
@@ -67,11 +66,13 @@
         $scope.icons = icons;
         $scope.currentSlide = 0;
 
+        console.log($scope.spaces);
         $scope.explore = function(index) {
           breadcrumbs = [];
           $scope.breadcrumbs = loadBreadCrumbs(index);
           $scope.spaces = loadSpace(index);
           $scope.currentSlide = returnSpacePosition($scope.spaces, index);
+          console.log($scope.spaces);
         };
 
         $scope.slide = function(slide) {

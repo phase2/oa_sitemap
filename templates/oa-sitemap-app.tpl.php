@@ -30,7 +30,7 @@
     <div class="oa-spaces" ng-class="{active: $index == currentSlide}" ng-repeat="space in spaces">
     {{$parent.spaces[6]}}
       <section class="oa-sections">
-        <div class="oa-section" ng-repeat="section in space.sections">
+        <div class="oa-section" ng-repeat="section in space.sections" ng-class="{newsection: section.title == 'New Section'}">
           <h4 class="oa-section-title"><div class="oa-section-icon" ng-bind-html="icons[section.icon_id]"></div><a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a></h4>
         </div>
       </section>
@@ -39,7 +39,7 @@
         <div class="oa-subspace" ng-repeat="index in space.subspaces">
           <div class="oa-subspace-icons">
 
-            <div ng-repeat="icon in $parent.$parent.allSpaces[index].icons| orderBy:orderIcons" ng-class="[icon.class, 'oa-subspace-icon-' + icon.position ]">
+            <div ng-repeat="icon in $parent.$parent.allSpaces[index].icons" ng-class="[icon.class, 'oa-subspace-icon-' + icon.position ]">
               <a ng-href="{{icon.url}}">
                 <i ng-class="[icon.icon, icon.class]"></i>
               </a>

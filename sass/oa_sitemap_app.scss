@@ -118,6 +118,9 @@
       @include translateY(-40%);
     }
   }
+  .newsection .oa-section-icon{
+    border: 1px dashed #ccc;
+  }
 
   .oa-subspace {
     position: relative;
@@ -129,6 +132,9 @@
     width: $width * 1.4;
     height: $width * 1.4;
     margin-bottom: 10px;
+    &.oa-new-space {
+      border: 1px dashed #ddd;
+    }
   }
 
   .oa-subspace-title {
@@ -188,6 +194,9 @@
   }
   .oa-icon-green {
     color: #42BB3D;
+  }
+  .oa-icon-red {
+    color: #FB4D53;
   }
 
 
