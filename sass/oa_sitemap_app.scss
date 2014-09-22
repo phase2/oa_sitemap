@@ -5,6 +5,10 @@
   $margin: 20px;
   $vertical-gap: 30px; // vertical gaps
 
+  .oa-sitemap-header {
+    margin-bottom: 5px;
+  }
+
   .oa-sitemap-search {
     .active {
       background: #ddd;
@@ -23,6 +27,10 @@
     padding: 8px;
     border: 2px solid #aaa;
     position: relative;
+    &:hover {
+      text-decoration: none;
+      background: #ddd;
+    }
     &:after {
       content: "";
       position: absolute;
@@ -65,25 +73,47 @@
       background: none;
       line-height: 34px;
       padding: 0;
-      &:focus {
+      &:hover, &:focus {
         outline: none;
+        color: #095a8b;
       }
     }
     .next {
-      right: 5%;
+      right: 30px;
+      &:after {
+        content: "";
+        position: absolute;
+        right: -20px;
+        top: 8px;
+        border-left: 12px solid #aaa;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
     }
     .prev {
-      left: 5%;
+      left: 30px;
+      &:before {
+        content: "";
+        position: absolute;
+        left: -20px;
+        top: 8px;
+        border-right: 12px solid #aaa;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
     }
   }
   .dropdown {
     display: inline-block;
   }
+  .dropdown-menu > li > a {
+    padding: 0 20px;
+  }
   .oa-space-title {
     font-size: 24px;
     font-weight: bold;
     display: inline-block;
-    &:hover, &.open:hover {
+    &:hover, &.open:hover, &:active, &.open:active, &:focus, &.open:focus {
       text-decoration: none;
     }
   }
