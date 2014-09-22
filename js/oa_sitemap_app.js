@@ -55,8 +55,8 @@
         }
       }
 
-      function returnDropDownSelects(active) {
-        var dropDownSelects = [spaces[topID]];
+      function returnDropDownSelects(active, top) {
+        var dropDownSelects = [spaces[top]];
         var index = 0;
 
 
@@ -75,7 +75,7 @@
             };
           }
         }
-        returnChildren(topID, active);
+        returnChildren(top, active);
         return dropDownSelects;
       }
 
@@ -85,7 +85,9 @@
       app.controller("oaSitemapController", function($scope, $http) {
         $scope.allSpaces = spaces;
         $scope.spaces = loadSpace(topID);
-        $scope.dropDownSelects = returnDropDownSelects(topID);
+        $scope.topDropdown = (0 in spaces) ? 0 : topID;
+        $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+
         $scope.breadcrumbs = loadBreadCrumbs(topID);
         $scope.icons = icons;
         $scope.currentSlide = returnSpacePosition($scope.spaces, topID);
@@ -95,7 +97,7 @@
           $scope.breadcrumbs = loadBreadCrumbs(spaceID);
           $scope.spaces = loadSpace(spaceID);
           $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
-          $scope.dropDownSelects = returnDropDownSelects(topID);
+          $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
         };
 
         $scope.slide = function(slide) {
