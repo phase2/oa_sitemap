@@ -40,7 +40,7 @@
       function loadBreadCrumbs(id) {
           var parentId = spaces[id].parent_id;
 
-          if (parentId != -1) {
+          if ((parentId != -1) && (parentId in spaces)) {
             breadcrumbs.push(spaces[parentId]);
             loadBreadCrumbs(parentId);
           }
@@ -57,17 +57,15 @@
       }
 
       function returnDropDownSelects(active) {
-        var dropDownSelects = [spaces[0]];
+        var dropDownSelects = [spaces[topID]];
         var index = 0;
 
 
-        function returnChildren(index, active) {
-          var subspaces = spaces[index].subspaces;
+        function returnChildren(id, active) {
+          var subspaces = spaces[id].subspaces;
           for(var i in subspaces) {
             var spaceID = subspaces[i]
             spaces[spaceID].prefix = Array(spaces[spaceID].depth  + 1 ).join("- ");
-            console.log('active' + active);
-            console.log('current' + spaceID);
             spaces[spaceID].classes = spaceID == active ? 'active' : '';
             dropDownSelects.push(spaces[spaceID]);
             if (spaces[spaceID].subspaces.length > 1) {
@@ -78,7 +76,7 @@
             };
           }
         }
-        returnChildren(0, active);
+        returnChildren(topID, active);
         return dropDownSelects;
       }
 
@@ -91,13 +89,13 @@
         $scope.dropDownSelects = returnDropDownSelects(topID);
         $scope.breadcrumbs = loadBreadCrumbs(topID);
         $scope.icons = icons;
-        $scope.currentSlide = 0;
+        $scope.currentSlide = returnSpacePosition($scope.spaces, topID);
 
-        $scope.exploreSpace = function(index) {
+        $scope.exploreSpace = function(spaceID) {
           breadcrumbs = [];
-          $scope.breadcrumbs = loadBreadCrumbs(index);
-          $scope.spaces = loadSpace(index);
-          $scope.currentSlide = returnSpacePosition($scope.spaces, index);
+          $scope.breadcrumbs = loadBreadCrumbs(spaceID);
+          $scope.spaces = loadSpace(spaceID);
+          $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
           $scope.dropDownSelects = returnDropDownSelects(topID);
         };
 
