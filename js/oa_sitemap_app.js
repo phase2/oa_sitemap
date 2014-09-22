@@ -13,7 +13,6 @@
 
       var topID = settings.oa_sitemap.topID;
       var icons = settings.oa_sitemap.icons;
-      var data = settings.oa_sitemap.data;
       var spaces = settings.oa_sitemap.spaces;
       var breadcrumbs = [];
 

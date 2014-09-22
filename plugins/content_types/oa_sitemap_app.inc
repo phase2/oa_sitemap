@@ -67,7 +67,6 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
   if ($top_id == 0) {
     $options[0] = $title;
   }
-  $data = oa_sitemap_data($top_id, $options);
   $spaces = array();
   oa_sitemap_spaces($top_id, $spaces);
 
@@ -75,22 +74,14 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
   if (empty($conf['oa_sitemap_parent']) && ($space_id != 0)) {
     $map_link = l(t('Full sitemap'), 'sitemap_app/' . $space_id);
   }
-  $form['search'] = array(
-    '#name' => 'oa_sitemap_search',
-    '#type' => 'select',
-    '#options' => $options,
-    '#value' => $top_id,
-  );
 
   $header_vars = array(
     'link' => $map_link,
-    'search' => drupal_render($form),
   );
 
   drupal_add_js(array('oa_sitemap' => array(
     'topID' => $space_id,
     'icons' => $icons,
-    'data' => $data,
     'spaces' => $spaces,
   )), 'setting');
 
