@@ -7,7 +7,7 @@
  * $data - JSON data
  */
 ?>
-<div class="oa-sitemap" ng-app="oaSitemap" ng-controller="oaSitemapController">
+<div class="oa-sitemap" ng-cloak ng-app="oaSitemap" ng-controller="oaSitemapController">
   <div class="oa-sitemap-header clearfix">
     <div class="oa-sitemap-search pull-right btn-group">
       <button class="oa-sitemap-search-toggle btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}} <span class="caret"></span></button>
