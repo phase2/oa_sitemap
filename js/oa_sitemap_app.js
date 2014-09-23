@@ -92,6 +92,13 @@
         $scope.icons = icons;
         $scope.currentSlide = returnSpacePosition($scope.spaces, topID);
 
+        // need to call CTools to get it to attach the modal popup behavior
+        // *after* our template has rendered the first time
+        setTimeout(function() {
+          Drupal.behaviors.ZZCToolsModal.attach(document);
+        }, 10);
+
+
         $scope.exploreSpace = function(spaceID) {
           breadcrumbs = [];
           $scope.breadcrumbs = loadBreadCrumbs(spaceID);

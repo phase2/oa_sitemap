@@ -41,8 +41,17 @@
     <div class="oa-spaces" ng-class="{active: $index == currentSlide}" ng-repeat="space in spaces">
 
       <section class="oa-sections">
-        <div class="oa-section" ng-repeat="section in space.sections" ng-class="{newsection: section.title == 'New Section'}">
-          <h4 class="oa-section-title"><div class="oa-section-icon" ng-bind-html="icons[section.icon_id]"></div><a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a></h4>
+        <div class="oa-section" ng-repeat="section in space.sections">
+          <h4 class="oa-section-title">
+            <div class="oa-section-icon" ng-bind-html="icons[section.icon_id]"></div>
+            <a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a>
+          </h4>
+        </div>
+        <div class="oa-section newsection">
+          <h4 class="oa-section-title">
+            <div class="oa-section-icon"><i class="icon-plus"></i></div>
+            <a href="{{space.new_section.url}}" class="oa-section-link {{space.new_section.class}}" title="{{space.new_section.title}}">{{space.new_section.title}}</a>
+          </h4>
         </div>
       </section>
 
@@ -63,8 +72,8 @@
         </div>
         <div class="oa-subspace oa-new-space">
           <h4 class="oa-subspace-title">
-            <a href="/wizard/nojs/add/oa-space" class="oa-subspace-link ctools-use-modal ctools-modal-oa-sitemap-space ctools-use-modal-processed" title="New Space">
-              <span><i class="icon-plus"></i>New Space</span>
+            <a href="{{space.new_space.url}}" class="oa-subspace-link {{space.new_space.class}}" title="{{space.new_space.title}}">
+              <span><i class="icon-plus"></i>{{space.new_space.title}}</span>
             </a>
           </h4>
         </div>

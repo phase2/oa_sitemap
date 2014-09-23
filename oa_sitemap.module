@@ -309,8 +309,11 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     ctools_include('ajax');
     ctools_include('modal');
     drupal_add_js($custom_style, 'setting');
-    $new_space = ctools_modal_text_button(t('New Space'), 'wizard/nojs/add/oa_space',
-      t('New Space'), 'ctools-modal-oa-sitemap-space');
+    $new_space = array(
+      'title' => t('New Space'),
+      'url' => url('wizard/nojs/add/oa_space'),
+      'class' => 'ctools-use-modal ctools-modal-oa-sitemap-space',
+    );
   }
 
   $spaces[$nid] = array(

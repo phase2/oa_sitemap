@@ -174,7 +174,7 @@
 }
 /* line 162, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .newsection .oa-section-icon {
-  border: 1px dashed #ccc;
+  border: 1px dashed #aaa;
 }
 /* line 166, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace {
@@ -190,7 +190,7 @@
 }
 /* line 176, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace.oa-new-space {
-  border: 1px dashed #ddd;
+  border: 1px dashed #aaa;
 }
 /* line 181, ../sass/oa_sitemap_app.scss */
 .oa-sitemap .oa-subspace-title {
