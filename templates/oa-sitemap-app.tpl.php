@@ -47,7 +47,7 @@
             <a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a>
           </h4>
         </div>
-        <div class="oa-section newsection">
+        <div ng-if="space.new_section.url" class="oa-section newsection">
           <h4 class="oa-section-title">
             <div class="oa-section-icon"><i class="icon-plus"></i></div>
             <a href="{{space.new_section.url}}" class="oa-section-link {{space.new_section.class}}" title="{{space.new_section.title}}">{{space.new_section.title}}</a>
@@ -70,7 +70,7 @@
             </a>
           </h4>
         </div>
-        <div class="oa-subspace oa-new-space">
+        <div ng-if="space.new_space.url" class="oa-subspace oa-new-space">
           <h4 class="oa-subspace-title">
             <a href="{{space.new_space.url}}" class="oa-subspace-link {{space.new_space.class}}" title="{{space.new_space.title}}">
               <span><i class="icon-plus"></i>{{space.new_space.title}}</span>
