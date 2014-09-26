@@ -11,11 +11,11 @@ function oa_sitemap_default_page_manager_pages() {
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
-  $page->name = 'oa_sitemap_app';
+  $page->name = 'oa_sitemap';
   $page->task = 'page';
-  $page->admin_title = 'Site Map App';
+  $page->admin_title = 'Site Map';
   $page->admin_description = '';
-  $page->path = 'sitemap_app/!node';
+  $page->path = 'sitemap/!node';
   $page->access = array();
   $page->menu = array();
   $page->arguments = array(
@@ -33,9 +33,9 @@ function oa_sitemap_default_page_manager_pages() {
   $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
-  $handler->name = 'page_oa_sitemap_app_panel_context';
+  $handler->name = 'page_oa_sitemap_panel_context';
   $handler->task = 'page';
-  $handler->subtask = 'oa_sitemap_app';
+  $handler->subtask = 'oa_sitemap';
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
@@ -97,16 +97,16 @@ function oa_sitemap_default_page_manager_pages() {
   $display->title_pane = 'new-9abcfdb2-c415-4ab7-8c0d-8110f83eab8e';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
-  $pages['oa_sitemap_app'] = $page;
+  $pages['oa_sitemap'] = $page;
 
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
-  $page->name = 'sitemap';
+  $page->name = 'sitemap_old';
   $page->task = 'page';
-  $page->admin_title = 'SItemap';
+  $page->admin_title = 'SItemap (old)';
   $page->admin_description = '';
-  $page->path = 'sitemap/!node';
+  $page->path = 'sitemap_old/!node';
   $page->access = array();
   $page->menu = array();
   $page->arguments = array(
@@ -124,9 +124,9 @@ function oa_sitemap_default_page_manager_pages() {
   $handler = new stdClass();
   $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
-  $handler->name = 'page_sitemap_panel_context';
+  $handler->name = 'page_sitemap_old_panel_context';
   $handler->task = 'page';
-  $handler->subtask = 'sitemap';
+  $handler->subtask = 'sitemap_old';
   $handler->handler = 'panel_context';
   $handler->weight = 0;
   $handler->conf = array(
@@ -188,7 +188,7 @@ function oa_sitemap_default_page_manager_pages() {
   $display->title_pane = 'new-e0a2cb14-ca89-48ac-9bdd-73b4b6fe6222';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
-  $pages['sitemap'] = $page;
+  $pages['sitemap_old'] = $page;
 
   $page = new stdClass();
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */

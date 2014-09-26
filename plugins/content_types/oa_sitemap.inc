@@ -76,7 +76,7 @@ function oa_sitemap_render($subtype, $conf, $args, $context) {
 
   $map_link = '';
   if (empty($conf['oa_sitemap_parent']) && ($space_id != 0)) {
-    $map_link = l(t('Full sitemap'), 'sitemap/' . $space_id);
+    $map_link = l(t('Full sitemap'), 'sitemap_old/' . $space_id);
   }
   $form['search'] = array(
     '#name' => 'oa_sitemap_search',
