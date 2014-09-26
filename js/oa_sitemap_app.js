@@ -16,6 +16,13 @@
       var allSpaces = settings.oa_sitemap.spaces;
       var breadcrumbs = [];
 
+      // Respond to CTools detach behaviors event.
+      $(document).bind('CToolsDetachBehaviors', function(event, context) {
+        //console.log('dialog closed');
+        //console.log(event);
+        //console.log(context);
+      });
+
       function loadSpace(id) {
         var parentId = allSpaces[id].parent_id;
         var currentSpaces = [];

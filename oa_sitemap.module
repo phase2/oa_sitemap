@@ -262,7 +262,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
 
     $new_section = array(
       'title' => t('New Section'),
-      'url' => url('wizard/js/add/oa-section'),
+      'url' => url('wizard/nojs/add/' . OA_SECTION_TYPE),
       'class' => 'ctools-use-modal ctools-modal-oa-sitemap-section',
       'icon_id' => 0,
     );
@@ -309,9 +309,10 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     ctools_include('ajax');
     ctools_include('modal');
     drupal_add_js($custom_style, 'setting');
+    $options = !empty($nid) ? array('query' => array(OA_PARENT_SPACE => $nid)) : array();
     $new_space = array(
       'title' => t('New Space'),
-      'url' => url('wizard/nojs/add/oa_space'),
+      'url' => url('wizard/nojs/add/' . OA_SPACE_TYPE, $options),
       'class' => 'ctools-use-modal ctools-modal-oa-sitemap-space',
     );
   }

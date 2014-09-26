@@ -5,6 +5,14 @@
   $margin: 20px;
   $vertical-gap: 30px; // vertical gaps
 
+  a, a:visited, a:active {
+    color: black;
+  }
+  a:hover {
+    text-decoration: none;
+    color: #008fe2;
+  }
+
   .oa-sitemap-header {
     margin-bottom: 5px;
   }
@@ -133,11 +141,6 @@
     vertical-align: top;
     text-align: center;
   }
-  .oa-section-link {
-    &:hover {
-
-    }
-  }
   .oa-section-icon {
     display: block;
     margin: 0 $margin;
@@ -159,8 +162,12 @@
       @include translateY(-40%);
     }
   }
-  .newsection .oa-section-icon{
+  .newsection .oa-section-icon {
     border: 1px dashed #aaa;
+    color: #3b3b3b;
+    &:hover {
+      background-color: #ddd;
+    }
   }
 
   .oa-subspace {

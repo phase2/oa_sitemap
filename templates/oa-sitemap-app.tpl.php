@@ -49,8 +49,9 @@
         </div>
         <div ng-if="space.new_section.url" class="oa-section newsection">
           <h4 class="oa-section-title">
-            <div class="oa-section-icon"><i class="icon-plus"></i></div>
-            <a href="{{space.new_section.url}}" class="oa-section-link {{space.new_section.class}}" title="{{space.new_section.title}}">{{space.new_section.title}}</a>
+            <a href="{{space.new_section.url}}" class="oa-section-link {{space.new_section.class}}" title="{{space.new_section.title}}">
+              <div class="oa-section-icon"><i class="icon-plus"></i></div>
+            {{space.new_section.title}}</a>
           </h4>
         </div>
       </section>
