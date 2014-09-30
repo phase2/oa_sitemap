@@ -8,7 +8,7 @@
 
 (function ($) {
 
-  var app = angular.module("oaSitemap", ['ngSanitize']);
+  var app = angular.module("oaSitemap", ['ngSanitize', 'ngDraggable']);
 
   app.controller("oaSitemapController", function($scope, $timeout, $location, $http) {
 
@@ -40,7 +40,7 @@
       // need to call CTools to get it to re-attach the modal popup behavior
       // to links *after* our space has been updated
       $timeout( function() {
-        $location.hash('oa-sitemap-top');
+        $location.hash('');
         $scope.$broadcast('oaSitemapRefresh', id);
       }, 10);
 
@@ -210,6 +210,13 @@
 
     $scope.editSpaceURL = function(spaceID) {
       return allSpaces[spaceID].url_edit + '?destination=' + document.URL;
+    }
+
+    $scope.onDragComplete = function(data, evt){
+      console.log("drag success, data:", data);
+    }
+    $scope.onDropComplete = function(data, evt){
+      console.log("drop success, data:", data);
     }
 
     $(document).on('oaWizardNew', function(event, node) {
