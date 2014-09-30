@@ -8,115 +8,197 @@
 
 (function ($) {
 
+  var app = angular.module("oaSitemap", ['ngSanitize']);
+
+  app.controller("oaSitemapController", function($scope, $timeout, $http) {
+
+    var currentID = 0;
+    var topID = 0;
+    var allSpaces = {};
+    var breadcrumbs = [];
+
+
+    function loadSpace(id) {
+      currentID = id;
+      var parentId = allSpaces[id].parent_id;
+      var currentSpaces = [];
+      var parentSpace = "";
+
+      // if ID has a valid parent space
+      if (parentSpace = allSpaces[parentId]) {
+        for(var i in parentSpace.subspaces) {
+          var childSpace = allSpaces[parentSpace.subspaces[i]];
+          currentSpaces.push(childSpace);
+        }
+      }
+      // if ID does not have a valid parent i.e. is top level space
+      else {
+        currentSpaces.push(allSpaces[id]);
+      }
+
+      // need to call CTools to get it to re-attach the modal popup behavior
+      // to links *after* our space has been updated
+      $timeout( function() {
+        $scope.$broadcast('oaSitemapRefresh', id);
+      }, 10);
+
+      return currentSpaces;
+    }
+
+    function loadBreadCrumbs(id) {
+      var parentId = allSpaces[id].parent_id;
+
+      if ((parentId != -1) && (parentId in allSpaces)) {
+        breadcrumbs.push(allSpaces[parentId]);
+        loadBreadCrumbs(parentId);
+      }
+
+      return breadcrumbs;
+    }
+
+    function returnSpacePosition (spaces, index) {
+      for (var i in spaces) {
+        if (spaces[i].nid == index) {
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    function returnDropDownSelects(active, top) {
+      var dropDownSelects = [allSpaces[top]];
+      var index = 0;
+
+      function returnChildren(id, active, depth) {
+        var subspaces = allSpaces[id].subspaces;
+        for (var i in subspaces) {
+          var spaceID = subspaces[i]
+          allSpaces[spaceID].prefix = Array(depth+1).join("- ");
+          allSpaces[spaceID].classes = spaceID == active ? 'active' : '';
+          dropDownSelects.push(allSpaces[spaceID]);
+          if (allSpaces[spaceID].subspaces.length > 1) {
+            var child = returnChildren(allSpaces[spaceID].nid, active, depth+1);
+            if (child) {
+              return child;
+            }
+          };
+        }
+      }
+      returnChildren(top, active, 1);
+      return dropDownSelects;
+    }
+
+    $scope.$on('oaSitemapRefresh', function(event, e) {
+      Drupal.attachBehaviors(document);
+    });
+
+    topID = Drupal.settings.oa_sitemap.topID;
+    allSpaces = Drupal.settings.oa_sitemap.spaces;
+
+    $scope.allSpaces = allSpaces;
+    $scope.spaces = loadSpace(topID);
+    $scope.topDropdown = (0 in allSpaces) ? 0 : topID;
+    $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+
+    $scope.breadcrumbs = loadBreadCrumbs(topID);
+    $scope.icons = Drupal.settings.oa_sitemap.icons;
+    $scope.currentSlide = parseInt(returnSpacePosition($scope.spaces, topID));
+
+    $scope.exploreSpace = function(spaceID) {
+      breadcrumbs = [];
+      $scope.breadcrumbs = loadBreadCrumbs(spaceID);
+      $scope.spaces = loadSpace(spaceID);
+      $scope.currentSlide = parseInt(returnSpacePosition($scope.spaces, spaceID));
+      $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+    };
+
+    $scope.slide = function(slide) {
+      $scope.currentSlide = parseInt(slide);
+    };
+
+    $scope.spaceClass = function(spaceID) {
+      var className = '';
+      if (allSpaces[spaceID].status != 0) {
+        className = (allSpaces[spaceID].visibility == 0) ? 'oa-icon-green' : 'oa-icon-red';
+      }
+      return className;
+    };
+
+    $scope.newSpaceTitle = function(spaceID) {
+      return (allSpaces[spaceID].parent_id >= 0) ? Drupal.t('New Subspace') : Drupal.t('New Space');
+    };
+
+    $scope.newSpaceClass = function(spaceID) {
+      return 'oa-subspace-link ctools-use-modal ctools-modal-oa-sitemap-space';
+    };
+
+    $scope.newSpaceURL = function(spaceID) {
+      var url = Drupal.settings.basePath + 'wizard/nojs/add/oa-space';
+      if (allSpaces[spaceID].parent_id > 0) {
+        url = url + '?oa_parent_space=' + allSpaces[spaceID].parent_id;
+      }
+      return url;
+    };
+
+    $scope.newSectionTitle = function(spaceID) {
+      return Drupal.t('New Section');
+    };
+
+    $scope.newSectionClass = function(spaceID) {
+      return 'oa-section-link ctools-use-modal ctools-modal-oa-sitemap-section';
+    };
+
+    $scope.newSectionURL = function(spaceID) {
+      var url = Drupal.settings.basePath + 'wizard/nojs/add/oa-section';
+      return url;
+    };
+
+    $(document).on('oaWizardNew', function(event, node) {
+      // respond to event message from submitting oa_wizard form
+      switch (node.type) {
+        case 'oa_section':
+          var parentID = node.og_group_ref.und[0].target_id;
+          if (allSpaces[parentID]) {
+            allSpaces[parentID].sections.push({
+              'title': node.title,
+              'url': Drupal.settings.basePath + 'node/' + node.nid,
+              'icon_id': node.field_oa_section.und[0].tid
+            });
+            console.log(node);
+            $scope.spaces = loadSpace(currentID);
+            $scope.$apply();
+          }
+          break;
+        case 'oa_space':
+          var parentID = node.oa_parent_space.und[Object.keys(node.oa_parent_space.und)[0]].target_id;
+          allSpaces[node.nid] = {
+            'nid': node.nid,
+            'parent_id': parentID,
+            'title': node.title,
+            'status': node.status,
+            'visibility': node.group_access.und[0].value,
+            'admin': allSpaces[parentID].admin,
+            'url': Drupal.settings.basePath + 'node/' + node.nid,
+            'url_edit': Drupal.settings.basePath + 'node/' + node.nid + '/edit',
+            'new_space': allSpaces[parentID].new_space,
+            'new_section': allSpaces[parentID].new_section,
+            'sections': {},
+            'subspaces': {}
+          };
+          allSpaces[parentID].subspaces.push(node.nid);
+          console.log(node);
+          console.log(allSpaces[node.nid]);
+          $scope.exploreSpace(currentID);
+          $scope.$apply();
+          break;
+      }
+    });
+
+  });
+
   Drupal.behaviors.oaSitemap = {
     attach: function(context, settings) {
 
-      var topID = settings.oa_sitemap.topID;
-      var icons = settings.oa_sitemap.icons;
-      var allSpaces = settings.oa_sitemap.spaces;
-      var breadcrumbs = [];
-
-      // Respond to CTools detach behaviors event.
-      $(document).bind('CToolsDetachBehaviors', function(event, context) {
-        //console.log('dialog closed');
-        //console.log(event);
-        //console.log(context);
-      });
-
-      function loadSpace(id) {
-        var parentId = allSpaces[id].parent_id;
-        var currentSpaces = [];
-        var parentSpace = "";
-
-        // if ID has a valid parent space
-        if (parentSpace = allSpaces[parentId]) {
-          for(var i in parentSpace.subspaces) {
-            var childSpace = allSpaces[parentSpace.subspaces[i]];
-            currentSpaces.push(childSpace);
-          }
-        }
-        // if ID does not have a valid parent i.e. is top level space
-        else {
-          currentSpaces.push(allSpaces[id]);
-        }
-
-        // need to call CTools to get it to re-attach the modal popup behavior
-        // to links *after* our space has been updated
-        setTimeout(function() {
-          Drupal.behaviors.ZZCToolsModal.attach(document);
-        }, 10);
-
-        return currentSpaces;
-      }
-
-      function loadBreadCrumbs(id) {
-          var parentId = allSpaces[id].parent_id;
-
-          if ((parentId != -1) && (parentId in allSpaces)) {
-            breadcrumbs.push(allSpaces[parentId]);
-            loadBreadCrumbs(parentId);
-          }
-
-          return breadcrumbs;
-      }
-
-      function returnSpacePosition (spaces, index) {
-        for (var i in spaces) {
-          if (spaces[i].nid == index) {
-            return i;
-          }
-        }
-      }
-
-      function returnDropDownSelects(active, top) {
-        var dropDownSelects = [allSpaces[top]];
-        var index = 0;
-
-        function returnChildren(id, active) {
-          var subspaces = allSpaces[id].subspaces;
-          for (var i in subspaces) {
-            var spaceID = subspaces[i]
-            allSpaces[spaceID].prefix = Array(allSpaces[spaceID].depth  + 1 ).join("- ");
-            allSpaces[spaceID].classes = spaceID == active ? 'active' : '';
-            dropDownSelects.push(allSpaces[spaceID]);
-            if (allSpaces[spaceID].subspaces.length > 1) {
-              var child = returnChildren(allSpaces[spaceID].nid, active);
-              if (child) {
-                return child;
-              }
-            };
-          }
-        }
-        returnChildren(top, active);
-        return dropDownSelects;
-      }
-
-
-      var app = angular.module("oaSitemap", ['ngSanitize']);
-
-      app.controller("oaSitemapController", function($scope, $http) {
-        $scope.allSpaces = allSpaces;
-        $scope.spaces = loadSpace(topID);
-        $scope.topDropdown = (0 in allSpaces) ? 0 : topID;
-        $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
-
-        $scope.breadcrumbs = loadBreadCrumbs(topID);
-        $scope.icons = icons;
-        $scope.currentSlide = parseInt(returnSpacePosition($scope.spaces, topID));
-
-        $scope.exploreSpace = function(spaceID) {
-          breadcrumbs = [];
-          $scope.breadcrumbs = loadBreadCrumbs(spaceID);
-          $scope.spaces = loadSpace(spaceID);
-          $scope.currentSlide = parseInt(returnSpacePosition($scope.spaces, spaceID));
-          $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
-        };
-
-        $scope.slide = function(slide) {
-          $scope.currentSlide = parseInt(slide);
-        }
-
-      });
     }
   }
 

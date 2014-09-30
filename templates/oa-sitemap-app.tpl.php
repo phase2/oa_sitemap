@@ -47,11 +47,11 @@
             <a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a>
           </h4>
         </div>
-        <div ng-if="space.new_section.url" class="oa-section newsection">
+        <div ng-if="space.new_section" class="oa-section newsection">
           <h4 class="oa-section-title">
-            <a href="{{space.new_section.url}}" class="oa-section-link {{space.new_section.class}}" title="{{space.new_section.title}}">
+            <a href="{{newSectionURL(space.nid)}}" ng-class="newSectionClass(space.nid)" title="{{newSectionTitle(space.nid)}}">
               <div class="oa-section-icon"><i class="icon-plus"></i></div>
-            {{space.new_section.title}}</a>
+            {{newSectionTitle(space.nid)}}</a>
           </h4>
         </div>
       </section>
@@ -59,9 +59,19 @@
       <section class="oa-subspaces">
         <div class="oa-subspace" ng-repeat="index in space.subspaces">
           <div class="oa-subspace-icons">
-            <div ng-repeat="icon in $parent.$parent.allSpaces[index].icons" ng-class="[icon.class, 'oa-subspace-icon-' + icon.position ]">
-              <a ng-href="{{icon.url}}">
-                <i ng-class="[icon.icon, icon.class]"></i>
+            <div class="oa-subspace-icon-left">
+              <a ng-href="{{allSpaces[index].url}}">
+                <i class="icon-user {{spaceClass(index)}}"></i>
+              </a>
+            </div>
+            <div ng-show="allSpaces[index].admin" class="oa-subspace-icon-center">
+              <a ng-href="{{allSpaces[index].url_edit}}">
+                <i class="icon-cog"></i>
+              </a>
+            </div>
+            <div class="oa-subspace-icon-right">
+              <a ng-href="{{allSpaces[index].url}}">
+                <i class="icon-eye-open"></i>
               </a>
             </div>
           </div>
@@ -71,10 +81,10 @@
             </a>
           </h4>
         </div>
-        <div ng-if="space.new_space.url" class="oa-subspace oa-new-space">
+        <div ng-if="space.new_space" class="oa-subspace oa-new-space">
           <h4 class="oa-subspace-title">
-            <a href="{{space.new_space.url}}" class="oa-subspace-link {{space.new_space.class}}" title="{{space.new_space.title}}">
-              <span><i class="icon-plus"></i>{{space.new_space.title}}</span>
+            <a href="{{newSpaceURL(space.nid)}}" ng-class="newSpaceClass(space.nid)" title="{{newSpaceTitle(space.nid)}}">
+              <span><i class="icon-plus"></i>{{newSpaceTitle(space.nid)}}</span>
             </a>
           </h4>
         </div>
