@@ -15,6 +15,16 @@ function oa_sitemap_menu() {
     'page arguments' => array(3),
     'access arguments' => array('access content'),
   );
+  $items['api/oa/sitemap-update/%node'] = array(
+    'page callback' => 'oa_sitemap_update_callback',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+  );
+  $items['api/oa/sitemap-delete/%node'] = array(
+    'page callback' => 'oa_sitemap_delete_callback',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+  );
 
   return $items;
 }
@@ -72,6 +82,184 @@ function oa_sitemap_spaces_callback($nid) {
   drupal_json_output($spaces);
   return;
 }
+
+/**
+ * Ajax Callback for updating fields in a space from the sitemap
+ * @param $node
+ */
+function oa_sitemap_update_callback($node) {
+  dd('UPDATE');
+  if (!node_access('update', $node)) {
+    ajax_deliver(MENU_ACCESS_DENIED);
+  }
+  dd('ACCESS');
+  $new_node = $_POST['node'];
+  $updated = FALSE;
+  _oa_sitemap_update_field($node, 'title', $new_node['title'], $updated);
+  _oa_sitemap_update_field($node, 'oa_parent_space', $new_node['parent_id'], $updated);
+  if ($updated) {
+    dd('SAVE');
+    node_save($node);
+  }
+  return TRUE;
+}
+
+/**
+ * Helper function to update a specific field.  Handles direct node fields,
+ * value fields, entity references, taxonomy references
+ * @param $node
+ * @param $field
+ * @param $value
+ * @param $updated
+ */
+function _oa_sitemap_update_field($node, $field, $value, &$updated) {
+  dd('Testing '.$field);
+  dd('  Value: '.$value);
+  dd($node->{$field});
+  $lang = LANGUAGE_NONE;
+  if (!isset($node->{$field})) {
+    // no field
+    return;
+  }
+  elseif (is_string($node->{$field}) && ($node->{$field} != $value)) {
+    dd('Set Direct');
+    $node->{$field} = $value;
+    $updated = TRUE;
+  }
+  elseif (is_string($node->{$field})) {
+    // string field did not change
+    return;
+  }
+  elseif (isset($node->{$field}[$lang][0]['value']) && ($node->{$field}[$lang][0]['value'] != $value)) {
+    dd('Set Value');
+    $node->{$field}[$lang][0]['value'] = $value;
+    $updated = TRUE;
+  }
+  elseif (isset($node->{$field}[$lang][0]['target_id']) && ($node->{$field}[$lang][0]['target_id'] != $value)) {
+    dd('Set target_id');
+    $node->{$field}[$lang][0]['target_id'] = $value;
+    $updated = TRUE;
+  }
+  elseif (isset($node->{$field}[$lang][0]['tid']) && ($node->{$field}[$lang][0]['tid'] != $value)) {
+    dd('Set tid');
+    $node->{$field}[$lang][0]['tid'] = $value;
+    $updated = TRUE;
+  }
+}
+
+/**
+ * Ajax Callback for deleting a node
+ * @param $node
+ */
+function oa_sitemap_delete_callback($node) {
+  if (!node_access('delete', $node)) {
+    ajax_deliver(MENU_ACCESS_DENIED);
+  }
+  node_delete($node->nid);
+  return TRUE;
+}
+
+/**
+ * Main helper function to grab all the spaces for the sitemap
+ * @param $node, node object or nid
+ * @param $spaces array by reference to be filled with space listing
+ * @param $parent_id int nid of parent space
+ * @param $index, start at 0
+ * @param $depth, start at 0
+ * Returns an array of data
+ *
+ */
+function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
+  global $user;
+
+  if (is_numeric($node)) {
+    $node = node_load($node);
+  }
+  $nid = !empty($node) ? $node->nid : 0;
+
+  $sections = oa_core_space_sections($nid, 1, FALSE, array('field_oa_section|tid'));
+  $section_links = array();
+  foreach ($sections as $section) {
+    $id = $section->field_oa_section_tid;
+    if (empty($id)) {
+      $term = taxonomy_get_term_by_name('Default', 'section_type');
+      $id = !empty($term) ? current(array_keys($term)) : 0;
+    }
+    $section_links[] = array(
+      'title' => $section->title,
+      'url' => url('node/' . $section->nid),
+      'icon_id' => $id,
+    );
+  }
+
+  $new_section = (!empty($node) && (og_user_access('node', $nid, "create " . OA_SECTION_TYPE . " content", $user)));
+  if ($new_section) {
+    // set up size of New Section popup for ctools
+    $custom_style = array(
+      'oa-sitemap-section' => array(
+        'modalSize' => array(
+          'type' => 'scale',
+          'width' => 0.5,
+          'height' => 0.5,
+        ),
+        'animation' => 'fadeIn',
+      ),
+    );
+    ctools_include('ajax');
+    ctools_include('modal');
+    drupal_add_js($custom_style, 'setting');
+  }
+
+  $new_space = empty($node)
+    ? user_access('create ' . OA_SPACE_TYPE . ' content', $user)
+    : (module_exists('oa_subspaces') && og_user_access('node', $nid, 'create ' . OA_SPACE_TYPE . ' content', $user));
+  if ($new_space) {
+    // set up size of New Space popup for ctools
+    $custom_style = array(
+      'oa-sitemap-space' => array(
+        'modalSize' => array(
+          'type' => 'scale',
+          'width' => 0.5,
+          'height' => 0.5,
+        ),
+        'animation' => 'fadeIn',
+      ),
+    );
+    ctools_include('ajax');
+    ctools_include('modal');
+    drupal_add_js($custom_style, 'setting');
+  }
+
+  $visibility = 1;
+  if (!empty($node)) {
+    $visibility = field_get_items('node', $node, 'group_access');
+    $visibility = $visibility[0]['value'];
+  }
+  $spaces[$nid] = array(
+    'nid' => $nid,
+    'parent_id' => ($nid == 0) ? -1 : $parent_id,
+    'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
+    'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
+    'url_edit' => !empty($node) ? url('node/' . $nid . '/edit') : '',
+    'admin' => !empty($node) && node_access('update', $node),
+    'status' => !empty($node) ? $node->status : 1,
+    'visibility' => $visibility,
+    'new_space'=> $new_space,
+    'new_section' => $new_section,
+    'sections' => $section_links,
+    'subspaces' => array(),
+  );
+
+  $children = oa_core_get_groups_by_parent($nid);
+  foreach ($children as $child) {
+    $spaces[$nid]['subspaces'][] = $child;
+    oa_sitemap_spaces($child, $spaces, $nid, $depth+1);
+  }
+
+  return $spaces;
+}
+
+/** ========== DEPRECATED CODE BELOW =============== **/
 
 /**
  * Main helper function to render a specific space row in the sitemap
@@ -209,106 +397,6 @@ function oa_sitemap_data($node, &$options, &$index = 0, $depth = 0) {
   $vars['subspaces'] = $subspaces;
 
   return $vars;
-}
-
-/**
- * Main helper function to grab all the spaces for the sitemap
- * @param $node, node object or nid
- * @param $spaces array by reference to be filled with space listing
- * @param $parent_id int nid of parent space
- * @param $index, start at 0
- * @param $depth, start at 0
- * Returns an array of data
- *
- */
-function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
-  global $user;
-
-  if (is_numeric($node)) {
-    $node = node_load($node);
-  }
-  $nid = !empty($node) ? $node->nid : 0;
-
-  $sections = oa_core_space_sections($nid, 1, FALSE, array('field_oa_section|tid'));
-  $section_links = array();
-  foreach ($sections as $section) {
-    $id = $section->field_oa_section_tid;
-    if (empty($id)) {
-      $term = taxonomy_get_term_by_name('Default', 'section_type');
-      $id = !empty($term) ? current(array_keys($term)) : 0;
-    }
-    $section_links[] = array(
-      'title' => $section->title,
-      'url' => url('node/' . $section->nid),
-      'icon_id' => $id,
-    );
-  }
-
-  $new_section = (!empty($node) && (og_user_access('node', $nid, "create " . OA_SECTION_TYPE . " content", $user)));
-  if ($new_section) {
-    // set up size of New Section popup for ctools
-    $custom_style = array(
-      'oa-sitemap-section' => array(
-        'modalSize' => array(
-          'type' => 'scale',
-          'width' => 0.5,
-          'height' => 0.5,
-        ),
-        'animation' => 'fadeIn',
-      ),
-    );
-    ctools_include('ajax');
-    ctools_include('modal');
-    drupal_add_js($custom_style, 'setting');
-  }
-
-  $new_space = empty($node)
-    ? user_access('create ' . OA_SPACE_TYPE . ' content', $user)
-    : (module_exists('oa_subspaces') && og_user_access('node', $nid, 'create ' . OA_SPACE_TYPE . ' content', $user));
-  if ($new_space) {
-    // set up size of New Space popup for ctools
-    $custom_style = array(
-      'oa-sitemap-space' => array(
-        'modalSize' => array(
-          'type' => 'scale',
-          'width' => 0.5,
-          'height' => 0.5,
-        ),
-        'animation' => 'fadeIn',
-      ),
-    );
-    ctools_include('ajax');
-    ctools_include('modal');
-    drupal_add_js($custom_style, 'setting');
-  }
-
-  $visibility = 1;
-  if (!empty($node)) {
-    $visibility = field_get_items('node', $node, 'group_access');
-    $visibility = $visibility[0]['value'];
-  }
-  $spaces[$nid] = array(
-    'nid' => $nid,
-    'parent_id' => ($nid == 0) ? -1 : $parent_id,
-    'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
-    'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
-    'url_edit' => !empty($node) ? url('node/' . $nid . '/edit') : '',
-    'admin' => !empty($node) && node_access('update', $node),
-    'status' => !empty($node) ? $node->status : 1,
-    'visibility' => $visibility,
-    'new_space'=> $new_space,
-    'new_section' => $new_section,
-    'sections' => $section_links,
-    'subspaces' => array(),
-  );
-
-  $children = oa_core_get_groups_by_parent($nid);
-  foreach ($children as $child) {
-    $spaces[$nid]['subspaces'][] = $child;
-    oa_sitemap_spaces($child, $spaces, $nid, $depth+1);
-  }
-
-  return $spaces;
 }
 
 /**

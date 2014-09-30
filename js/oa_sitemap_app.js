@@ -163,10 +163,22 @@
       if (confirm('Are you sure you wish to delete "' + allSpaces[nid].title + '" ?')) {
         //TODO: drupal ajax callback to delete a node
         var index = space.subspaces.indexOf(nid);
-        if (index > -1) {
-          space.subspaces.splice(index, 1);
-        }
-        delete allSpaces.nid;
+        $.post(
+          // Callback URL.
+          Drupal.settings.basePath + 'api/oa/sitemap-delete/' + nid,
+          {},
+          function( data ) {
+            if ((data.length > 0) && (data[1].command == 'alert')) {
+              alert(data[1].text);
+            }
+            else {
+              if (index > -1) {
+                space.subspaces.splice(index, 1);
+              }
+              delete allSpaces.nid;
+              $scope.$apply();
+            }
+        });
       }
     }
 
@@ -180,8 +192,20 @@
     };
 
     $scope.saveTitle = function(spaceID) {
-      allSpaces[spaceID].title = $scope.editableTitle[spaceID];
       $scope.disableEditor(spaceID);
+      $.post(
+        // Callback URL.
+        Drupal.settings.basePath + 'api/oa/sitemap-update/' + spaceID,
+        {'node': allSpaces[spaceID]},
+      function( data ) {
+        if ((data.length > 0) && (data[1].command == 'alert')) {
+          alert(data[1].text);
+        }
+        else {
+          allSpaces[spaceID].title = $scope.editableTitle[spaceID];
+          $scope.$apply();
+        }
+      });
     };
 
     $scope.editSpaceURL = function(spaceID) {
