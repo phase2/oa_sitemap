@@ -26,7 +26,7 @@
       <a ng-click='exploreSpace(breadcrumb.nid)'>{{breadcrumb.title}}</a>
     </li>
   </ul>
-  <div class="oa-carousel-container">
+  <div id="oa-sitemap-top" class="oa-carousel-container">
     <div class="oa-space-header">
       <button class="prev" ng-show="spaces[currentSlide - 1]" ng-click="currentSlide = currentSlide -1">{{spaces[currentSlide - 1].title}}</button>
       <div class="dropdown">
@@ -58,16 +58,19 @@
 
       <section class="oa-subspaces">
         <div class="oa-subspace" ng-repeat="index in space.subspaces">
-          <div class="oa-subspace-icons">
+          <div class="oa-subspace-icons" ng-hide="allSpaces[index].editorEnabled">
             <div class="oa-subspace-icon-left">
               <a ng-href="{{allSpaces[index].url}}">
                 <i class="icon-user {{spaceClass(index)}}"></i>
               </a>
             </div>
-            <div ng-show="allSpaces[index].admin" class="oa-subspace-icon-center">
-              <a ng-href="{{allSpaces[index].url_edit}}">
-                <i class="icon-cog"></i>
-              </a>
+            <div ng-show="allSpaces[index].admin" class="dropdown oa-subspace-icon-center">
+              <a class="" data-toggle="dropdown" href="#"><i class="icon-cog"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a ng-href="{{editSpaceURL(index)}}">Edit</a></li>
+                <li><a ng-click="deleteSubspace(space, index)">Delete</a></li>
+                <li><a ng-click="enableEditor(index)"">Rename</a></li>
+              </ul>
             </div>
             <div class="oa-subspace-icon-right">
               <a ng-href="{{allSpaces[index].url}}">
@@ -76,9 +79,17 @@
             </div>
           </div>
           <h4 class="oa-subspace-title">
-            <a ng-click='exploreSpace($parent.allSpaces[index].nid)' class="oa-subspace-link">
+            <a ng-hide="allSpaces[index].editorEnabled" ng-click='exploreSpace($parent.allSpaces[index].nid)' class="oa-subspace-link">
               <span>{{$parent.allSpaces[index].title}}</span>
             </a>
+            <div ng-show="allSpaces[index].editorEnabled">
+              <textarea ng-model="editableTitle[index]"></textarea>
+              <div class="oa-rename-actions">
+                <a href="#" ng-click="saveTitle(index)">Save</a>
+                or
+                <a href="#" ng-click="disableEditor(index)">Cancel</a>.
+              </div>
+            </div>
           </h4>
         </div>
         <div ng-if="space.new_space" class="oa-subspace oa-new-space">

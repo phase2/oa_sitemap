@@ -10,7 +10,7 @@
 
   var app = angular.module("oaSitemap", ['ngSanitize']);
 
-  app.controller("oaSitemapController", function($scope, $timeout, $http) {
+  app.controller("oaSitemapController", function($scope, $timeout, $location, $http) {
 
     var currentID = 0;
     var topID = 0;
@@ -35,10 +35,12 @@
       else {
         currentSpaces.push(allSpaces[id]);
       }
+      allSpaces[id].editorEnabled = false;
 
       // need to call CTools to get it to re-attach the modal popup behavior
       // to links *after* our space has been updated
       $timeout( function() {
+        $location.hash('oa-sitemap-top');
         $scope.$broadcast('oaSitemapRefresh', id);
       }, 10);
 
@@ -59,7 +61,7 @@
     function returnSpacePosition (spaces, index) {
       for (var i in spaces) {
         if (spaces[i].nid == index) {
-          return i;
+          return parseInt(i);
         }
       }
       return -1;
@@ -99,16 +101,17 @@
     $scope.spaces = loadSpace(topID);
     $scope.topDropdown = (0 in allSpaces) ? 0 : topID;
     $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+    $scope.editableTitle = {};
 
     $scope.breadcrumbs = loadBreadCrumbs(topID);
     $scope.icons = Drupal.settings.oa_sitemap.icons;
-    $scope.currentSlide = parseInt(returnSpacePosition($scope.spaces, topID));
+    $scope.currentSlide = returnSpacePosition($scope.spaces, topID);
 
     $scope.exploreSpace = function(spaceID) {
       breadcrumbs = [];
       $scope.breadcrumbs = loadBreadCrumbs(spaceID);
       $scope.spaces = loadSpace(spaceID);
-      $scope.currentSlide = parseInt(returnSpacePosition($scope.spaces, spaceID));
+      $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
       $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
     };
 
@@ -134,8 +137,8 @@
 
     $scope.newSpaceURL = function(spaceID) {
       var url = Drupal.settings.basePath + 'wizard/nojs/add/oa-space';
-      if (allSpaces[spaceID].parent_id > 0) {
-        url = url + '?oa_parent_space=' + allSpaces[spaceID].parent_id;
+      if (spaceID > 0) {
+        url = url + '?oa_parent_space=' + spaceID;
       }
       return url;
     };
@@ -150,8 +153,40 @@
 
     $scope.newSectionURL = function(spaceID) {
       var url = Drupal.settings.basePath + 'wizard/nojs/add/oa-section';
+      if (spaceID > 0) {
+        url = url + '?og_group_ref=' + spaceID;
+      }
       return url;
     };
+
+    $scope.deleteSubspace = function(space, nid) {
+      if (confirm('Are you sure you wish to delete "' + allSpaces[nid].title + '" ?')) {
+        //TODO: drupal ajax callback to delete a node
+        var index = space.subspaces.indexOf(nid);
+        if (index > -1) {
+          space.subspaces.splice(index, 1);
+        }
+        delete allSpaces.nid;
+      }
+    }
+
+    $scope.enableEditor = function(spaceID) {
+      $scope.editableTitle[spaceID] = allSpaces[spaceID].title;
+      allSpaces[spaceID].editorEnabled = true;
+    };
+
+    $scope.disableEditor = function(spaceID) {
+      allSpaces[spaceID].editorEnabled = false;
+    };
+
+    $scope.saveTitle = function(spaceID) {
+      allSpaces[spaceID].title = $scope.editableTitle[spaceID];
+      $scope.disableEditor(spaceID);
+    };
+
+    $scope.editSpaceURL = function(spaceID) {
+      return allSpaces[spaceID].url_edit + '?destination=' + document.URL;
+    }
 
     $(document).on('oaWizardNew', function(event, node) {
       // respond to event message from submitting oa_wizard form
@@ -170,6 +205,7 @@
           }
           break;
         case 'oa_space':
+          console.log(node);
           var parentID = node.oa_parent_space.und[Object.keys(node.oa_parent_space.und)[0]].target_id;
           allSpaces[node.nid] = {
             'nid': node.nid,
@@ -182,11 +218,10 @@
             'url_edit': Drupal.settings.basePath + 'node/' + node.nid + '/edit',
             'new_space': allSpaces[parentID].new_space,
             'new_section': allSpaces[parentID].new_section,
-            'sections': {},
-            'subspaces': {}
+            'sections': [],
+            'subspaces': []
           };
           allSpaces[parentID].subspaces.push(node.nid);
-          console.log(node);
           console.log(allSpaces[node.nid]);
           $scope.exploreSpace(currentID);
           $scope.$apply();

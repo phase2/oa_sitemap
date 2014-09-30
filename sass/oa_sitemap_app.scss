@@ -5,6 +5,11 @@
   $margin: 20px;
   $vertical-gap: 30px; // vertical gaps
 
+  textarea {
+    width: 100%;
+    height: 124px;
+  }
+
   a, a:visited, a:active {
     color: black;
   }
@@ -67,6 +72,7 @@
     overflow: hidden;
     &.active {
       height: auto;
+      overflow: visible;
     }
   }
   .oa-space-header {
@@ -121,6 +127,10 @@
   }
   .dropdown-menu > li > a {
     padding: 0 20px;
+    color: #333;
+    &:hover {
+      color: white;
+    }
   }
   .oa-space-title {
     font-size: 24px;
