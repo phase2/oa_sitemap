@@ -7,18 +7,26 @@
 
   [ng-drag].drag-over {
   }
-  [ng-drop].drag-enter {
-    background: #42BB3D;
-    opacity: 0.7;
+  [ng-drag].drag-enter {
   }
   [ng-drop].dragging {
-    background: transparent;
   }
   [ng-drag].dragging {
     opacity: 0.5;
   }
   [ng-drag].drag-enter.dragging {
+  }
+  [ng-drop].drag-enter {
+    background: #42BB3D;
+    opacity: 0.7;
+  }
+  [ng-drop].oa-section-title.drag-enter  {
     background: transparent;
+    opacity: 1;
+  }
+  [ng-drop].drag-enter .oa-section-icon {
+    background: #42BB3D;
+    opacity: 0.7;
   }
 
   textarea {
@@ -84,12 +92,8 @@
 
   .oa-spaces {
     text-align: center;
-    height: 0;
-    overflow: hidden;
-    &.active {
-      height: auto;
-      overflow: visible;
-    }
+    height: auto;
+    overflow: visible;
   }
   .oa-space-header {
     position: relative;

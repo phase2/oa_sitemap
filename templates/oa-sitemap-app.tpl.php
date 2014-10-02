@@ -7,7 +7,7 @@
  * $data - JSON data
  */
 ?>
-<div class="oa-sitemap" ng-cloak ng-app="oaSitemap" ng-controller="oaSitemapController">
+<div class="oa-sitemap" ng-cloak ng-app="oaSitemap" ng-controller="oaSitemapController" ondragstart="return false;" ondrop="return false;">
   <div class="oa-sitemap-header clearfix">
     <div class="oa-sitemap-search pull-right btn-group">
       <button class="oa-sitemap-search-toggle btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}} <span class="caret"></span></button>
@@ -23,32 +23,34 @@
   </div>
   <ul class="oa-sitemap-breadcrumbs">
     <li class="oa-sitemap-breadcrumb" ng-repeat="breadcrumb in breadcrumbs.slice().reverse()"">
-      <a ng-click='exploreSpace(breadcrumb.nid)' ng-drop="true" ng-drop-success="onDropComplete($data,$event)">{{breadcrumb.title}}</a>
+      <a ng-click='exploreSpace(breadcrumb.nid)' ng-drop="true" ng-drop-success="onDropOnSpace($data,breadcrumb.nid,$event)">{{breadcrumb.title}}</a>
     </li>
   </ul>
   <div id="oa-sitemap-top" class="oa-carousel-container">
     <div class="oa-space-header">
-      <button class="prev" ng-show="spaces[currentSlide - 1]" ng-click="currentSlide = currentSlide -1" ng-drop="true" ng-drop-success="onDropComplete($data,$event)">{{spaces[currentSlide - 1].title}}</button>
+      <button class="prev" ng-show="spaces[currentSlide-1]" ng-click="slide(currentSlide-1)" ng-drop="true" ng-drop-success="onDropOnSpace($data,spaces[currentSlide-1].nid,$event)">{{spaces[currentSlide - 1].title}}</button>
       <div class="dropdown">
-        <a class="oa-space-title" data-toggle="dropdown" href="#" ng-drop="true" ng-drop-success="onDropComplete($data,$event)">{{spaces[currentSlide].title}}</a>
+        <a class="oa-space-title" data-toggle="dropdown" href="#" ng-drop="true">{{spaces[currentSlide].title}}</a>
         <ul class="dropdown-menu" role="menu">
-          <li ng-repeat="space in spaces"><a ng-click="slide($index)">{{space.title}}</a></li>
+          <li ng-repeat="space in spaces">
+            <a ng-click="slide($index)" ng-drop="true" ng-drop-success="onDropOnSpace($data,spaces[$index].nid,$event)">{{space.title}}</a>
+          </li>
         </ul>
       </div>
-      <button class="next" ng-show="spaces[currentSlide + 1]" ng-click="currentSlide = currentSlide +1" ng-drop="true" ng-drop-success="onDropComplete($data,$event)">{{spaces[currentSlide + 1].title}}</button>
+      <button class="next" ng-show="spaces[currentSlide+1]" ng-click="slide(currentSlide+1)" ng-drop="true" ng-drop-success="onDropOnSpace($data,spaces[currentSlide+1].nid,$event)">{{spaces[currentSlide + 1].title}}</button>
     </div>
 
-    <div class="oa-spaces" ng-class="{active: $index == currentSlide}" ng-repeat="space in spaces">
+    <div class="oa-spaces">
 
       <section class="oa-sections">
-        <div class="oa-section" ng-repeat="section in space.sections" ng-drag="true" ng-drag-data="section">
-          <h4 class="oa-section-title" ng-drop="true" ng-drop-success="onDropComplete($data,$event)">
+        <div class="oa-section" ng-repeat="section in space.sections" ng-drag="true" ng-drag-data="section" ng-drag-id="1">
+          <h4 class="oa-section-title" ng-drop="true" ng-drop-id="[1]" ng-drop-success="onDropOnSection($data,$index,section,$event)">
             <div class="oa-section-icon" ng-bind-html="icons[section.icon_id]"></div>
             <a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a>
           </h4>
         </div>
-        <div ng-if="space.new_section" class="oa-section newsection" ng-drop="true" ng-drop-success="onDropComplete($data,$event)">
-          <h4 class="oa-section-title">
+        <div ng-if="space.new_section" class="oa-section newsection">
+          <h4 class="oa-section-title" ng-drop="true" ng-drop-id="[1]" ng-drop-success="onDropOnSection($data,space.sections.length,undefined,$event)">
             <a href="{{newSectionURL(space.nid)}}" ng-class="newSectionClass(space.nid)" title="{{newSectionTitle(space.nid)}}">
               <div class="oa-section-icon"><i class="icon-plus"></i></div>
             {{newSectionTitle(space.nid)}}</a>
@@ -57,7 +59,7 @@
       </section>
 
       <section class="oa-subspaces">
-        <div class="oa-subspace" ng-repeat="index in space.subspaces">
+        <div class="oa-subspace" ng-repeat="index in space.subspaces" ng-drag="true" ng-drag-data="allSpaces[index]" ng-drag-id="2">
           <div class="oa-subspace-icons" ng-hide="allSpaces[index].editorEnabled">
             <div class="oa-subspace-icon-left">
               <a ng-href="{{allSpaces[index].url}}">
@@ -78,8 +80,9 @@
               </a>
             </div>
           </div>
-          <h4 class="oa-subspace-title" ng-drop="true" ng-drop-success="onDropComplete($data,$event)">
-            <a ng-hide="allSpaces[index].editorEnabled" ng-click='exploreSpace($parent.allSpaces[index].nid)' class="oa-subspace-link">
+          <h4 class="oa-subspace-title">
+            <a ng-hide="allSpaces[index].editorEnabled" class="oa-subspace-link" ng-click='exploreSpace($parent.allSpaces[index].nid)'
+               ng-drop="true" ng-drop-success="onDropOnSpace($data,index,$event)">
               <span>{{$parent.allSpaces[index].title}}</span>
             </a>
             <div ng-show="allSpaces[index].editorEnabled">
@@ -94,7 +97,8 @@
         </div>
         <div ng-if="space.new_space" class="oa-subspace oa-new-space">
           <h4 class="oa-subspace-title">
-            <a href="{{newSpaceURL(space.nid)}}" ng-class="newSpaceClass(space.nid)" title="{{newSpaceTitle(space.nid)}}">
+            <a href="{{newSpaceURL(space.nid)}}" ng-class="newSpaceClass(space.nid)" title="{{newSpaceTitle(space.nid)}}"
+               ng-drop="true" ng-drop-id="[2]" ng-drop-success="onDropOnSpaceList($data,space.subspaces.length,-1,$event)">
               <span><i class="icon-plus"></i>{{newSpaceTitle(space.nid)}}</span>
             </a>
           </h4>

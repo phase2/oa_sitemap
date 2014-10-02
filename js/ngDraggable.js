@@ -1,14 +1,17 @@
 /**
  * @file
  * Javascript for the drag/drop module from https://github.com/fatlinesofcode/ngDraggable.
- * Modified to deal with ensuring that clicking a draggable object doesnt actually
- * drag it until it's been moved a bit.
+ * Modified by mpotter:
+ * 1) to deal with ensuring that clicking a draggable object doesnt actually
+ *    drag it until it's been moved a bit.
+ * 2) allow separate id's to be assigned to drag/drop elements to control which
+ *    drag objects can be dropped over which drop objects
  */
 
 (function ($) {
 
 angular.module("ngDraggable", [])
-  .directive('ngDrag', ['$rootScope', '$parse', function ($rootScope, $parse) {
+  .directive('ngDrag', ['$rootScope', '$parse', '$timeout', function ($rootScope, $parse, $timeout) {
     return {
       restrict: 'A',
       link: function (scope, element, attrs) {
@@ -37,7 +40,6 @@ angular.module("ngDraggable", [])
           toggleListeners(true);
         };
 
-
         var toggleListeners = function (enable) {
           // remove listeners
 
@@ -47,16 +49,18 @@ angular.module("ngDraggable", [])
           scope.$on('$destroy', onDestroy);
           attrs.$observe("ngDrag", onEnableChange);
           scope.$watch(attrs.ngDragData, onDragDataChange);
+          scope.$watch(attrs.ngDragId, onDragIdChange);
           element.on(_pressEvents, onpress);
-          if(! _hasTouch){
-            element.on('mousedown', function(){ return false;}); // prevent native drag
-          }
         };
         var onDestroy = function (enable) {
           toggleListeners(false);
         };
         var onDragDataChange = function (newVal, oldVal) {
           _data = newVal;
+          _data.dragging = false;
+        }
+        var onDragIdChange = function (newVal, oldVal) {
+          _data.dragid = newVal;
         }
         var onEnableChange = function (newVal, oldVal) {
           _dragEnabled=scope.$eval(newVal);
@@ -67,6 +71,8 @@ angular.module("ngDraggable", [])
          * On touch devices as a small delay so as not to prevent native window scrolling
          */
         var onpress = function(evt) {
+          if (_data.editorEnabled) return;
+          console.log(_data);
           if(! _dragEnabled)return;
 
 
@@ -92,6 +98,7 @@ angular.module("ngDraggable", [])
         }
         var onstartpress = function(evt) {
           _dragDown = true;
+          _data.dragging = false;
           _dragStartX = evt.pageX;
           _dragStartY = evt.pageY;
           $document.on(_moveEvents, onmove);
@@ -100,6 +107,7 @@ angular.module("ngDraggable", [])
         var onlongpress = function(evt) {
           _dragDown = false;
           if(! _dragEnabled)return;
+          _data.dragging = true;
           evt.preventDefault();
           offset = element.offset();
           element.centerX = (element.width()/2);
@@ -118,6 +126,7 @@ angular.module("ngDraggable", [])
         var onmove = function(evt) {
           if(! _dragEnabled)return;
 
+          // ensure mouse has moved a bit before we start dragging
           if (_dragDown) {
             if ((Math.abs(evt.pageX-_dragStartX) > 2) && (Math.abs(evt.pageY-_dragStartY) > 2)) {
               onlongpress(evt);
@@ -146,15 +155,24 @@ angular.module("ngDraggable", [])
           reset();
           $document.off(_moveEvents, onmove);
           $document.off(_releaseEvents, onrelease);
-
+//          $timeout(function(){
+//            _data.dragging = false;
+//          });
         }
         var onDragComplete = function(evt) {
-
+          // clear dragging on timeout to stop ng-click event from triggering on drag/drop
           if(! onDragSuccessCallback)return;
 
           scope.$apply(function () {
             onDragSuccessCallback(scope, {$data: _data, $event: evt});
           });
+//          setTimeout(function(){
+//            _data.dragging = false;
+//          },10);
+
+//          $timeout(function(){
+//            _data.dragging = false;
+//          });
         }
         var reset = function() {
           element.css({left:'',top:'', position:'', 'z-index':''});
@@ -191,10 +209,19 @@ angular.module("ngDraggable", [])
           scope.$on('draggable:start', onDragStart);
           scope.$on('draggable:move', onDragMove);
           scope.$on('draggable:end', onDragEnd);
+          scope.$watch(attrs.ngDropId, onDropIdChange);
         };
         var onDestroy = function (enable) {
           toggleListeners(false);
         };
+        var onDropIdChange = function (newVal, oldVal) {
+          if (newVal == undefined) {
+            scope.dropid = [];
+          }
+          else {
+            scope.dropid = newVal;
+          }
+        }
         var onEnableChange = function (newVal, oldVal) {
           _dropEnabled=scope.$eval(newVal);
         }
@@ -204,10 +231,12 @@ angular.module("ngDraggable", [])
         }
         var onDragMove = function(evt, obj) {
           if(! _dropEnabled)return;
+          if((scope.dropid.length > 0) && (scope.dropid.indexOf(obj.data.dragid) < 0)) return;
           isTouching(obj.x,obj.y,obj.element);
         }
         var onDragEnd = function(evt, obj) {
           if(! _dropEnabled)return;
+          if((scope.dropid.length > 0) && (scope.dropid.indexOf(obj.data.dragid) < 0)) return;
           if(isTouching(obj.x,obj.y,obj.element)){
             // call the ngDraggable element callback
             if(obj.callback){

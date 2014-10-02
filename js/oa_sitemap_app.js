@@ -26,7 +26,7 @@
 
       // if ID has a valid parent space
       if (parentSpace = allSpaces[parentId]) {
-        for(var i in parentSpace.subspaces) {
+        for (var i in parentSpace.subspaces) {
           var childSpace = allSpaces[parentSpace.subspaces[i]];
           currentSpaces.push(childSpace);
         }
@@ -102,21 +102,26 @@
     $scope.topDropdown = (0 in allSpaces) ? 0 : topID;
     $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
     $scope.editableTitle = {};
+    $scope.space = allSpaces[topID];
 
     $scope.breadcrumbs = loadBreadCrumbs(topID);
     $scope.icons = Drupal.settings.oa_sitemap.icons;
     $scope.currentSlide = returnSpacePosition($scope.spaces, topID);
 
     $scope.exploreSpace = function(spaceID) {
-      breadcrumbs = [];
-      $scope.breadcrumbs = loadBreadCrumbs(spaceID);
-      $scope.spaces = loadSpace(spaceID);
-      $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
-      $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+      if (!allSpaces[spaceID].dragging) {
+        breadcrumbs = [];
+        $scope.breadcrumbs = loadBreadCrumbs(spaceID);
+        $scope.spaces = loadSpace(spaceID);
+        $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
+        $scope.space = allSpaces[spaceID];
+        $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+      }
     };
 
     $scope.slide = function(slide) {
       $scope.currentSlide = parseInt(slide);
+      $scope.space = $scope.spaces[$scope.currentSlide];
     };
 
     $scope.spaceClass = function(spaceID) {
@@ -192,6 +197,8 @@
     };
 
     $scope.saveTitle = function(spaceID) {
+      oldTitle = allSpaces[spaceID].title;
+      allSpaces[spaceID].title = $scope.editableTitle[spaceID];
       $scope.disableEditor(spaceID);
       $.post(
         // Callback URL.
@@ -199,11 +206,10 @@
         {'node': allSpaces[spaceID]},
       function( data ) {
         if ((data.length > 0) && (data[1].command == 'alert')) {
-          alert(data[1].text);
-        }
-        else {
-          allSpaces[spaceID].title = $scope.editableTitle[spaceID];
+          // undo local change and report error
+          allSpaces[spaceID].title = oldTitle;
           $scope.$apply();
+          alert(data[1].text);
         }
       });
     };
@@ -212,11 +218,37 @@
       return allSpaces[spaceID].url_edit + '?destination=' + document.URL;
     }
 
-    $scope.onDragComplete = function(data, evt){
-      console.log("drag success, data:", data);
+    $scope.onDropOnSpace = function(data, spaceID, evt){
+      console.log("drop SPACE " + spaceID + " success, data:", data);
+      if ('nid' in data) {
+        if (data.nid != spaceID) {
+          // dropping a space on a space
+          var oldIndex = allSpaces[data.parent_id].subspaces.indexOf(data.nid);
+          allSpaces[data.parent_id].subspaces.splice(oldIndex, 1);
+          data.parent_id = spaceID;
+          allSpaces[spaceID].subspaces.push(data.nid);
+        }
+      }
+      else {
+        // dropping a section on a space
+        var oldIndex = $scope.space.sections.indexOf(data);
+        allSpaces[$scope.space.nid].sections.splice(oldIndex, 1);
+        allSpaces[spaceID].sections.push(data);
+      }
     }
-    $scope.onDropComplete = function(data, evt){
-      console.log("drop success, data:", data);
+    $scope.onDropOnSpaceList = function(data, index, spaceID, evt){
+      if (data.nid != spaceID) {
+        // don't drop over itself
+        console.log("drop SPACELIST " + spaceID + " success, index: " + index + " data:", data);
+        // reordering subspaces
+      }
+    }
+    $scope.onDropOnSection = function(data, index, section, evt){
+      if (!angular.equals(data,section)) {
+        // don't drop over itself
+        console.log("drop SECTION " + index + " success, data:", data);
+        // reordering sections
+      }
     }
 
     $(document).on('oaWizardNew', function(event, node) {
