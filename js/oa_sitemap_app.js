@@ -269,7 +269,7 @@
           break;
         case 'oa_space':
           console.log(node);
-          var parentID = node.oa_parent_space.und[Object.keys(node.oa_parent_space.und)[0]].target_id;
+          var parentID = (node.oa_parent_space == undefined) ? 0 : node.oa_parent_space.und[Object.keys(node.oa_parent_space.und)[0]].target_id;
           allSpaces[node.nid] = {
             'nid': node.nid,
             'parent_id': parentID,

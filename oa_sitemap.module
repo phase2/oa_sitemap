@@ -241,7 +241,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
     'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
     'url_edit' => !empty($node) ? url('node/' . $nid . '/edit') : '',
-    'admin' => !empty($node) && node_access('update', $node),
+    'admin' => empty($node) ? $new_space : node_access('update', $node),
     'status' => !empty($node) ? $node->status : 1,
     'visibility' => $visibility,
     'new_space'=> $new_space,
