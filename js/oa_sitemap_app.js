@@ -10,7 +10,7 @@
 
   var app = angular.module("oaSitemap", ['ngSanitize', 'ngDraggable']);
 
-  app.controller("oaSitemapController", function($scope, $timeout, $location, $http) {
+  app.controller("oaSitemapController", function($scope, $timeout, $location) {
 
     var currentID = 0;
     var topID = 0;
@@ -22,10 +22,10 @@
       currentID = id;
       var parentId = allSpaces[id].parent_id;
       var currentSpaces = [];
-      var parentSpace = "";
 
       // if ID has a valid parent space
-      if (parentSpace = allSpaces[parentId]) {
+      var parentSpace = allSpaces[parentId];
+      if (parentSpace) {
         for (var i in parentSpace.subspaces) {
           var childSpace = allSpaces[parentSpace.subspaces[i]];
           currentSpaces.push(childSpace);
@@ -69,13 +69,12 @@
 
     function returnDropDownSelects(active, top) {
       var dropDownSelects = [allSpaces[top]];
-      var index = 0;
 
       function returnChildren(id, active, depth) {
         var subspaces = allSpaces[id].subspaces;
         for (var i in subspaces) {
-          var spaceID = subspaces[i]
-          allSpaces[spaceID].prefix = Array(depth+1).join("- ");
+          var spaceID = subspaces[i];
+          allSpaces[spaceID].prefix = new Array(depth+1).join("- ");
           allSpaces[spaceID].classes = spaceID == active ? 'active' : '';
           dropDownSelects.push(allSpaces[spaceID]);
           if (allSpaces[spaceID].subspaces.length > 1) {
@@ -83,8 +82,9 @@
             if (child) {
               return child;
             }
-          };
+          }
         }
+        return false;
       }
       returnChildren(top, active, 1);
       return dropDownSelects;
@@ -185,7 +185,7 @@
             }
         });
       }
-    }
+    };
 
     $scope.enableEditor = function(spaceID) {
       $scope.editableTitle[spaceID] = allSpaces[spaceID].title;
@@ -197,7 +197,7 @@
     };
 
     $scope.saveTitle = function(spaceID) {
-      oldTitle = allSpaces[spaceID].title;
+      var oldTitle = allSpaces[spaceID].title;
       allSpaces[spaceID].title = $scope.editableTitle[spaceID];
       $scope.disableEditor(spaceID);
       $.post(
@@ -216,7 +216,7 @@
 
     $scope.editSpaceURL = function(spaceID) {
       return allSpaces[spaceID].url_edit + '?destination=' + document.URL;
-    }
+    };
 
     $scope.onDropOnSpace = function(data, spaceID, evt){
       console.log("drop SPACE " + spaceID + " success, data:", data);
@@ -235,21 +235,23 @@
         allSpaces[$scope.space.nid].sections.splice(oldIndex, 1);
         allSpaces[spaceID].sections.push(data);
       }
-    }
+    };
+
     $scope.onDropOnSpaceList = function(data, index, spaceID, evt){
       if (data.nid != spaceID) {
         // don't drop over itself
         console.log("drop SPACELIST " + spaceID + " success, index: " + index + " data:", data);
         // reordering subspaces
       }
-    }
+    };
+
     $scope.onDropOnSection = function(data, index, section, evt){
       if (!angular.equals(data,section)) {
         // don't drop over itself
         console.log("drop SECTION " + index + " success, data:", data);
         // reordering sections
       }
-    }
+    };
 
     $(document).on('oaWizardNew', function(event, node) {
       // respond to event message from submitting oa_wizard form
