@@ -44,9 +44,23 @@
 
       <section class="oa-sections">
         <div class="oa-section" ng-repeat="section in space.sections" ng-drag="true" ng-drag-data="section" ng-drag-id="1">
-          <h4 class="oa-section-title" ng-drop="true" ng-drop-id="[1]" ng-drop-success="onDropOnSection($data,$index,section,$event)">
-            <div class="oa-section-icon" ng-bind-html="icons[section.icon_id]"></div>
-            <a href="{{section.url}}" class="oa-section-link {{section.class}}">{{section.title}}</a>
+          <h4 class="oa-section-title dropdown" ng-drop="true" ng-drop-id="[1]" ng-drop-success="onDropOnSection($data,$index,section,$event)">
+            <div class="oa-section-icon {{sectionClass(section)}}" ng-bind-html="icons[section.icon_id]"></div>
+            <a ng-hide="section.editorEnabled" class="oa-section-link {{section.class}}" data-toggle="dropdown" href="#">{{section.title}}</a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a ng-href="{{editSectionURL(section)}}">Edit</a></li>
+              <li><a ng-click="deleteSection(space, section)">Delete</a></li>
+              <li><a ng-click="enableSectionEditor(section)">Rename</a></li>
+              <li><a href="{{section.url}}">View</a></li>
+            </ul>
+            <div ng-show="section.editorEnabled">
+              <textarea ng-model="editableTitle[section.nid]"></textarea>
+              <div class="oa-rename-actions">
+                <a href="#" ng-click="saveSectionTitle(section)">Save</a>
+                or
+                <a href="#" ng-click="disableSectionEditor(section)">Cancel</a>.
+              </div>
+            </div>
           </h4>
         </div>
         <div ng-if="space.new_section" class="oa-section newsection">
@@ -71,7 +85,7 @@
               <ul class="dropdown-menu" role="menu">
                 <li><a ng-href="{{editSpaceURL(index)}}">Edit</a></li>
                 <li><a ng-click="deleteSubspace(space, index)">Delete</a></li>
-                <li><a ng-click="enableEditor(index)"">Rename</a></li>
+                <li><a ng-click="enableSpaceEditor(index)"">Rename</a></li>
               </ul>
             </div>
             <div class="oa-subspace-icon-right">
@@ -88,9 +102,9 @@
             <div ng-show="allSpaces[index].editorEnabled">
               <textarea ng-model="editableTitle[index]"></textarea>
               <div class="oa-rename-actions">
-                <a href="#" ng-click="saveTitle(index)">Save</a>
+                <a href="#" ng-click="saveSpaceTitle(index)">Save</a>
                 or
-                <a href="#" ng-click="disableEditor(index)">Cancel</a>.
+                <a href="#" ng-click="disableSpaceEditor(index)">Cancel</a>.
               </div>
             </div>
           </h4>

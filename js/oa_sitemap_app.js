@@ -152,6 +152,11 @@
       return className;
     };
 
+    $scope.sectionClass = function(section) {
+      var className = (section.visibility == 0) ? 'oa-border-green' : 'oa-border-red';
+      return className;
+    };
+
     $scope.newSpaceTitle = function(spaceID) {
       return (allSpaces[spaceID].parent_id >= 0) ? Drupal.t('New Subspace') : Drupal.t('New Space');
     };
@@ -211,16 +216,38 @@
       }
     };
 
-    $scope.enableEditor = function(spaceID) {
+    $scope.deleteSection = function(space, section) {
+      if (confirm('Are you sure you wish to delete "' + section.title + '" ?')) {
+        //TODO: drupal ajax callback to delete a node
+        var index = space.sections.indexOf(section);
+        $.post(
+          // Callback URL.
+          Drupal.settings.basePath + 'api/oa/sitemap-delete/' + section.nid,
+          {},
+          function( data ) {
+            if ((data.length > 0) && (data[1].command == 'alert')) {
+              alert(data[1].text);
+            }
+            else {
+              if (index > -1) {
+                space.sections.splice(index, 1);
+              }
+              $scope.$apply();
+            }
+          });
+      }
+    };
+
+    $scope.enableSpaceEditor = function(spaceID) {
       $scope.editableTitle[spaceID] = allSpaces[spaceID].title;
       allSpaces[spaceID].editorEnabled = true;
     };
 
-    $scope.disableEditor = function(spaceID) {
+    $scope.disableSpaceEditor = function(spaceID) {
       allSpaces[spaceID].editorEnabled = false;
     };
 
-    $scope.saveTitle = function(spaceID) {
+    $scope.saveSpaceTitle = function(spaceID) {
       var oldTitle = allSpaces[spaceID].title;
       allSpaces[spaceID].title = $scope.editableTitle[spaceID];
       $scope.disableEditor(spaceID);
@@ -238,13 +265,44 @@
       });
     };
 
+    $scope.enableSectionEditor = function(section) {
+      $scope.editableTitle[section.nid] = section.title;
+      section.editorEnabled = true;
+    };
+
+    $scope.disableSectionEditor = function(section) {
+      section.editorEnabled = false;
+    };
+
+    $scope.saveSectionTitle = function(section) {
+      var oldTitle = section.title;
+      section.title = $scope.editableTitle[section.nid];
+      $scope.disableSectionEditor(section);
+      $.post(
+        // Callback URL.
+        Drupal.settings.basePath + 'api/oa/sitemap-update/' + section.nid,
+        {'node': section},
+        function( data ) {
+          if ((data.length > 0) && (data[1].command == 'alert')) {
+            // undo local change and report error
+            section.title = oldTitle;
+            $scope.$apply();
+            alert(data[1].text);
+          }
+        });
+    };
+
     $scope.editSpaceURL = function(spaceID) {
       return allSpaces[spaceID].url_edit + '?destination=' + document.URL;
     };
 
+    $scope.editSectionURL = function(section) {
+      return section.url_edit + '?destination=' + document.URL;
+    };
+
     $scope.onDropOnSpace = function(data, spaceID, evt){
       console.log("drop SPACE " + spaceID + " success, data:", data);
-      if ('nid' in data) {
+      if ('sections' in data) {
         if (data.nid != spaceID) {
           // dropping a space on a space
           var oldIndex = allSpaces[data.parent_id].subspaces.indexOf(data.nid);
