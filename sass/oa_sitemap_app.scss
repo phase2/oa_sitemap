@@ -1,5 +1,9 @@
 @import "compass";
 
+#modalContent {
+  position: fixed !important;
+}
+
 .oa-sitemap {
   $width: 110px;
   $margin: 20px;

@@ -306,7 +306,7 @@
             'url': Drupal.settings.basePath + 'node/' + node.nid,
             'url_edit': Drupal.settings.basePath + 'node/' + node.nid + '/edit',
             'new_space': allSpaces[parentID].new_space,
-            'new_section': allSpaces[parentID].new_section,
+            'new_section': (parentID == 0) ? allSpaces[parentID].new_space : allSpaces[parentID].new_section,
             'sections': [],
             'subspaces': []
           };

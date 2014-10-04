@@ -74,7 +74,7 @@ function oa_sitemap_theme() {
 
 /**
  * JSON callback to return space/subspace/section data for a given space node
- * @param $node optional parent node
+ * @param $nid int optional parent node
  */
 function oa_sitemap_spaces_callback($nid) {
   $spaces = array();

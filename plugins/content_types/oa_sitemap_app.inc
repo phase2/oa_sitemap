@@ -89,7 +89,7 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
       'modalSize' => array(
         'type' => 'scale',
         'width' => 0.5,
-        'height' => 0.5,
+        'height' => 0.9,
       ),
       'animation' => 'fadeIn',
     ),
