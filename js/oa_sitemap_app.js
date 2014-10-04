@@ -91,7 +91,27 @@
     }
 
     $scope.$on('oaSitemapRefresh', function(event, e) {
-      Drupal.attachBehaviors(document);
+      // need to reset ctools since it caches the previous href values on modal links
+      console.log('REFRESH');
+      $('a.ctools-use-modal').each(function() {
+        // get link url without any query string
+        var newurl = $(this).attr('href');
+        var newlink = newurl.split('?')[0];
+        // now need to remove previous ajax assigned to the old url
+        for (var base in Drupal.ajax) {
+          console.log('Test',base);
+          var link = base.split('?')[0];
+          if (newlink == link) {
+            console.log('FOUND',base);
+            //Drupal.ajax[base].url = newurl;
+            //Drupal.ajax[base].element_settings.url = newurl;
+            Drupal.ajax[base].options.url = newurl;
+            console.log(Drupal.ajax[base]);
+          }
+        }
+      });
+      // ok, now reattach new ctools ajax to modals
+      Drupal.attachBehaviors($('.oa-sitemap'));
     });
 
     topID = Drupal.settings.oa_sitemap.topID;
@@ -141,7 +161,7 @@
     };
 
     $scope.newSpaceURL = function(spaceID) {
-      var url = Drupal.settings.basePath + 'api/oa_wizard/nojs/add/oa-space';
+      var url = Drupal.settings.basePath + 'api/oa_wizard/add/oa-space';
       if (spaceID > 0) {
         url = url + '?oa_parent_space=' + spaceID;
       }
@@ -157,7 +177,7 @@
     };
 
     $scope.newSectionURL = function(spaceID) {
-      var url = Drupal.settings.basePath + 'api/oa_wizard/nojs/add/oa-section';
+      var url = Drupal.settings.basePath + 'api/oa_wizard/add/oa-section';
       if (spaceID > 0) {
         url = url + '?og_group_ref=' + spaceID;
       }
@@ -165,6 +185,10 @@
     };
 
     $scope.deleteSubspace = function(space, nid) {
+      if ((allSpaces[nid].sections.length > 0) || (allSpaces[nid].subspaces.length > 0)) {
+        alert('Can only delete empty spaces.');
+        return;
+      }
       if (confirm('Are you sure you wish to delete "' + allSpaces[nid].title + '" ?')) {
         //TODO: drupal ajax callback to delete a node
         var index = space.subspaces.indexOf(nid);
@@ -298,7 +322,7 @@
 
   Drupal.behaviors.oaSitemap = {
     attach: function(context, settings) {
-
+      console.log('Behavior fired',context);
     }
   }
 

@@ -79,11 +79,29 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
     'link' => $map_link,
   );
 
-  drupal_add_js(array('oa_sitemap' => array(
-    'topID' => $space_id,
-    'icons' => $icons,
-    'spaces' => $spaces,
-  )), 'setting');
+  drupal_add_js(array(
+    'oa_sitemap' => array(
+      'topID' => $space_id,
+      'icons' => $icons,
+      'spaces' => $spaces,
+    ),
+    'oa-sitemap-section' => array(
+      'modalSize' => array(
+        'type' => 'scale',
+        'width' => 0.5,
+        'height' => 0.5,
+      ),
+      'animation' => 'fadeIn',
+    ),
+    'oa-sitemap-space' => array(
+      'modalSize' => array(
+        'type' => 'scale',
+        'width' => 0.5,
+        'height' => 0.5,
+      ),
+      'animation' => 'fadeIn',
+    ),
+  ), 'setting');
 
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular.min.js');
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular-sanitize.js');

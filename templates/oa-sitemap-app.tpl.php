@@ -51,7 +51,7 @@
         </div>
         <div ng-if="space.new_section" class="oa-section newsection">
           <h4 class="oa-section-title" ng-drop="true" ng-drop-id="[1]" ng-drop-success="onDropOnSection($data,space.sections.length,undefined,$event)">
-            <a href="{{newSectionURL(space.nid)}}" ng-class="newSectionClass(space.nid)" title="{{newSectionTitle(space.nid)}}">
+            <a ng-href="{{newSectionURL(space.nid)}}" ng-class="newSectionClass(space.nid)" title="{{newSectionTitle(space.nid)}}">
               <div class="oa-section-icon"><i class="icon-plus"></i></div>
             {{newSectionTitle(space.nid)}}</a>
           </h4>
@@ -97,7 +97,7 @@
         </div>
         <div ng-if="space.new_space" class="oa-subspace oa-new-space">
           <h4 class="oa-subspace-title">
-            <a href="{{newSpaceURL(space.nid)}}" ng-class="newSpaceClass(space.nid)" title="{{newSpaceTitle(space.nid)}}"
+            <a ng-href="{{newSpaceURL(space.nid)}}" ng-class="newSpaceClass(space.nid)" title="{{newSpaceTitle(space.nid)}}"
                ng-drop="true" ng-drop-id="[2]" ng-drop-success="onDropOnSpaceList($data,space.subspaces.length,-1,$event)">
               <span><i class="icon-plus"></i>{{newSpaceTitle(space.nid)}}</span>
             </a>

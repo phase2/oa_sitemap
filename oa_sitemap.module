@@ -193,48 +193,17 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
   }
 
   $new_section = (!empty($node) && (og_user_access('node', $nid, "create " . OA_SECTION_TYPE . " content", $user)));
-  if ($new_section) {
-    // set up size of New Section popup for ctools
-    $custom_style = array(
-      'oa-sitemap-section' => array(
-        'modalSize' => array(
-          'type' => 'scale',
-          'width' => 0.5,
-          'height' => 0.5,
-        ),
-        'animation' => 'fadeIn',
-      ),
-    );
-    ctools_include('ajax');
-    ctools_include('modal');
-    drupal_add_js($custom_style, 'setting');
-  }
 
   $new_space = empty($node)
     ? user_access('create ' . OA_SPACE_TYPE . ' content', $user)
     : (module_exists('oa_subspaces') && og_user_access('node', $nid, 'create ' . OA_SPACE_TYPE . ' content', $user));
-  if ($new_space) {
-    // set up size of New Space popup for ctools
-    $custom_style = array(
-      'oa-sitemap-space' => array(
-        'modalSize' => array(
-          'type' => 'scale',
-          'width' => 0.5,
-          'height' => 0.5,
-        ),
-        'animation' => 'fadeIn',
-      ),
-    );
-    ctools_include('ajax');
-    ctools_include('modal');
-    drupal_add_js($custom_style, 'setting');
-  }
 
   $visibility = 1;
   if (!empty($node)) {
     $visibility = field_get_items('node', $node, 'group_access');
     $visibility = $visibility[0]['value'];
   }
+
   $spaces[$nid] = array(
     'nid' => $nid,
     'parent_id' => ($nid == 0) ? -1 : $parent_id,
@@ -317,7 +286,7 @@ function oa_sitemap_data($node, &$options, &$index = 0, $depth = 0) {
 
     $section_links[] = array(
       'title' => t('New Section'),
-      'url' => url('api/oa_wizard/js/add/oa-section'),
+      'url' => url('api/oa_wizard/add/oa-section'),
       'class' => 'ctools-use-modal ctools-modal-oa-sitemap-section',
       'icon_id' => 0,
     );
@@ -382,7 +351,7 @@ function oa_sitemap_data($node, &$options, &$index = 0, $depth = 0) {
 
     $new_space_vars = array(
       'title' => t('New Space'),
-      'url' => url('api/oa_wizard/js/add/oa-space'),
+      'url' => url('api/oa_wizard/add/oa-space'),
       'class' => 'ctools-use-modal ctools-modal-oa-sitemap-space',
       'sections' => array(),
       'subspaces' => array(),
@@ -454,7 +423,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
     drupal_add_js($custom_style, 'setting');
 
     $section_links[] = array(
-      'link' => ctools_modal_text_button(t('New Section'), 'api/oa_wizard/nojs/add/oa-section',
+      'link' => ctools_modal_text_button(t('New Section'), 'api/oa_wizard/add/oa-section',
         t('New Section'), 'ctools-modal-oa-sitemap-section'),
       'icon' => $icons[0],
       'class' => 'oa-section new-section',
@@ -518,7 +487,7 @@ function oa_sitemap_space_map($node, &$options, $icons = array(), &$index = 0, $
     drupal_add_js($custom_style, 'setting');
 
     $new_space_vars = array(
-      'link' => ctools_modal_text_button('<span>' . t('New Space') . '</span>', 'api/oa_wizard/nojs/add/oa-space',
+      'link' => ctools_modal_text_button('<span>' . t('New Space') . '</span>', 'api/oa_wizard/add/oa-space',
         t('New Space'), 'ctools-modal-oa-sitemap-space'),
       'sections' => array(),
       'subspaces' => array(),
