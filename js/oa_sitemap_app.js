@@ -92,21 +92,17 @@
 
     $scope.$on('oaSitemapRefresh', function(event, e) {
       // need to reset ctools since it caches the previous href values on modal links
-      console.log('REFRESH');
       $('a.ctools-use-modal').each(function() {
         // get link url without any query string
         var newurl = $(this).attr('href');
         var newlink = newurl.split('?')[0];
         // now need to remove previous ajax assigned to the old url
         for (var base in Drupal.ajax) {
-          console.log('Test',base);
           var link = base.split('?')[0];
           if (newlink == link) {
-            console.log('FOUND',base);
             //Drupal.ajax[base].url = newurl;
             //Drupal.ajax[base].element_settings.url = newurl;
             Drupal.ajax[base].options.url = newurl;
-            console.log(Drupal.ajax[base]);
           }
         }
       });
@@ -201,9 +197,9 @@
           // Callback URL.
           Drupal.settings.basePath + 'api/oa/sitemap-delete/' + nid,
           {},
-          function( data ) {
-            if ((data.length > 0) && (data[1].command == 'alert')) {
-              alert(data[1].text);
+          function( result ) {
+            if ((result.length > 0) && (result[1].command == 'alert')) {
+              alert(result[1].text);
             }
             else {
               if (index > -1) {
@@ -224,9 +220,9 @@
           // Callback URL.
           Drupal.settings.basePath + 'api/oa/sitemap-delete/' + section.nid,
           {},
-          function( data ) {
-            if ((data.length > 0) && (data[1].command == 'alert')) {
-              alert(data[1].text);
+          function( result ) {
+            if ((result.length > 0) && (result[1].command == 'alert')) {
+              alert(result[1].text);
             }
             else {
               if (index > -1) {
@@ -238,84 +234,67 @@
       }
     };
 
-    $scope.enableSpaceEditor = function(spaceID) {
-      $scope.editableTitle[spaceID] = allSpaces[spaceID].title;
-      allSpaces[spaceID].editorEnabled = true;
+    $scope.enableEditor = function(node) {
+      $scope.editableTitle[node.nid] = node.title;
+      allSpaces[node.nid].editorEnabled = true;
     };
 
-    $scope.disableSpaceEditor = function(spaceID) {
-      allSpaces[spaceID].editorEnabled = false;
+    $scope.disableEditor = function(node) {
+      allSpaces[node.nid].editorEnabled = false;
     };
 
-    $scope.saveSpaceTitle = function(spaceID) {
-      var oldTitle = allSpaces[spaceID].title;
-      allSpaces[spaceID].title = $scope.editableTitle[spaceID];
-      $scope.disableEditor(spaceID);
+    $scope.saveTitle = function(node) {
+      var oldTitle = node.title;
+      node.title = $scope.editableTitle[node.nid];
+      $scope.disableEditor(node.nid);
       $.post(
         // Callback URL.
-        Drupal.settings.basePath + 'api/oa/sitemap-update/' + spaceID,
-        {'node': allSpaces[spaceID]},
-      function( data ) {
-        if ((data.length > 0) && (data[1].command == 'alert')) {
+        Drupal.settings.basePath + 'api/oa/sitemap-update/' + node.nid,
+        {'node': node},
+      function( result ) {
+        if ((result.length > 0) && (result[1].command == 'alert')) {
           // undo local change and report error
-          allSpaces[spaceID].title = oldTitle;
+          node.title = oldTitle;
           $scope.$apply();
-          alert(data[1].text);
+          alert(result[1].text);
         }
       });
     };
 
-    $scope.enableSectionEditor = function(section) {
-      $scope.editableTitle[section.nid] = section.title;
-      section.editorEnabled = true;
-    };
-
-    $scope.disableSectionEditor = function(section) {
-      section.editorEnabled = false;
-    };
-
-    $scope.saveSectionTitle = function(section) {
-      var oldTitle = section.title;
-      section.title = $scope.editableTitle[section.nid];
-      $scope.disableSectionEditor(section);
-      $.post(
-        // Callback URL.
-        Drupal.settings.basePath + 'api/oa/sitemap-update/' + section.nid,
-        {'node': section},
-        function( data ) {
-          if ((data.length > 0) && (data[1].command == 'alert')) {
-            // undo local change and report error
-            section.title = oldTitle;
-            $scope.$apply();
-            alert(data[1].text);
-          }
-        });
-    };
-
-    $scope.editSpaceURL = function(spaceID) {
-      return allSpaces[spaceID].url_edit + '?destination=' + document.URL;
-    };
-
-    $scope.editSectionURL = function(section) {
-      return section.url_edit + '?destination=' + document.URL;
+    $scope.editURL = function(node) {
+      return node.url_edit + '?destination=' + document.URL;
     };
 
     $scope.onDropOnSpace = function(data, spaceID, evt){
-      console.log("drop SPACE " + spaceID + " success, data:", data);
-      if ('sections' in data) {
-        if (data.nid != spaceID) {
-          // dropping a space on a space
-          var oldIndex = allSpaces[data.parent_id].subspaces.indexOf(data.nid);
-          allSpaces[data.parent_id].subspaces.splice(oldIndex, 1);
-          data.parent_id = spaceID;
-          allSpaces[spaceID].subspaces.push(data.nid);
-        }
-      }
-      else {
-        // dropping a section on a space
-        var oldIndex = $scope.space.sections.indexOf(data);
-        allSpaces[$scope.space.nid].sections.splice(oldIndex, 1);
-        allSpaces[spaceID].sections.push(data);
+      if (data.nid != spaceID) {
+        // dropping a space or section on a space
+        var oldParent = data.parent_id;
+        data.parent_id = spaceID;
+        $.post(
+          // Callback URL.
+          Drupal.settings.basePath + 'api/oa/sitemap-update/' + data.nid,
+          {'node': data},
+          function( result ) {
+            if ((result.length > 0) && (result[1].command == 'alert')) {
+              // failed, so undo
+              data.parent_id = oldParent;
+              $scope.$apply();
+              alert(result[1].text);
+            }
+            else {
+              if (data.type == 'oa_space') {
+                var oldIndex = allSpaces[oldParent].subspaces.indexOf(data.nid);
+                allSpaces[oldParent].subspaces.splice(oldIndex, 1);
+                allSpaces[spaceID].subspaces.push(data.nid);
+              }
+              else {
+                var oldIndex = $scope.space.sections.indexOf(data);
+                allSpaces[$scope.space.nid].sections.splice(oldIndex, 1);
+                allSpaces[spaceID].sections.push(data);
+              }
+              $scope.$apply();
+            }
+          });
       }
     };
 
@@ -380,7 +359,6 @@
 
   Drupal.behaviors.oaSitemap = {
     attach: function(context, settings) {
-      console.log('Behavior fired',context);
     }
   }
 

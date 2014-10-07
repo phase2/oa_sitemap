@@ -95,8 +95,16 @@ function oa_sitemap_update_callback($node) {
   dd('ACCESS');
   $new_node = $_POST['node'];
   $updated = FALSE;
+  dd($new_node);
   _oa_sitemap_update_field($node, 'title', $new_node['title'], $updated);
-  _oa_sitemap_update_field($node, 'oa_parent_space', $new_node['parent_id'], $updated);
+  if ($new_node['type'] == OA_SPACE_TYPE) {
+    // updating a space node
+    _oa_sitemap_update_field($node, 'oa_parent_space', $new_node['parent_id'], $updated);
+  }
+  else {
+    // updating a section node
+    _oa_sitemap_update_field($node, 'og_group_ref', $new_node['parent_id'], $updated);
+  }
   if ($updated) {
     dd('SAVE');
     node_save($node);
@@ -193,6 +201,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     $section_links[] = array(
       'nid' => $section->nid,
       'parent_id' => ($nid == 0) ? -1 : $parent_id,
+      'type' => OA_SECTION_TYPE,
       'title' => $section->title,
       'url' => url('node/' . $section->nid),
       'url_edit' => url('node/' . $section->nid . '/edit'),
@@ -220,6 +229,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
   $spaces[$nid] = array(
     'nid' => $nid,
     'parent_id' => ($nid == 0) ? -1 : $parent_id,
+    'type' => OA_SPACE_TYPE,
     'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
     'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
     'url_edit' => !empty($node) ? url('node/' . $nid . '/edit') : '',
