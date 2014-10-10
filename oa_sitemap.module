@@ -88,14 +88,11 @@ function oa_sitemap_spaces_callback($nid) {
  * @param $node
  */
 function oa_sitemap_update_callback($node) {
-  dd('UPDATE');
   if (!node_access('update', $node)) {
     ajax_deliver(MENU_ACCESS_DENIED);
   }
-  dd('ACCESS');
   $new_node = $_POST['node'];
   $updated = FALSE;
-  dd($new_node);
   _oa_sitemap_update_field($node, 'title', $new_node['title'], $updated);
   if ($new_node['type'] == OA_SPACE_TYPE) {
     // updating a space node
@@ -106,7 +103,6 @@ function oa_sitemap_update_callback($node) {
     _oa_sitemap_update_field($node, 'og_group_ref', $new_node['parent_id'], $updated);
   }
   if ($updated) {
-    dd('SAVE');
     node_save($node);
   }
   return TRUE;
@@ -121,16 +117,12 @@ function oa_sitemap_update_callback($node) {
  * @param $updated
  */
 function _oa_sitemap_update_field($node, $field, $value, &$updated) {
-  dd('Testing '.$field);
-  dd('  Value: '.$value);
-  dd($node->{$field});
   $lang = LANGUAGE_NONE;
   if (!isset($node->{$field})) {
     // no field
     return;
   }
   elseif (is_string($node->{$field}) && ($node->{$field} != $value)) {
-    dd('Set Direct');
     $node->{$field} = $value;
     $updated = TRUE;
   }
@@ -139,17 +131,14 @@ function _oa_sitemap_update_field($node, $field, $value, &$updated) {
     return;
   }
   elseif (isset($node->{$field}[$lang][0]['value']) && ($node->{$field}[$lang][0]['value'] != $value)) {
-    dd('Set Value');
     $node->{$field}[$lang][0]['value'] = $value;
     $updated = TRUE;
   }
   elseif (isset($node->{$field}[$lang][0]['target_id']) && ($node->{$field}[$lang][0]['target_id'] != $value)) {
-    dd('Set target_id');
     $node->{$field}[$lang][0]['target_id'] = $value;
     $updated = TRUE;
   }
   elseif (isset($node->{$field}[$lang][0]['tid']) && ($node->{$field}[$lang][0]['tid'] != $value)) {
-    dd('Set tid');
     $node->{$field}[$lang][0]['tid'] = $value;
     $updated = TRUE;
   }
@@ -191,6 +180,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'field_oa_team_ref|target_id',
     'field_oa_user_ref|target_id',
   ));
+
   $section_links = array();
   foreach ($sections as $section) {
     $id = $section->field_oa_section_tid;
@@ -205,7 +195,9 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
       'title' => $section->title,
       'url' => url('node/' . $section->nid),
       'url_edit' => url('node/' . $section->nid . '/edit'),
-      'admin' => node_access('update', $section),
+      //don't have a full section node, so can't call node_access('update',section)
+      //so use the parent's admin access
+      'admin' => $spaces[$parent_id]['admin'],
       'visibility' =>
         empty($section->field_oa_group_ref_target_id) &&
         empty($section->field_oa_team_ref_target_id) &&
@@ -247,7 +239,6 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     $spaces[$nid]['subspaces'][] = $child;
     oa_sitemap_spaces($child, $spaces, $nid, $depth+1);
   }
-
   return $spaces;
 }
 
