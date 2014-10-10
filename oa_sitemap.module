@@ -181,6 +181,20 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'field_oa_user_ref|target_id',
   ));
 
+  $new_section = (!empty($node) && (og_user_access('node', $nid, "create " . OA_SECTION_TYPE . " content", $user)));
+
+  $new_space = empty($node)
+    ? user_access('create ' . OA_SPACE_TYPE . ' content', $user)
+    : (module_exists('oa_subspaces') && og_user_access('node', $nid, 'create ' . OA_SPACE_TYPE . ' content', $user));
+
+  $visibility = 1;
+  if (!empty($node)) {
+    $visibility = field_get_items('node', $node, 'group_access');
+    $visibility = $visibility[0]['value'];
+  }
+
+  $admin_access = empty($node) ? $new_space : node_access('update', $node);
+
   $section_links = array();
   foreach ($sections as $section) {
     $id = $section->field_oa_section_tid;
@@ -197,25 +211,13 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
       'url_edit' => url('node/' . $section->nid . '/edit'),
       //don't have a full section node, so can't call node_access('update',section)
       //so use the parent's admin access
-      'admin' => $spaces[$parent_id]['admin'],
+      'admin' => empty($spaces[$parent_id]) ? $admin_access : $spaces[$parent_id]['admin'],
       'visibility' =>
         empty($section->field_oa_group_ref_target_id) &&
         empty($section->field_oa_team_ref_target_id) &&
         empty($section->field_oa_user_ref_target_id),
       'icon_id' => $id,
     );
-  }
-
-  $new_section = (!empty($node) && (og_user_access('node', $nid, "create " . OA_SECTION_TYPE . " content", $user)));
-
-  $new_space = empty($node)
-    ? user_access('create ' . OA_SPACE_TYPE . ' content', $user)
-    : (module_exists('oa_subspaces') && og_user_access('node', $nid, 'create ' . OA_SPACE_TYPE . ' content', $user));
-
-  $visibility = 1;
-  if (!empty($node)) {
-    $visibility = field_get_items('node', $node, 'group_access');
-    $visibility = $visibility[0]['value'];
   }
 
   $spaces[$nid] = array(
@@ -225,7 +227,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
     'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
     'url_edit' => !empty($node) ? url('node/' . $nid . '/edit') : '',
-    'admin' => empty($node) ? $new_space : node_access('update', $node),
+    'admin' => $admin_access,
     'status' => !empty($node) ? $node->status : 1,
     'visibility' => $visibility,
     'new_space'=> $new_space,

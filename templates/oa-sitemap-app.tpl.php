@@ -48,9 +48,9 @@
             <div class="oa-section-icon {{sectionClass(section)}}" ng-bind-html="icons[section.icon_id]"></div>
             <a ng-hide="section.editorEnabled" class="oa-section-link {{section.class}}" data-toggle="dropdown" href="#">{{section.title}}</a>
             <ul class="dropdown-menu" role="menu">
-              <li><a ng-href="{{editURL(section)}}">Edit</a></li>
-              <li><a ng-click="deleteSection(space, section)">Delete</a></li>
-              <li><a ng-click="enableEditor(section)">Rename</a></li>
+              <li ng-show="section.admin"><a ng-href="{{editURL(section)}}">Edit</a></li>
+              <li ng-show="section.admin"><a ng-click="deleteSection(space, section)">Delete</a></li>
+              <li ng-show="section.admin"><a ng-click="enableEditor(section)">Rename</a></li>
               <li><a href="{{section.url}}">View</a></li>
             </ul>
             <div ng-show="section.editorEnabled">

@@ -149,7 +149,7 @@
     };
 
     $scope.sectionClass = function(section) {
-      var className = (section.visibility == 0) ? 'oa-border-green' : 'oa-border-red';
+      var className = (section.visibility) ? 'oa-border-green' : 'oa-border-red';
       return className;
     };
 
@@ -246,7 +246,7 @@
     $scope.saveTitle = function(node) {
       var oldTitle = node.title;
       node.title = $scope.editableTitle[node.nid];
-      $scope.disableEditor(node.nid);
+      $scope.disableEditor(node);
       $.post(
         // Callback URL.
         Drupal.settings.basePath + 'api/oa/sitemap-update/' + node.nid,
@@ -323,6 +323,10 @@
             allSpaces[parentID].sections.push({
               'title': node.title,
               'url': Drupal.settings.basePath + 'node/' + node.nid,
+              'visibility': (node.field_oa_group_ref.und.length == 0) &&
+                node.field_oa_team_ref.und.length == 0 &&
+                node.field_oa_user_ref.und.length == 0,
+              'admin': allSpaces[parentID].admin,
               'icon_id': node.field_oa_section.und[0].tid
             });
             console.log(node);
