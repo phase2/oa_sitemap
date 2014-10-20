@@ -42,11 +42,11 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
   $icons = array();
   $icons[0] = '<i class="icon-plus"></i>';
   foreach ($terms as $id => $term) {
-    if (!empty($term->field_icon_class_value)) {
-      $icon = '<i class="' . check_plain($term->field_icon_class_value) . '"></i>';
+    if (!empty($term->field_oa_icon_class_value)) {
+      $icon = '<i class="' . check_plain($term->field_oa_icon_class_value) . '"></i>';
     }
-    elseif (!empty($term->field_icon_image_fid)) {
-      $file = file_load($term->field_icon_image_fid);
+    elseif (!empty($term->field_oa_icon_image_fid)) {
+      $file = file_load($term->field_oa_icon_image_fid);
       $content = array(
         'file' => array(
           '#theme' => 'image_style',
