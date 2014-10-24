@@ -275,7 +275,10 @@
           Drupal.settings.basePath + 'api/oa/sitemap-update/' + data.nid,
           {'node': data},
           function( result ) {
-            if ((result.length > 0) && (result[1].command == 'alert')) {
+            if ((result.length > 0) && (result[0].command == 'redirect')) {
+              window.location.href = result[0].url;
+            }
+            else if ((result.length > 0) && (result[1].command == 'alert')) {
               // failed, so undo
               data.parent_id = oldParent;
               $scope.$apply();
