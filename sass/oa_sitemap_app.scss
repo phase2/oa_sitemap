@@ -1,13 +1,30 @@
 @import "compass";
 
+$sitemapBackground: #E6F8FD;
+
 #modalContent {
   position: fixed !important;
+}
+
+body.oa-sitemap-full {
+  background: $sitemapBackground;
+  #main-wrapper {
+    background: $sitemapBackground;
+    #main {
+      background: $sitemapBackground;
+    }
+  }
+  .oa-sitemap {
+    background: $sitemapBackground url(../images/clouds.png) no-repeat center top;
+  }
 }
 
 .oa-sitemap {
   $width: 110px;
   $margin: 20px;
-  $vertical-gap: 30px; // vertical gaps
+  $vertical-gap: 20px; // vertical gaps
+
+  margin-top: 20px;
 
   [ng-drag].drag-over {
   }
@@ -24,7 +41,7 @@
     background: #42BB3D;
     opacity: 0.7;
   }
-  [ng-drop].oa-section-title.drag-enter  {
+  [ng-drop].oa-section-title.drag-enter {
     background: transparent;
     opacity: 1;
   }
@@ -53,11 +70,30 @@
     color: #008fe2;
   }
 
+  .oa-sitemap-title {
+    h3 {
+      margin: 3px 20px 0 0;
+    }
+  }
+
   .oa-sitemap-header {
     margin-bottom: 5px;
+    a {
+      position: relative;
+      display: block;
+      z-index: 5;
+      margin-right: 10px;
+    }
+    a.btn-none {
+      padding: 8px 16px;
+      font-size: 12px;
+      text-decoration: underline;
+      color: #777;
+    }
   }
 
   .oa-sitemap-search {
+    z-index: 5;
     .active {
       background: #095a8b;
       color: white;
@@ -74,16 +110,14 @@
     margin: 0;
   }
 
-  .oa-sitemap-breadcrumb a{
-    display: inline-block;
+  #oa-sitemap-top {
+    background: white;
+  }
+
+  .oa-sitemap-breadcrumb a {
     margin-bottom: $vertical-gap;
-    padding: 8px;
-    border: 2px solid #aaa;
     position: relative;
-    &:hover {
-      text-decoration: none;
-      background: #ddd;
-    }
+    border: 1px solid #aaa;
     &:after {
       content: "";
       position: absolute;
@@ -110,22 +144,29 @@
     position: relative;
     margin: 0 0 $vertical-gap;
     text-align: center;
-    background: #ddd;
-    border-bottom: 2px solid #aaa;
+    background: #032941;
+    color: white;
+    border-bottom: 1px solid #aaa;
     border-radius: 8px;
     padding: 8px 0;
+    a, a:visited, a:active {
+      color: white;
+    }
     button {
-      font-weight: 500;
+      font-weight: 300;
       font-size: 18px;
-      color: #333;
       position: absolute;
       border: none;
       background: none;
+      color: white;
       line-height: 34px;
       padding: 0;
-      &:hover, &:focus {
+      &:hover {
         outline: none;
-        color: #095a8b;
+        color: yellow;
+      }
+      &:active, &:visited, &:focus {
+        color: white;
       }
     }
     .next {
@@ -135,7 +176,7 @@
         position: absolute;
         right: -20px;
         top: 8px;
-        border-left: 12px solid #aaa;
+        border-left: 12px solid white;
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
       }
@@ -147,7 +188,7 @@
         position: absolute;
         left: -20px;
         top: 8px;
-        border-right: 12px solid #aaa;
+        border-right: 12px solid white;
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
       }
@@ -266,7 +307,7 @@
     left: 0;
     right: 0;
     font-size: 22px;
-    z-index: 10;
+    z-index: 4;
     a {
       color: #999;
       &:hover {
@@ -300,5 +341,55 @@
     border-color: #FB4D53;
   }
 
+  /***** Add styles for front page design with help test *******/
+  .oa-sitemap-help {
+    position: relative;
+    margin-bottom: 20px;
+    margin-top: 75px;
+    > div {
+      background: #32c0ec;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: Roboto, sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      padding-right: 240px;
+    }
+    img.oa-sitemap-helpimage {
+      position: absolute;
+      height: 150px;
+      bottom: 15px;
+      right: -10px;
+    }
+    img.oa-sitemap-helpicon {
+      margin-right: 20px;
+      width: 60px;
+    }
+    .oa-sitemap-caret {
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      height: 22px;
+      background: transparent;
+      margin-top: -7px;
+    }
+  }
 
+}
+
+/* Mobile settings */
+@media only screen and (max-width: 768px) {
+  .oa-sitemap .oa-sitemap-help {
+    position: relative;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    img {
+      display: none;
+    }
+
+    > div {
+      padding-right: 20px;
+    }
+  }
 }

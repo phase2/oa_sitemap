@@ -9,6 +9,9 @@
 ?>
 <div class="oa-sitemap" ng-cloak ng-app="oaSitemap" ng-controller="oaSitemapController" ondragstart="return false;" ondrop="return false;">
   <div class="oa-sitemap-header clearfix">
+    <div class="oa-sitemap-title pull-left">
+      <h3>{{title}}</h3>
+    </div>
     <div class="oa-sitemap-search pull-right btn-group">
       <button class="oa-sitemap-search-toggle btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}} <span class="caret"></span></button>
       <ul class="dropdown-menu" role="menu">
@@ -17,13 +20,33 @@
         </li>
       </ul>
     </div>
+    <a class="btn-none pull-right" ng-if="showHelp && helpStatus" ng-click="toggleHelp(false)" href="#">
+      Hide Help
+    </a>
+    <a class="btn btn-default pull-right" ng-if="showHelp && !helpStatus" ng-click="toggleHelp(true)" href="#">
+      <i class="icon-question-sign"></i> Help
+    </a>
     <div class="oa-sitemap-full pull-left">
       <?php print $link; ?>
     </div>
   </div>
+  <div class="oa-sitemap-help" ng-if="showHelp && helpStatus && space.new_space">
+    <img class="oa-sitemap-helpimage" ng-src="{{basePath}}/images/atrium-tree.png">
+    <div class="oa-sitemap-spacehelp" ng-if="!space.new_section">
+      <img class="pull-left oa-sitemap-helpicon" ng-src="{{basePath}}/images/space.png">
+      <div ng-bind-html="spaceHelp"></div>
+    </div>
+    <div class="oa-sitemap-sectionhelp" ng-if="space.new_section">
+      <img class="pull-left oa-sitemap-helpicon" ng-src="{{basePath}}/images/section.png">
+      <div ng-bind-html="sectionHelp"></div>
+    </div>
+    <div class="oa-sitemap-caret">
+      <img ng-src="{{basePath}}/images/triangle.png">
+    </div>
+  </div>
   <ul class="oa-sitemap-breadcrumbs">
     <li class="oa-sitemap-breadcrumb" ng-repeat="breadcrumb in breadcrumbs.slice().reverse()"">
-      <a ng-click='exploreSpace(breadcrumb.nid)' ng-drop="true" ng-drop-success="onDropOnSpace($data,breadcrumb.nid,$event)">{{breadcrumb.title}}</a>
+      <a class="btn btn-default" ng-click='exploreSpace(breadcrumb.nid)' ng-drop="true" ng-drop-success="onDropOnSpace($data,breadcrumb.nid,$event)">{{breadcrumb.title}}</a>
     </li>
   </ul>
   <div id="oa-sitemap-top" class="oa-carousel-container">

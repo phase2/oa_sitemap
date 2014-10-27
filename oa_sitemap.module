@@ -25,6 +25,11 @@ function oa_sitemap_menu() {
     'page arguments' => array(3),
     'access arguments' => array('access content'),
   );
+  $items['api/oa/sitemap-help/%'] = array(
+    'page callback' => 'oa_sitemap_help_callback',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+  );
 
   return $items;
 }
@@ -148,6 +153,21 @@ function oa_sitemap_delete_callback($node) {
 }
 
 /**
+ * Ajax Callback for saving Show Help to user session
+ * @param $value
+ */
+function oa_sitemap_help_callback($value) {
+  global $user;
+
+  if (($user->uid == 0) && !drupal_session_started()) {
+    return;
+  }
+
+  $_SESSION['oa_sitemap_help'] = $value;
+  return TRUE;
+}
+
+/**
  * Main helper function to grab all the spaces for the sitemap
  * @param $node, node object or nid
  * @param $spaces array by reference to be filled with space listing
@@ -215,7 +235,7 @@ function oa_sitemap_spaces($node, &$spaces, $parent_id = 0, $depth = 0) {
     'nid' => $nid,
     'parent_id' => ($nid == 0) ? -1 : $parent_id,
     'type' => OA_SPACE_TYPE,
-    'title' => !empty($node) ? check_plain($node->title) : variable_get('site_name', t('Home')),
+    'title' => !empty($node) ? decode_entities(check_plain($node->title)) : variable_get('site_name', t('Home')),
     'url' => !empty($node) ? url('node/' . $nid) : url('<front>'),
     'url_edit' => !empty($node) ? url('node/' . $nid . '/edit') : '',
     'admin' => $admin_access,

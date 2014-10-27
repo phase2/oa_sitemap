@@ -8,9 +8,9 @@
 
 (function ($) {
 
-  var app = angular.module("oaSitemap", ['ngSanitize', 'ngDraggable']);
+  var app = angular.module("oaSitemap", ['ngSanitize', 'ngDraggable', 'ngCookies']);
 
-  app.controller("oaSitemapController", function($scope, $timeout, $location) {
+  app.controller("oaSitemapController", function($scope, $timeout, $location, $cookies) {
 
     var currentID = 0;
     var topID = 0;
@@ -119,6 +119,13 @@
     $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
     $scope.editableTitle = {};
     $scope.space = allSpaces[topID];
+    $scope.showHelp = Drupal.settings.oa_sitemap.showHelp;
+    $scope.helpStatus = Drupal.settings.oa_sitemap.helpStatus;
+    $scope.fullPage = Drupal.settings.oa_sitemap.fullPage;
+    $scope.spaceHelp = Drupal.settings.oa_sitemap.spaceHelp;
+    $scope.sectionHelp = Drupal.settings.oa_sitemap.sectionHelp;
+    $scope.basePath = Drupal.settings.oa_sitemap.basePath;
+    $scope.title = Drupal.settings.oa_sitemap.title;
 
     $scope.breadcrumbs = loadBreadCrumbs(topID);
     $scope.icons = Drupal.settings.oa_sitemap.icons;
@@ -132,12 +139,20 @@
         $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
         $scope.space = allSpaces[spaceID];
         $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
+        console.log($scope.space);
       }
     };
 
     $scope.slide = function(slide) {
       $scope.currentSlide = parseInt(slide);
       $scope.space = $scope.spaces[$scope.currentSlide];
+    };
+
+    $scope.toggleHelp = function(value) {
+      $scope.helpStatus = value;
+      var arg = value ? 1 : 0;
+      // ajax callback to set drupal user session value
+      $.get(Drupal.settings.basePath + 'api/oa/sitemap-help/' + arg, {});
     };
 
     $scope.spaceClass = function(spaceID) {
@@ -329,13 +344,11 @@
               'admin': allSpaces[parentID].admin,
               'icon_id': node.field_oa_section.und[0].tid
             });
-            console.log(node);
             $scope.spaces = loadSpace(currentID);
             $scope.$apply();
           }
           break;
         case 'oa_space':
-          console.log(node);
           var parentID = (node.oa_parent_space == undefined) ? 0 : node.oa_parent_space.und[Object.keys(node.oa_parent_space.und)[0]].target_id;
           allSpaces[node.nid] = {
             'nid': node.nid,
@@ -352,7 +365,6 @@
             'subspaces': []
           };
           allSpaces[parentID].subspaces.push(node.nid);
-          console.log(allSpaces[node.nid]);
           $scope.exploreSpace(currentID);
           $scope.$apply();
           break;
@@ -363,6 +375,9 @@
 
   Drupal.behaviors.oaSitemap = {
     attach: function(context, settings) {
+      if (settings.oa_sitemap.fullPage) {
+        $('body').addClass('oa-sitemap-full');
+      }
     }
   }
 

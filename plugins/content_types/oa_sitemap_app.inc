@@ -13,6 +13,10 @@ $plugin = array(
   'required context' => new ctools_context_optional(t('Node'), 'node'),
   'defaults' => array(
     'oa_sitemap_parent' => FALSE,
+    'oa_sitemap_help' => FALSE,
+    'oa_sitemap_fullpage' => FALSE,
+    'oa_sitemap_space_help' => '',
+    'oa_sitemap_section_help' => '',
   ),
 );
 
@@ -22,6 +26,10 @@ $plugin = array(
  * @see ctools_plugin_examples for more advanced info
  */
 function oa_sitemap_app_render($subtype, $conf, $args, $context) {
+  global $user;
+
+  $logged_in = ($user->uid != 0);
+
   $node = NULL;
   if (isset($context->data)) {
     $node = $context->data;
@@ -84,6 +92,13 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
       'topID' => $space_id,
       'icons' => $icons,
       'spaces' => $spaces,
+      'showHelp' => !empty($conf['oa_sitemap_help']) ? $logged_in && $conf['oa_sitemap_help'] : FALSE,
+      'helpStatus' => (!isset($_SESSION['oa_sitemap_help']) || ($_SESSION['oa_sitemap_help'] == 1)),
+      'fullPage' => !empty($conf['oa_sitemap_fullpage']) ? $logged_in && $conf['oa_sitemap_fullpage'] : FALSE,
+      'spaceHelp' => !empty($conf['oa_sitemap_space_help']['value']) ? $conf['oa_sitemap_space_help']['value'] : '',
+      'sectionHelp' => !empty($conf['oa_sitemap_section_help']['value']) ? $conf['oa_sitemap_section_help']['value'] : '',
+      'basePath' => base_path() . $base,
+      'title' => $page_title,
     ),
     'oa-sitemap-section' => array(
       'modalSize' => array(
@@ -105,6 +120,7 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
 
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular.min.js');
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular-sanitize.js');
+  drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular-cookies.js');
 
   drupal_add_js($base . '/js/ngDraggable.js');
   drupal_add_js($base . '/js/oa_sitemap_app.js');
@@ -126,6 +142,30 @@ function oa_sitemap_app_settings_form($form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Show full parent tree'),
     '#default_value' => $conf['oa_sitemap_parent'],
+  );
+  $form['oa_sitemap_help'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show help text'),
+    '#default_value' => $conf['oa_sitemap_help'],
+  );
+  $form['oa_sitemap_fullpage'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show fullpage theming'),
+    '#default_value' => $conf['oa_sitemap_fullpage'],
+  );
+  $form['oa_sitemap_space_help'] = array(
+    '#title' => t('Create Space help text'),
+    '#description' => t('Enter the text to be displayed for the Create Space help box.'),
+    '#type' => 'text_format',
+    '#format' => isset($conf['oa_sitemap_space_help']['format']) ? $conf['oa_sitemap_space_help']['format'] : 'panopoly_wysiwyg_text',
+    '#default_value' => isset($conf['oa_sitemap_space_help']['value']) ? $conf['oa_sitemap_space_help']['value'] : '',
+  );
+  $form['oa_sitemap_section_help'] = array(
+    '#title' => t('Create Section help text'),
+    '#description' => t('Enter the text to be displayed for the Create Section help box.'),
+    '#type' => 'text_format',
+    '#format' => isset($conf['oa_sitemap_section_help']['format']) ? $conf['oa_sitemap_section_help']['format'] : 'panopoly_wysiwyg_text',
+    '#default_value' => isset($conf['oa_sitemap_section_help']['value']) ? $conf['oa_sitemap_section_help']['value'] : '',
   );
 
   return $form;
