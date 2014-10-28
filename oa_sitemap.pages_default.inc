@@ -77,10 +77,20 @@ function oa_sitemap_default_page_manager_pages() {
       'override_title_text' => '',
       'return' => 'Finish',
       'cancel' => 'Cancel',
-      'form_build_id' => 'form-f9Poh0Up2MD71aezSQY_sF2aJUXGaaoOyqfWnaekVSU',
-      'form_token' => 'YZMG4AmvmAsvRPSzwpkZrRAoo_TG-GKIO2M85G90bTA',
+      'form_build_id' => 'form-K-kNfXhLu_CkyB1h9QmmnmtRTJzLi0CyX7_OgnbkOfg',
+      'form_token' => 'QirTMBeGJboHuNQ-QgckipOfF033GsybkNZsJRt6kB4',
       'form_id' => 'oa_sitemap_app_settings_form',
       'op' => 'Finish',
+      'oa_sitemap_help' => 1,
+      'oa_sitemap_space_help' => array(
+        'value' => '<p>Open Atrium sites are divided into <strong>Spaces</strong>. A Space can be a department, project, region, office, brand, working group, etc. Once a space is created, you can select it to move into that space and create more content. Select the "<strong>New Space</strong>" button to create a new space.</p>',
+        'format' => 'panopoly_wysiwyg_text',
+      ),
+      'oa_sitemap_section_help' => array(
+        'value' => '<p>Spaces contain content within "<strong>Sections</strong>". A Section can be a Calendar, Discussion Forum, Document Library, Task list, Folder, etc. Select the "<strong>New Section</strong>" button to create a new section. Spaces can also be subdivided further into <strong>Sub-spaces</strong>. &nbsp;Select the "<strong>New Subspace</strong>" button to create a new sub-space.</p>',
+        'format' => 'panopoly_wysiwyg_text',
+      ),
+      'oa_sitemap_fullpage' => 1,
     );
     $pane->cache = array();
     $pane->style = array(
@@ -93,7 +103,7 @@ function oa_sitemap_default_page_manager_pages() {
     $pane->uuid = '9abcfdb2-c415-4ab7-8c0d-8110f83eab8e';
     $display->content['new-9abcfdb2-c415-4ab7-8c0d-8110f83eab8e'] = $pane;
     $display->panels['contentmain'][0] = 'new-9abcfdb2-c415-4ab7-8c0d-8110f83eab8e';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = 'new-9abcfdb2-c415-4ab7-8c0d-8110f83eab8e';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
@@ -311,7 +321,7 @@ function oa_sitemap_default_page_manager_pages() {
     $pane->uuid = 'bc169ec1-4d41-43ae-a6a0-96c481dc31ee';
     $display->content['new-bc169ec1-4d41-43ae-a6a0-96c481dc31ee'] = $pane;
     $display->panels['contentmain'][0] = 'new-bc169ec1-4d41-43ae-a6a0-96c481dc31ee';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
