@@ -177,7 +177,7 @@
     };
 
     $scope.newSpaceURL = function(spaceID) {
-      var url = Drupal.settings.basePath + 'api/oa_wizard/add/oa-space';
+      var url = Drupal.settings.basePath + 'api/oa_wizard/space-wizard';
       if (spaceID > 0) {
         url = url + '?oa_parent_space=' + spaceID;
       }
@@ -193,7 +193,7 @@
     };
 
     $scope.newSectionURL = function(spaceID) {
-      var url = Drupal.settings.basePath + 'api/oa_wizard/add/oa-section';
+      var url = Drupal.settings.basePath + 'api/oa_wizard/section-wizard';
       if (spaceID > 0) {
         url = url + '?og_group_ref=' + spaceID;
       }
