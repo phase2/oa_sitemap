@@ -80,6 +80,26 @@ function oa_sitemap_spaces_callback($nid) {
 }
 
 /**
+ * Helper function to capture the Batch API redirect URL.
+ *
+ * @param string $url
+ *   (optional) URL to redirect to.
+ * @param array $options
+ *   (optional) URL options.
+ *
+ * @return string|NULL
+ *   If a URL is passed in, it'll return NULL; otherwise it'll return an array
+ *   containing the arguments that this function was last called with.
+ */
+function _oa_sitemap_batch_goto($url = NULL, $options = array()) {
+  static $cache;
+  if (is_null($url)) {
+    return $cache;
+  }
+  $cache = array($url, $options);
+}
+
+/**
  * Ajax Callback for updating fields in a space from the sitemap
  * @param $node
  */
@@ -100,6 +120,16 @@ function oa_sitemap_update_callback($node) {
   }
   if ($updated) {
     node_save($node);
+
+    // If a batch was set, we need to redirect to the batch and then back to
+    // this space in the sitemap.
+    $batch = batch_get();
+    if (!empty($batch)) {
+      batch_process('sitemap/' . $new_node['parent_id'], 'batch', '_oa_sitemap_batch_goto');
+      $batch_redirect = _oa_sitemap_batch_goto();
+      // Tell the Javascript app that we need to redirect.
+      drupal_json_output(array(array('command' => 'redirect', 'url' => url($batch_redirect[0], array('absolute' => TRUE) + $batch_redirect[1]))));
+    }
   }
   return TRUE;
 }
