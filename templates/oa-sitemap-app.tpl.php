@@ -66,7 +66,7 @@
     <div class="oa-spaces">
 
       <section class="oa-sections">
-        <div class="oa-section" ng-repeat="section in space.sections" ng-drag="true" ng-drag-data="section" ng-drag-id="1">
+        <div class="oa-section" ng-repeat="section in space.sections" ng-drag="{{dragDrop}}" ng-drag-data="section" ng-drag-id="1">
           <h4 class="oa-section-title dropdown" ng-drop="true" ng-drop-id="[1]" ng-drop-success="onDropOnSection($data,$index,section,$event)">
             <div class="oa-section-icon {{sectionClass(section)}}" ng-bind-html="icons[section.icon_id]"></div>
             <a ng-hide="section.editorEnabled" class="oa-section-link {{section.class}}" data-toggle="dropdown" href="#">{{section.title}}</a>
@@ -96,7 +96,7 @@
       </section>
 
       <section class="oa-subspaces">
-        <div class="oa-subspace" ng-repeat="index in space.subspaces" ng-drag="true" ng-drag-data="allSpaces[index]" ng-drag-id="2">
+        <div class="oa-subspace" ng-repeat="index in space.subspaces" ng-drag="{{dragDrop}}" ng-drag-data="allSpaces[index]" ng-drag-id="2">
           <div class="oa-subspace-icons" ng-hide="allSpaces[index].editorEnabled">
             <div class="oa-subspace-icon-left">
               <a ng-href="{{allSpaces[index].url}}">
@@ -144,5 +144,12 @@
 
     </div>
   </div>
-
+  <div id="oa-sitemap-footer">
+    <a class="btn-none pull-right" ng-if="space.new_space && dragDrop" ng-click="toggleDrag(false)" href="#">
+      Disable Drag/drop
+    </a>
+    <a class="btn-none pull-right" ng-if="space.new_space && !dragDrop" ng-click="toggleDrag(true)" href="#">
+      Enable Drag/drop
+    </a>
+  </div>
 </div>

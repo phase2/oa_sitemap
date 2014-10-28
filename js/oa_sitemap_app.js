@@ -90,6 +90,17 @@
       return dropDownSelects;
     }
 
+    function getOptions(helpValue, dragValue) {
+      var value = 0;
+      if (helpValue) {
+        value = value + 1;
+      }
+      if (dragValue) {
+        value = value + 2;
+      }
+      return value;
+    }
+
     $scope.$on('oaSitemapRefresh', function(event, e) {
       // need to reset ctools since it caches the previous href values on modal links
       $('a.ctools-use-modal').each(function() {
@@ -120,7 +131,8 @@
     $scope.editableTitle = {};
     $scope.space = allSpaces[topID];
     $scope.showHelp = Drupal.settings.oa_sitemap.showHelp;
-    $scope.helpStatus = Drupal.settings.oa_sitemap.helpStatus;
+    $scope.helpStatus = Drupal.settings.oa_sitemap.options & 0x01;
+    $scope.dragDrop = Drupal.settings.oa_sitemap.options & 0x02;
     $scope.fullPage = Drupal.settings.oa_sitemap.fullPage;
     $scope.spaceHelp = Drupal.settings.oa_sitemap.spaceHelp;
     $scope.sectionHelp = Drupal.settings.oa_sitemap.sectionHelp;
@@ -179,9 +191,16 @@
 
     $scope.toggleHelp = function(value) {
       $scope.helpStatus = value;
-      var arg = value ? 1 : 0;
+      var arg = getOptions(value, $scope.dragDrop);
       // ajax callback to set drupal user session value
-      $.get(Drupal.settings.basePath + 'api/oa/sitemap-help/' + arg, {});
+      $.get(Drupal.settings.basePath + 'api/oa/sitemap-option/' + arg, {});
+    };
+
+    $scope.toggleDrag = function(value) {
+      $scope.dragDrop = value;
+      var arg = getOptions($scope.helpStatus, value);
+      // ajax callback to set drupal user session value
+      $.get(Drupal.settings.basePath + 'api/oa/sitemap-option/' + arg, {});
     };
 
     $scope.spaceClass = function(spaceID) {

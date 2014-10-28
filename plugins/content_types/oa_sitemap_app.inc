@@ -93,7 +93,7 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
       'icons' => $icons,
       'spaces' => $spaces,
       'showHelp' => !empty($conf['oa_sitemap_help']) ? $logged_in && $conf['oa_sitemap_help'] : FALSE,
-      'helpStatus' => (!isset($_SESSION['oa_sitemap_help']) || ($_SESSION['oa_sitemap_help'] == 1)),
+      'options' => isset($_SESSION['oa_sitemap_option']) ? $_SESSION['oa_sitemap_option'] : 1,
       'fullPage' => !empty($conf['oa_sitemap_fullpage']) ? $logged_in && $conf['oa_sitemap_fullpage'] : FALSE,
       'spaceHelp' => !empty($conf['oa_sitemap_space_help']['value']) ? $conf['oa_sitemap_space_help']['value'] : '',
       'sectionHelp' => !empty($conf['oa_sitemap_section_help']['value']) ? $conf['oa_sitemap_section_help']['value'] : '',

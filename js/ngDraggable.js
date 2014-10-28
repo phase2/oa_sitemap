@@ -72,7 +72,6 @@ angular.module("ngDraggable", [])
          */
         var onpress = function(evt) {
           if (_data.editorEnabled) return;
-          console.log(_data);
           if(! _dragEnabled)return;
 
 

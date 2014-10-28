@@ -25,8 +25,8 @@ function oa_sitemap_menu() {
     'page arguments' => array(3),
     'access arguments' => array('access content'),
   );
-  $items['api/oa/sitemap-help/%'] = array(
-    'page callback' => 'oa_sitemap_help_callback',
+  $items['api/oa/sitemap-option/%'] = array(
+    'page callback' => 'oa_sitemap_option_callback',
     'page arguments' => array(3),
     'access arguments' => array('access content'),
   );
@@ -186,14 +186,14 @@ function oa_sitemap_delete_callback($node) {
  * Ajax Callback for saving Show Help to user session
  * @param $value
  */
-function oa_sitemap_help_callback($value) {
+function oa_sitemap_option_callback($value) {
   global $user;
 
   if (($user->uid == 0) && !drupal_session_started()) {
     return;
   }
 
-  $_SESSION['oa_sitemap_help'] = $value;
+  $_SESSION['oa_sitemap_option'] = $value;
   return TRUE;
 }
 
