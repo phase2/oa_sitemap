@@ -16,7 +16,7 @@
       <button class="oa-sitemap-search-toggle btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">{{spaces[currentSlide].title}} <span class="caret"></span></button>
       <ul class="dropdown-menu" role="menu">
         <li ng-repeat="dropDownSelect in dropDownSelects">
-          <a ng-class="dropDownSelect.classes" class="oa-sitemap-search-link" ng-click="exploreSpace(dropDownSelect.nid)">{{dropDownSelect.prefix}}{{dropDownSelect.title}}</a>
+          <a ng-class="dropDownSelect.classes" class="oa-sitemap-search-link" ng-click="exploreSpace(dropDownSelect.nid, 1)">{{dropDownSelect.prefix}}{{dropDownSelect.title}}</a>
         </li>
       </ul>
     </div>
@@ -46,7 +46,7 @@
   </div>
   <ul class="oa-sitemap-breadcrumbs">
     <li class="oa-sitemap-breadcrumb" ng-repeat="breadcrumb in breadcrumbs.slice().reverse()"">
-      <a class="btn btn-default" ng-click='exploreSpace(breadcrumb.nid)' ng-drop="true" ng-drop-success="onDropOnSpace($data,breadcrumb.nid,$event)">{{breadcrumb.title}}</a>
+      <a class="btn btn-default" ng-click='exploreSpace(breadcrumb.nid, -1)' ng-drop="true" ng-drop-success="onDropOnSpace($data,breadcrumb.nid,$event)">{{breadcrumb.title}}</a>
     </li>
   </ul>
   <div id="oa-sitemap-top" class="oa-carousel-container">
@@ -118,7 +118,7 @@
             </div>
           </div>
           <h4 class="oa-subspace-title">
-            <a ng-hide="allSpaces[index].editorEnabled" class="oa-subspace-link" ng-click='exploreSpace($parent.allSpaces[index].nid)'
+            <a ng-hide="allSpaces[index].editorEnabled" class="oa-subspace-link" ng-click='exploreSpace($parent.allSpaces[index].nid, 1)'
                ng-drop="true" ng-drop-success="onDropOnSpace($data,index,$event)">
               <span>{{$parent.allSpaces[index].title}}</span>
             </a>

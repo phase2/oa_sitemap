@@ -8,9 +8,9 @@
 
 (function ($) {
 
-  var app = angular.module("oaSitemap", ['ngSanitize', 'ngDraggable', 'ngCookies']);
+  var app = angular.module("oaSitemap", ['ngSanitize', 'ngDraggable']);
 
-  app.controller("oaSitemapController", function($scope, $timeout, $location, $cookies) {
+  app.controller("oaSitemapController", function($scope, $timeout, $location) {
 
     var currentID = 0;
     var topID = 0;
@@ -131,7 +131,7 @@
     $scope.icons = Drupal.settings.oa_sitemap.icons;
     $scope.currentSlide = returnSpacePosition($scope.spaces, topID);
 
-    $scope.exploreSpace = function(spaceID) {
+    $scope.exploreSpace = function(spaceID, direction) {
       if (!allSpaces[spaceID].dragging) {
         breadcrumbs = [];
         $scope.breadcrumbs = loadBreadCrumbs(spaceID);
@@ -139,13 +139,42 @@
         $scope.currentSlide = returnSpacePosition($scope.spaces, spaceID);
         $scope.space = allSpaces[spaceID];
         $scope.dropDownSelects = returnDropDownSelects(topID, $scope.topDropdown);
-        console.log($scope.space);
+        if (parseInt(direction) != 0) {
+          $('#oa-sitemap-top').css({
+            top: -20 * parseInt(direction)
+          });
+          $('#oa-sitemap-top').animate({
+            top: 0
+          }, 300);
+        }
+
       }
     };
 
     $scope.slide = function(slide) {
+      var diff = $scope.currentSlide - parseInt(slide);
       $scope.currentSlide = parseInt(slide);
       $scope.space = $scope.spaces[$scope.currentSlide];
+      var offset = -1000;
+      if (diff < 0) {
+        offset = 1000;
+      }
+      $('#oa-sitemap-top .oa-spaces').css({
+        opacity: 1,
+        left: offset
+      });
+      $('#oa-sitemap-top .oa-space-header').css({
+        opacity: 1,
+        left: offset
+      });
+      $('#oa-sitemap-top .oa-spaces').animate({
+        opacity: 1,
+        left: 0
+      }, 300);
+      $('#oa-sitemap-top .oa-space-header').animate({
+        opacity: 1,
+        left: 0
+      }, 300);
     };
 
     $scope.toggleHelp = function(value) {
@@ -365,7 +394,7 @@
             'subspaces': []
           };
           allSpaces[parentID].subspaces.push(node.nid);
-          $scope.exploreSpace(currentID);
+          $scope.exploreSpace(currentID, 0);
           $scope.$apply();
           break;
       }

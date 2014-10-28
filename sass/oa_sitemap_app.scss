@@ -108,6 +108,8 @@ body.oa-sitemap-full {
 
   #oa-sitemap-top {
     background: white;
+    position: relative;
+    overflow: hidden;
   }
 
   .oa-sitemap-breadcrumb a {
@@ -132,6 +134,7 @@ body.oa-sitemap-full {
   }
 
   .oa-spaces {
+    position: relative;
     text-align: center;
     height: auto;
     overflow: visible;

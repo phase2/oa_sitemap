@@ -120,7 +120,6 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
 
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular.min.js');
   drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular-sanitize.js');
-  drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-rc.1/angular-cookies.js');
 
   drupal_add_js($base . '/js/ngDraggable.js');
   drupal_add_js($base . '/js/oa_sitemap_app.js');
