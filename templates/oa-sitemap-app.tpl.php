@@ -56,7 +56,7 @@
         <a class="oa-space-title" data-toggle="dropdown" href="#" ng-drop="true">{{spaces[currentSlide].title}}</a>
         <ul class="dropdown-menu" role="menu">
           <li ng-repeat="space in spaces">
-            <a ng-click="slide($index)" ng-drop="true" ng-drop-success="onDropOnSpace($data,spaces[$index].nid,$event)">{{space.title}}</a>
+            <a ng-click="slide($index)" ng-drop="true" ng-drop-success="onDropOnSpace($data,space.nid,$event)">{{space.title}}</a>
           </li>
         </ul>
       </div>

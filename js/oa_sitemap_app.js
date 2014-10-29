@@ -171,6 +171,7 @@
       if (diff < 0) {
         offset = 1000;
       }
+      $('#oa-sitemap-top').css('overflow', 'hidden');
       $('#oa-sitemap-top .oa-spaces').css({
         opacity: 1,
         left: offset
@@ -186,7 +187,10 @@
       $('#oa-sitemap-top .oa-space-header').animate({
         opacity: 1,
         left: 0
-      }, 300);
+      }, 300,
+      function () {
+        $('#oa-sitemap-top').css('overflow', 'visible');
+      });
     };
 
     $scope.toggleHelp = function(value) {
@@ -388,6 +392,7 @@
           if (allSpaces[parentID]) {
             allSpaces[parentID].sections.push({
               'title': node.title,
+              'type': 'oa_section',
               'url': Drupal.settings.basePath + 'node/' + node.nid,
               'visibility': (node.field_oa_group_ref.und.length == 0) &&
                 node.field_oa_team_ref.und.length == 0 &&
@@ -405,6 +410,7 @@
             'nid': node.nid,
             'parent_id': parentID,
             'title': node.title,
+            'type': 'oa_space',
             'status': node.status,
             'visibility': node.group_access.und[0].value,
             'admin': allSpaces[parentID].admin,

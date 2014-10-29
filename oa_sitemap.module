@@ -161,7 +161,15 @@ function _oa_sitemap_update_field($node, $field, $value, &$updated) {
     $updated = TRUE;
   }
   elseif (isset($node->{$field}[$lang][0]['target_id']) && ($node->{$field}[$lang][0]['target_id'] != $value)) {
-    $node->{$field}[$lang][0]['target_id'] = $value;
+    if ($value == 0) {
+      unset($node->{field}[$lang][0]);
+      if (count($node->{field}[$lang]) == 0) {
+        unset($node->{field});
+      }
+    }
+    else {
+      $node->{$field}[$lang][0]['target_id'] = $value;
+    }
     $updated = TRUE;
   }
   elseif (isset($node->{$field}[$lang][0]['tid']) && ($node->{$field}[$lang][0]['tid'] != $value)) {
