@@ -59,6 +59,9 @@
             <a ng-click="slide($index)" ng-drop="true" ng-drop-success="onDropOnSpace($data,space.nid,$event)">{{space.title}}</a>
           </li>
         </ul>
+        <a ng-href="{{spaces[currentSlide].url}}">
+          &nbsp;&nbsp;<i class="icon-eye-open"></i>
+        </a>
       </div>
       <button class="next" ng-show="spaces[currentSlide+1]" ng-click="slide(currentSlide+1)" ng-drop="true" ng-drop-success="onDropOnSpace($data,spaces[currentSlide+1].nid,$event)">{{spaces[currentSlide + 1].title}}</button>
     </div>

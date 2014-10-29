@@ -168,6 +168,10 @@ body.oa-sitemap-full {
         color: white;
       }
     }
+    a [class^="icon-"] {
+      font-size: 22px;
+      color: #CCC;
+    }
     .next {
       right: 30px;
       &:after {
