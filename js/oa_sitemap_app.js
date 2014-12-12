@@ -106,14 +106,16 @@
       $('a.ctools-use-modal').each(function() {
         // get link url without any query string
         var newurl = $(this).attr('href');
-        var newlink = newurl.split('?')[0];
-        // now need to remove previous ajax assigned to the old url
-        for (var base in Drupal.ajax) {
-          var link = base.split('?')[0];
-          if (newlink == link) {
-            //Drupal.ajax[base].url = newurl;
-            //Drupal.ajax[base].element_settings.url = newurl;
-            Drupal.ajax[base].options.url = newurl;
+        var newquery = newurl.split('?');
+        if (newquery.length > 1) {
+          var newlink = newquery[0];
+          // now need to remove previous ajax assigned to the old url
+          for (var base in Drupal.ajax) {
+            if ($(this)[0] == Drupal.ajax[base].element) {
+              //Drupal.ajax[base].url = newurl;
+              //Drupal.ajax[base].element_settings.url = newurl;
+              Drupal.ajax[base].options.url = newurl;
+            }
           }
         }
       });
