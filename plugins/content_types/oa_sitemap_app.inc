@@ -37,7 +37,8 @@ function oa_sitemap_app_render($subtype, $conf, $args, $context) {
   $space_id = isset($node) ? $node->nid : 0;
 
   $title = (empty($node) || !empty($conf['oa_sitemap_parent'])) ? variable_get('site_name', '') : $node->title;
-  $page_title = !empty($title) ? t('Site Map for @space', array('@space' => $title)) : t('Site Map');
+  // don't sanitize title yet, it will get handled by drupal_set_title and by {{}} sanitization in angular
+  $page_title = !empty($title) ? t('Site Map for !space', array('!space' => $title)) : t('Site Map');
 
   $base = drupal_get_path('module', 'oa_sitemap');
 
