@@ -77,8 +77,8 @@
           allSpaces[spaceID].prefix = new Array(depth+1).join("- ");
           allSpaces[spaceID].classes = spaceID == active ? 'active' : '';
           dropDownSelects.push(allSpaces[spaceID]);
-          if (allSpaces[spaceID].subspaces.length > 1) {
-            var child = returnChildren(allSpaces[spaceID].nid, active, depth+1);
+          if (allSpaces[spaceID].subspaces.length > 0) {
+            var child = returnChildren(spaceID, active, depth+1);
             if (child) {
               return child;
             }
