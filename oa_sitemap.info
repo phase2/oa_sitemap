@@ -4,6 +4,7 @@ core = 7.x
 package = Open Atrium
 dependencies[] = ctools
 dependencies[] = oa_core
+dependencies[] = oa_angular
 dependencies[] = oa_wizard
 dependencies[] = page_manager
 apps[screenshots][] = app/screenshot.png
