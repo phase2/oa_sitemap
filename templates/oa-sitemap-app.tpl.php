@@ -21,10 +21,10 @@
       </ul>
     </div>
     <a class="btn-none pull-right" ng-if="showHelp && helpStatus" ng-click="toggleHelp(false)" href="#">
-      Hide Help
+      <?php t('Hide Help'); ?>
     </a>
     <a class="btn btn-default pull-right" ng-if="showHelp && !helpStatus" ng-click="toggleHelp(true)" href="#">
-      <i class="icon-question-sign"></i> Help
+      <i class="icon-question-sign"></i> <?php t('Help'); ?>
     </a>
     <div class="oa-sitemap-full pull-left">
       <?php print $link; ?>
@@ -74,17 +74,17 @@
             <div class="oa-section-icon {{sectionClass(section)}}" ng-bind-html="icons[section.icon_id]"></div>
             <a ng-hide="section.editorEnabled" class="oa-section-link {{section.class}}" data-toggle="dropdown" href="#">{{section.title}}</a>
             <ul class="dropdown-menu" role="menu">
-              <li ng-show="section.admin"><a ng-href="{{editURL(section)}}">Edit</a></li>
-              <li ng-show="section.admin"><a ng-click="deleteSection(space, section)">Delete</a></li>
-              <li ng-show="section.admin"><a ng-click="enableEditor(section)">Rename</a></li>
+              <li ng-show="section.admin"><a ng-href="{{editURL(section)}}"><?php t('Edit'); ?></a></li>
+              <li ng-show="section.admin"><a ng-click="deleteSection(space, section)"><?php t('Delete'); ?></a></li>
+              <li ng-show="section.admin"><a ng-click="enableEditor(section)"><?php t('Rename'); ?></a></li>
               <li><a href="{{section.url}}">View</a></li>
             </ul>
             <div ng-show="section.editorEnabled">
               <textarea ng-model="editableTitle[section.nid]"></textarea>
               <div class="oa-rename-actions">
-                <a href="#" ng-click="saveTitle(section)">Save</a>
-                or
-                <a href="#" ng-click="disableEditor(section)">Cancel</a>.
+                <a href="#" ng-click="saveTitle(section)"><?php t('Save'); ?></a>
+                <?php t('or'); ?>
+                <a href="#" ng-click="disableEditor(section)"><?php t('Cancel'); ?></a>.
               </div>
             </div>
           </h4>
@@ -109,9 +109,9 @@
             <div ng-show="allSpaces[index].admin" class="dropdown oa-subspace-icon-center">
               <a class="" data-toggle="dropdown" href="#"><i class="icon-cog"></i></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a ng-href="{{editURL(allSpaces[index])}}">Edit</a></li>
-                <li><a ng-click="deleteSubspace(space, index)">Delete</a></li>
-                <li><a ng-click="enableEditor(allSpaces[index])">Rename</a></li>
+                <li><a ng-href="{{editURL(allSpaces[index])}}"><?php t('Edit'); ?></a></li>
+                <li><a ng-click="deleteSubspace(space, index)"><?php t('Delete'); ?></a></li>
+                <li><a ng-click="enableEditor(allSpaces[index])"><?php t('Rename'); ?></a></li>
               </ul>
             </div>
             <div class="oa-subspace-icon-right">
@@ -128,9 +128,9 @@
             <div ng-show="allSpaces[index].editorEnabled">
               <textarea ng-model="editableTitle[index]"></textarea>
               <div class="oa-rename-actions">
-                <a href="#" ng-click="saveTitle(allSpaces[index])">Save</a>
+                <a href="#" ng-click="saveTitle(allSpaces[index])"><?php t('Save'); ?></a>
                 or
-                <a href="#" ng-click="disableEditor(allSpaces[index])">Cancel</a>.
+                <a href="#" ng-click="disableEditor(allSpaces[index])"><?php t('Cancel'); ?></a>.
               </div>
             </div>
           </h4>
@@ -149,10 +149,10 @@
   </div>
   <div id="oa-sitemap-footer">
     <a class="btn-none pull-right" ng-if="space.new_space && dragDrop" ng-click="toggleDrag(false)" href="#">
-      Disable Drag/drop
+      <?php t('Disable Drag/drop'); ?>
     </a>
     <a class="btn-none pull-right" ng-if="space.new_space && !dragDrop" ng-click="toggleDrag(true)" href="#">
-      Enable Drag/drop
+      <?php t('Enable Drag/drop'); ?>
     </a>
   </div>
 </div>
