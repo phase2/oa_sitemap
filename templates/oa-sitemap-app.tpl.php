@@ -59,7 +59,7 @@
             <a ng-click="slide($index)" ng-drop="true" ng-drop-success="onDropOnSpace($data,space.nid,$event)">{{space.title}}</a>
           </li>
         </ul>
-        <a ng-href="{{spaces[currentSlide].url}}">
+        <a ng-href="{{spaces[currentSlide].url}}" title="<?php t('Visit Space'); ?>">
           &nbsp;&nbsp;<i class="icon-eye-open"></i>
         </a>
       </div>
@@ -107,7 +107,7 @@
               </a>
             </div>
             <div ng-show="allSpaces[index].admin" class="dropdown oa-subspace-icon-center">
-              <a class="" data-toggle="dropdown" href="#"><i class="icon-cog"></i></a>
+              <a class="" data-toggle="dropdown" href="#" title="<?php t('Settings'); ?>"><i class="icon-cog"></i></a>
               <ul class="dropdown-menu" role="menu">
                 <li><a ng-href="{{editURL(allSpaces[index])}}"><?php t('Edit'); ?></a></li>
                 <li><a ng-click="deleteSubspace(space, index)"><?php t('Delete'); ?></a></li>
@@ -115,7 +115,7 @@
               </ul>
             </div>
             <div class="oa-subspace-icon-right">
-              <a ng-href="{{allSpaces[index].url}}">
+              <a ng-href="{{allSpaces[index].url}}" title="<?php t('Visit Space'); ?>">
                 <i class="icon-eye-open"></i>
               </a>
             </div>
