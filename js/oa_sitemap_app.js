@@ -231,9 +231,9 @@
     };
 
     $scope.newSpaceURL = function(spaceID) {
-      var url = Drupal.settings.basePath + 'api/oa_wizard/space-wizard';
+      var url = Drupal.settings.basePath + 'api/oa_wizard/space-wizard?sitemap=1';
       if (spaceID > 0) {
-        url = url + '?oa_parent_space=' + spaceID;
+        url = url + '&oa_parent_space=' + spaceID;
       }
       return url;
     };

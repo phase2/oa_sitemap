@@ -77,7 +77,7 @@
               <li ng-show="section.admin"><a ng-href="{{editURL(section)}}"><?php print t('Edit'); ?></a></li>
               <li ng-show="section.admin"><a ng-click="deleteSection(space, section)"><?php print t('Delete'); ?></a></li>
               <li ng-show="section.admin"><a ng-click="enableEditor(section)"><?php print t('Rename'); ?></a></li>
-              <li><a href="{{section.url}}">View</a></li>
+              <li><a href="{{section.url}}"><?php print t('View'); ?></a></li>
             </ul>
             <div ng-show="section.editorEnabled">
               <textarea ng-model="editableTitle[section.nid]"></textarea>
